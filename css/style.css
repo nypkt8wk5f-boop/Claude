@@ -631,6 +631,101 @@ p.lead { font-size: 1.12rem; color: var(--text); }
 }
 .ig svg { width: 18px; height: 18px; fill: currentColor; }
 
+/* ---------- announcement bar ---------- */
+
+.announce {
+  display: block;
+  background: var(--red);
+  color: #fff;
+  text-align: center;
+  padding: 9px 16px;
+  font-family: var(--head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .76rem;
+  transition: background .15s;
+}
+.announce:hover { background: var(--red-dark); }
+
+/* ---------- Founding 50 ---------- */
+
+.founding {
+  background: var(--card);
+  border: 1px solid var(--red);
+  box-shadow: 0 0 0 1px var(--red);
+  border-radius: var(--radius);
+  padding: 38px 36px 30px;
+}
+.founding-head {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 880px) { .founding-head { grid-template-columns: 1fr; gap: 26px; } }
+
+.founding-terms { list-style: none; margin-top: 18px; }
+.founding-terms li {
+  position: relative;
+  padding: 5px 0 5px 26px;
+  color: var(--text);
+  font-size: .95rem;
+}
+.founding-terms li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 14px;
+  height: 8px;
+  border-left: 2px solid var(--red);
+  border-bottom: 2px solid var(--red);
+  transform: rotate(-45deg);
+}
+
+.founding-prices { display: grid; gap: 16px; }
+.fprice {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 24px;
+}
+.fprice h3 { font-size: 1.05rem; letter-spacing: .08em; }
+.fprice .price {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: 2.1rem;
+  color: #fff;
+  margin: 6px 0 2px;
+}
+.fprice .price small { font-size: .85rem; font-weight: 500; color: var(--muted); letter-spacing: .05em; }
+.fprice p { font-size: .88rem; margin-bottom: 14px; }
+
+.spots { margin-top: 30px; }
+.spots-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.spots-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  border-radius: 999px;
+}
+.spots p {
+  margin-top: 10px;
+  font-family: var(--head);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .82rem;
+  color: var(--muted);
+}
+.spots strong { color: #fff; font-size: 1rem; }
+
 /* ---------- reveal animation ---------- */
 
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }

@@ -25,6 +25,14 @@ Built as plain HTML/CSS/JS — no build step, no frameworks. Open `index.html` i
 
 Fonts (Oswald + Inter) are self-hosted in `assets/fonts/` so the site has no external dependencies.
 
+## Founding 50 counter
+
+The memberships page shows "X of 50 founding spots remaining" with a progress bar.
+As spots sell, edit `memberships.html`: change the `<strong>50 of 50</strong>` text and
+the `width:100%` on the `spots-fill` span (width = remaining ÷ 50 × 100). When the offer
+sells out, delete the whole `<section>` containing the `founding` block, and remove the
+`announce` bar link at the top of each page.
+
 ## Contact form
 
 The form opens the visitor's email app with the message pre-filled, addressed to
