@@ -5,13 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home | Ultimate Fight Fitness</title>
   <meta name="description" content="Ultimate Fight Fitness — BJJ, Muay Thai and Strength & Conditioning gym in Bishop Stortford. Over 55 classes per week. First session free.">
-  <link rel="icon" type="image/png" href="assets/img/logo-small.png">
+  <meta name="theme-color" content="#313131">
+  <link rel="canonical" href="https://www.ultimatefightfitness.co.uk/">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <meta property="og:title" content="Home | Ultimate Fight Fitness">
   <meta property="og:description" content="Ultimate Fight Fitness — BJJ, Muay Thai and Strength & Conditioning gym in Bishop Stortford. Over 55 classes per week. First session free.">
-  <meta property="og:image" content="assets/img/muaythai-area.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.ultimatefightfitness.co.uk/assets/img/muaythai-area.jpg">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preload" as="image" href="assets/img/muaythai-area.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ExerciseGym",
+    "name": "Ultimate Fight Fitness",
+    "url": "https://www.ultimatefightfitness.co.uk",
+    "email": "info@ultimatefightfitness.co.uk",
+    "image": "https://www.ultimatefightfitness.co.uk/assets/img/muaythai-area.jpg",
+    "priceRange": "££",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Unit 7 Twyford Road",
+      "addressLocality": "Bishop's Stortford",
+      "postalCode": "CM23 3LJ",
+      "addressCountry": "GB"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "06:00", "closes": "20:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "14:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "14:00" }
+    ],
+    "sameAs": ["https://www.instagram.com/ultimatefight_fitness"]
+  }
+  </script>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="announce" href="memberships.html">The Founding 50 is open &mdash; lock your first year from &pound;79.99/month &rarr;</a>
     <div class="wrap nav">
@@ -29,6 +58,7 @@
       </ul>
     </div>
   </header>
+<main id="main">
   <section class="hero">
     <div class="hero-bg" style="background-image:url('assets/img/muaythai-area.jpg')"></div>
     <div class="wrap hero-inner">
@@ -63,6 +93,32 @@
     </div>
   </section>
 
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Getting started</p>
+        <h2 class="section-title">Your first session, sorted</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <b>1</b>
+          <h3>Book your free session</h3>
+          <p><a class="link" style="color:var(--red);font-weight:600" href="mailto:info@ultimatefightfitness.co.uk?subject=Free%20first%20session">Drop us a message</a>, DM us on Instagram, or just walk in. Tell us which class you fancy &mdash; any class, any discipline.</p>
+        </div>
+        <div class="step reveal">
+          <b>2</b>
+          <h3>Turn up 15 minutes early</h3>
+          <p>Comfortable sportswear and a water bottle is all you need. We&rsquo;ll show you around, introduce you to your coach and get you settled.</p>
+        </div>
+        <div class="step reveal">
+          <b>3</b>
+          <h3>Train</h3>
+          <p>Your first session is completely free &mdash; no card, no commitment. If you love it, pick a plan and we&rsquo;ll see you on the mats.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section alt">
     <div class="wrap">
       <div class="section-head reveal">
@@ -73,19 +129,19 @@
       </div>
       <div class="tile-grid">
         <a class="tile reveal" href="classes.html#bjj">
-          <img src="assets/img/rodrigo-jack-nogi.jpg" alt="No-gi Brazilian Jiu-Jitsu training">
+          <img src="assets/img/rodrigo-jack-nogi.jpg" alt="No-gi Brazilian Jiu-Jitsu training" loading="lazy">
           <div class="tile-label"><h3>Brazilian Jiu Jitsu</h3><span>Gi &amp; No-Gi</span></div>
         </a>
         <a class="tile reveal" href="classes.html#muaythai">
-          <img src="assets/img/jack-muay-thai.jpg" alt="Muay Thai pad work">
+          <img src="assets/img/jack-muay-thai.jpg" alt="Muay Thai pad work" loading="lazy">
           <div class="tile-label"><h3>Muay Thai</h3><span>All levels</span></div>
         </a>
         <a class="tile reveal" href="classes.html#kids">
-          <img src="assets/img/bjj-room-wide.jpg" alt="The upstairs matted training area">
+          <img src="assets/img/bjj-room-wide.jpg" alt="The upstairs matted training area" loading="lazy">
           <div class="tile-label"><h3>Kids Classes</h3><span>BJJ &amp; Muay Thai</span></div>
         </a>
         <a class="tile reveal" href="classes.html#hybrid">
-          <img src="assets/img/kettlebells.jpg" alt="Kettlebells lined up in the strength and conditioning area">
+          <img src="assets/img/kettlebells.jpg" alt="Kettlebells lined up in the strength and conditioning area" loading="lazy">
           <div class="tile-label"><h3>Hybrid</h3><span>S &amp; C</span></div>
         </a>
         <a class="tile reveal" href="classes.html#sweat">
@@ -180,6 +236,7 @@
     </div>
   </section>
 
+</main>
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer-grid">
