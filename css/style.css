@@ -436,6 +436,22 @@ p.lead { font-size: 1.12rem; color: var(--text); }
 }
 .day .c { color: var(--text); }
 .day .c small { display: block; color: var(--muted); }
+.day .tag {
+  display: inline-block;
+  font-style: normal;
+  font-family: var(--head);
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  padding: 1px 8px;
+  margin-left: 6px;
+  vertical-align: 2px;
+  white-space: nowrap;
+}
 
 .note {
   margin-top: 30px;
@@ -513,6 +529,15 @@ p.lead { font-size: 1.12rem; color: var(--text); }
   border-left: 2px solid var(--red);
   border-bottom: 2px solid var(--red);
   transform: rotate(-45deg);
+}
+.plan li.ex { color: var(--muted); }
+.plan li.ex::before {
+  border: 0;
+  width: 12px;
+  height: 0;
+  border-bottom: 2px solid var(--muted);
+  transform: none;
+  top: 16px;
 }
 .plan .btn { margin-top: auto; text-align: center; }
 
