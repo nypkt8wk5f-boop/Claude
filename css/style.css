@@ -5,6 +5,7 @@
 @import url("../assets/fonts/fonts.css");
 
 :root {
+  color-scheme: dark;
   --bg: #313131;           /* matches the logo grey */
   --bg-2: #2a2a2b;
   --card: #3a3a3b;
