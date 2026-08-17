@@ -1,5 +1,95 @@
 // Ultimate Fight Fitness — shared scripts
 
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PREVIEW = !!window.UFF_PREVIEW;
+
+// Loading curtain — shows once per browsing session
+const loader = document.querySelector('.loader');
+if (loader) {
+  const dismiss = () => {
+    if (loader.classList.contains('done')) return;
+    loader.classList.add('done');
+    try { sessionStorage.uffSeen = '1'; } catch (e) {}
+  };
+  window.addEventListener('load', () => setTimeout(dismiss, 700));
+  setTimeout(dismiss, 2400); // safety net
+}
+
+// Scroll progress bar
+const progress = document.getElementById('progress');
+if (progress) {
+  const paint = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+  };
+  addEventListener('scroll', paint, { passive: true });
+  paint();
+}
+
+// Custom cursor ring (desktop pointers only)
+const cursor = document.getElementById('cursor');
+if (cursor && matchMedia('(pointer: fine)').matches && !REDUCED) {
+  let tx = -100, ty = -100, x = -100, y = -100;
+  addEventListener('mousemove', e => {
+    tx = e.clientX; ty = e.clientY;
+    cursor.classList.add('on');
+    cursor.classList.toggle('hot', !!e.target.closest('a, button, summary, .tile, .plan'));
+  }, { passive: true });
+  (function follow() {
+    x += (tx - x) * 0.2; y += (ty - y) * 0.2;
+    cursor.style.transform = 'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%)';
+    requestAnimationFrame(follow);
+  })();
+  addEventListener('mouseout', e => { if (!e.relatedTarget) cursor.classList.remove('on'); });
+}
+
+// Magnetic buttons
+if (matchMedia('(pointer: fine)').matches && !REDUCED) {
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = (e.clientX - r.left - r.width / 2) / r.width;
+      const dy = (e.clientY - r.top - r.height / 2) / r.height;
+      btn.style.transform = 'translate(' + dx * 5 + 'px,' + (dy * 4 - 1) + 'px)';
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+}
+
+// Gentle parallax on feature photos
+if (!REDUCED) {
+  const pxEls = Array.from(document.querySelectorAll('.split .photo img'));
+  if (pxEls.length) {
+    let ticking = false;
+    const move = () => {
+      pxEls.forEach(img => {
+        const r = img.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) return;
+        const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+        img.style.transform = 'translateY(' + (p * -16).toFixed(1) + 'px) scale(1.06)';
+      });
+      ticking = false;
+    };
+    addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(move); ticking = true; }
+    }, { passive: true });
+    move();
+  }
+}
+
+// Page-to-page fade (real site only, not the single-file preview)
+if (!PREVIEW && !REDUCED) {
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href$=".html"], a[href*=".html#"]');
+    if (!a || a.target === '_blank') return;
+    const href = a.getAttribute('href');
+    if (/^https?:|^mailto:/.test(href)) return;
+    e.preventDefault();
+    document.body.classList.add('leaving');
+    setTimeout(() => { window.location.href = href; }, 200);
+  });
+}
+
 // Mobile navigation
 const burger = document.querySelector('.burger');
 const navLinks = document.querySelector('.nav-links');

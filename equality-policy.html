@@ -13,8 +13,12 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://www.ultimatefightfitness.co.uk/assets/img/muaythai-area.jpg">
   <link rel="stylesheet" href="css/style.css">
+  <script>try{if(sessionStorage.uffSeen)document.documentElement.classList.add('no-loader')}catch(e){}</script>
 </head>
 <body>
+  <div class="loader" aria-hidden="true"><img src="assets/img/logo-small.png" alt=""><span class="loader-bar"></span></div>
+  <div id="progress" aria-hidden="true"></div>
+  <div id="cursor" aria-hidden="true"></div>
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="announce" href="memberships.html">The Founding 50 is open &mdash; lock your first year from &pound;79.99/month &rarr;</a>
@@ -163,6 +167,7 @@
 </main>
   <footer class="site-footer">
     <div class="wrap">
+      <div class="footer-word" aria-hidden="true">Be <b>Ultimate.</b></div>
       <div class="footer-grid">
         <div>
           <div class="footer-logo"><img src="assets/img/logo-small.png" alt="Ultimate Fight Fitness"></div>

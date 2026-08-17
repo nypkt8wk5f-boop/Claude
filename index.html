@@ -13,6 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://www.ultimatefightfitness.co.uk/assets/img/muaythai-area.jpg">
   <link rel="stylesheet" href="css/style.css">
+  <script>try{if(sessionStorage.uffSeen)document.documentElement.classList.add('no-loader')}catch(e){}</script>
   <link rel="preload" as="image" href="assets/img/muaythai-area.jpg">
   <script type="application/ld+json">
   {
@@ -40,6 +41,9 @@
   </script>
 </head>
 <body>
+  <div class="loader" aria-hidden="true"><img src="assets/img/logo-small.png" alt=""><span class="loader-bar"></span></div>
+  <div id="progress" aria-hidden="true"></div>
+  <div id="cursor" aria-hidden="true"></div>
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="announce" href="memberships.html">The Founding 50 is open &mdash; lock your first year from &pound;79.99/month &rarr;</a>
@@ -63,7 +67,7 @@
     <div class="hero-bg" style="background-image:url('assets/img/muaythai-area.jpg')"></div>
     <div class="wrap hero-inner">
       <p class="kicker">Bishop Stortford &middot; BJJ &middot; Muay Thai &middot; Strength &amp; Conditioning</p>
-      <h1 class="display">Train. Fight.<br><span class="accent">Be Ultimate.</span></h1>
+      <h1 class="display"><span class="ch" style="--i:0">T</span><span class="ch" style="--i:1">r</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">i</span><span class="ch" style="--i:4">n</span><span class="ch" style="--i:5">.</span><span class="ch" style="--i:6"> </span><span class="ch" style="--i:7">F</span><span class="ch" style="--i:8">i</span><span class="ch" style="--i:9">g</span><span class="ch" style="--i:10">h</span><span class="ch" style="--i:11">t</span><span class="ch" style="--i:12">.</span><br><span class="accent"><span class="ch" style="--i:13">B</span><span class="ch" style="--i:14">e</span><span class="ch" style="--i:15"> </span><span class="ch" style="--i:16">U</span><span class="ch" style="--i:17">l</span><span class="ch" style="--i:18">t</span><span class="ch" style="--i:19">i</span><span class="ch" style="--i:20">m</span><span class="ch" style="--i:21">a</span><span class="ch" style="--i:22">t</span><span class="ch" style="--i:23">e</span><span class="ch" style="--i:24">.</span></span></h1>
       <p class="hero-sub"><strong>With over 55 classes per week</strong> there&rsquo;s always something to fit your schedule, your goals and your training style&hellip; and your first session&rsquo;s free.</p>
       <div class="hero-ctas">
         <a class="btn" href="classes.html">Our Classes</a>
@@ -239,6 +243,7 @@
 </main>
   <footer class="site-footer">
     <div class="wrap">
+      <div class="footer-word" aria-hidden="true">Be <b>Ultimate.</b></div>
       <div class="footer-grid">
         <div>
           <div class="footer-logo"><img src="assets/img/logo-small.png" alt="Ultimate Fight Fitness"></div>
