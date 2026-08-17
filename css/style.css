@@ -195,6 +195,7 @@ p.lead { font-size: 1.12rem; color: var(--text); }
   background-size: cover;
   background-position: center;
 }
+.hero .hero-bg { background-image: url(../assets/img/muaythai-area.jpg); }
 .hero-bg::after {
   content: "";
   position: absolute;
@@ -202,7 +203,7 @@ p.lead { font-size: 1.12rem; color: var(--text); }
   background:
     linear-gradient(180deg, rgba(41,41,42,.45) 0%, rgba(41,41,42,.55) 45%, rgba(49,49,49,.97) 100%);
 }
-.hero-inner { padding: 120px 0 72px; width: 100%; }
+.hero-inner { padding-top: 120px; padding-bottom: 72px; width: 100%; }
 .hero .display .accent { color: var(--red); }
 .hero-sub {
   max-width: 620px;
@@ -1151,6 +1152,51 @@ html.no-loader .loader { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .hero .hero-bg, .hero .kicker, .hero .display, .hero-sub, .hero-ctas,
   .hero-stats, .marquee-track, .spots-fill { animation: none; }
+}
+
+/* ---------- phone-size tuning ---------- */
+
+@media (max-width: 640px) {
+  .hero { min-height: 100svh; }
+  .hero .hero-bg {
+    background-image: url(../assets/img/muaythai-bags.jpg);
+    background-position: center 30%;
+  }
+  .hero-inner { padding-top: 92px; padding-bottom: 40px; }
+  .hero .kicker { font-size: .66rem; letter-spacing: .18em; gap: 10px; }
+  .hero .kicker::before { width: 22px; }
+  .display { font-size: clamp(2.5rem, 12.5vw, 3.4rem); }
+  .hero-sub { font-size: 1rem; margin: 14px 0 22px; }
+  .hero-ctas .btn { padding: 12px 20px; font-size: .8rem; }
+  .hero-stats {
+    gap: 18px 26px;
+    margin-top: 28px;
+    padding-top: 18px;
+  }
+  .hero-stats b { font-size: 1.65rem; }
+  .hero-stats span { font-size: .6rem; letter-spacing: .14em; margin-top: 4px; }
+
+  .announce { font-size: .6rem; letter-spacing: .08em; padding: 7px 12px; }
+  .section { padding: 58px 0; }
+  .section-head { margin-bottom: 30px; }
+  h2.section-title { font-size: 1.65rem; }
+  .kicker { font-size: .72rem; letter-spacing: .2em; }
+  .bg-word { font-size: 17vw; top: 14px; }
+
+  .marquee { padding: 12px 0; }
+  .marquee-track { gap: 30px; }
+  .marquee-track span { font-size: 1.05rem; }
+  .marquee-track i { font-size: .8rem; }
+
+  .page-hero { padding: 70px 0 44px; }
+  .coach { padding: 40px 0; }
+  .coach h3 { font-size: 1.5rem; }
+  .founding { padding: 26px 20px 22px; }
+  .fprice .price { font-size: 1.8rem; }
+  .plan .price { font-size: 2.1rem; }
+  .footer-word { font-size: 13vw; margin: -4px 0 24px; }
+  .site-footer { padding-top: 44px; }
+  .steps .step, .card { padding: 22px 20px; }
 }
 
 /* ---------- reveal animation ---------- */
