@@ -1044,8 +1044,7 @@ html.no-loader .loader { display: none; }
   white-space: nowrap;
 }
 .marquee-track span.o {
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, .4);
+  color: #fff;
 }
 .marquee-track i {
   font-style: normal;
