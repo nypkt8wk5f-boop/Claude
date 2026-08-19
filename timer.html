@@ -109,6 +109,10 @@
     <div class="lbl">Rest Time</div>
     <div class="row"><button data-k="rest" data-d="-15">&minus;</button><div class="val" id="vRest">1:00</div><button data-k="rest" data-d="15">+</button></div>
   </div>
+  <div class="set">
+    <div class="lbl">Sound</div>
+    <div class="row"><button data-k="vol" data-d="-10">&minus;</button><div class="val" id="vVol">90%</div><button data-k="vol" data-d="10">+</button></div>
+  </div>
 </div>
 
 <div class="actions">
@@ -119,17 +123,17 @@
 
 <script>
 (function () {
-  var S = { rounds: 5, work: 180, rest: 60 };
+  var S = { rounds: 5, work: 180, rest: 60, vol: 90 };
   try {
     var saved = JSON.parse(localStorage.getItem('uffTimer') || '{}');
-    ['rounds', 'work', 'rest'].forEach(function (k) { if (typeof saved[k] === 'number') S[k] = saved[k]; });
+    ['rounds', 'work', 'rest', 'vol'].forEach(function (k) { if (typeof saved[k] === 'number') S[k] = saved[k]; });
   } catch (e) {}
 
-  var LIM = { rounds: [1, 30, 1], work: [15, 1800, 15], rest: [0, 600, 15] };
+  var LIM = { rounds: [1, 30, 1], work: [15, 1800, 15], rest: [0, 600, 15], vol: [0, 100, 10] };
   var el = {
     phase: document.getElementById('phase'), clock: document.getElementById('clock'),
     round: document.getElementById('round'), bar: document.getElementById('bar'),
-    vRounds: document.getElementById('vRounds'), vWork: document.getElementById('vWork'), vRest: document.getElementById('vRest'),
+    vRounds: document.getElementById('vRounds'), vWork: document.getElementById('vWork'), vRest: document.getElementById('vRest'), vVol: document.getElementById('vVol'),
     start: document.getElementById('startBtn'), reset: document.getElementById('resetBtn')
   };
 
@@ -139,12 +143,14 @@
     el.vRounds.textContent = S.rounds;
     el.vWork.textContent = fmt(S.work);
     el.vRest.textContent = fmt(S.rest);
+    el.vVol.textContent = S.vol + '%';
   }
 
   /* ---------- sound: WebAudio boxing bell + warning clacks ---------- */
   var AC = window.AudioContext || window.webkitAudioContext, ctx = null, master = null;
   function audio() {
-    if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.9; master.connect(ctx.destination); }
+    if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.connect(ctx.destination); }
+    master.gain.value = Math.pow(S.vol / 100, 1.6) * 1.1;
     if (ctx.state === 'suspended') ctx.resume();
     return ctx;
   }
@@ -290,6 +296,7 @@
       var k = b.dataset.k, d = +b.dataset.d, lim = LIM[k];
       S[k] = Math.min(lim[1], Math.max(lim[0], S[k] + d * (k === 'rounds' ? 1 : 1)));
       save(); renderSettings();
+      if (k === 'vol') { audio(); bell(0, .7); }
       if (!T.running && (T.phase === 'idle' || T.phase === 'done')) { T.remaining = S.work; render(); }
     });
   });
