@@ -58,6 +58,10 @@
   #resetBtn { background:none; color:var(--muted); border:2px solid var(--line); }
   .actions button:focus-visible { outline:3px solid var(--red); outline-offset:3px; }
 
+  #fsBtn { position:fixed; top:2.6vh; right:2.6vh; z-index:20; font-size:3.4vh; width:6.4vh; height:6.4vh;
+           background:rgba(42,42,43,.85); color:var(--muted); border:2px solid var(--line); border-radius:14px; cursor:pointer; }
+  #fsBtn:focus-visible, #fsBtn:active { border-color:var(--red); outline:none; }
+  :fullscreen #fsBtn { display:none; }
   .hint { position:fixed; bottom:1vh; right:1.4vw; font-family:'Inter',sans-serif; font-style:normal; font-weight:600;
           font-size:1.7vh; letter-spacing:.12em; color:rgba(255,255,255,.35); }
   body.running .panel { display:none; }
@@ -83,6 +87,7 @@
 <div class="corner tl"></div>
 <div class="corner br"></div>
 <header><img src="assets/img/logo.png" alt="Ultimate Fight Fitness"></header>
+<button id="fsBtn" title="Fullscreen">&#x26F6;</button>
 
 <main>
   <div class="phase" id="phase">Ready</div>
@@ -269,7 +274,15 @@
     render();
   }
 
-  el.start.addEventListener('click', function () { T.running ? pause() : start(); });
+  function goFullscreen() {
+    var d = document.documentElement;
+    var fn = d.requestFullscreen || d.webkitRequestFullscreen;
+    if (fn && !document.fullscreenElement && !document.webkitFullscreenElement) {
+      try { fn.call(d).catch(function () {}); } catch (e) {}
+    }
+  }
+  document.getElementById('fsBtn').addEventListener('click', goFullscreen);
+  el.start.addEventListener('click', function () { goFullscreen(); T.running ? pause() : start(); });
   el.reset.addEventListener('click', reset);
 
   document.querySelectorAll('.set button').forEach(function (b) {
