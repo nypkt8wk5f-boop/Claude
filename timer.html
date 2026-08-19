@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<title>Round Timer | Ultimate Fight Fitness</title>
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  :root { color-scheme: dark; --bg:#191919; --card:#2a2a2b; --line:#4a4a4c; --text:#f5f5f5; --muted:#c0c0c4; --red:#d92730; --green:#35b36b; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { height:100%; }
+  body { background:var(--bg); color:var(--text); font-family:'Oswald',sans-serif; font-weight:700; font-style:italic;
+         text-transform:uppercase; display:flex; flex-direction:column; align-items:center; overflow:hidden; user-select:none; }
+  .grain { position:fixed; inset:0; opacity:.1; pointer-events:none; z-index:50;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  header { padding:2.2vh 0 0; text-align:center; }
+  header img { height:7.5vh; max-height:64px; }
+
+  main { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; padding:0 4vw; }
+  .phase { font-size:5.2vh; letter-spacing:.4em; text-indent:.4em; color:var(--muted); }
+  .phase.work { color:var(--red); }
+  .phase.rest { color:var(--green); }
+  .clock { font-size:34vh; line-height:1; letter-spacing:.02em; font-variant-numeric:tabular-nums; margin:.5vh 0 1vh; }
+  .clock.warn { animation:blink .5s steps(2) infinite; }
+  @keyframes blink { 50% { opacity:.35; } }
+  .round { font-size:4.6vh; letter-spacing:.24em; text-indent:.24em; color:var(--muted); }
+  .round b { color:var(--text); }
+  .barwrap { width:min(72vw,900px); height:1.6vh; background:rgba(255,255,255,.12); border-radius:999px; overflow:hidden; margin-top:2.6vh; }
+  .bar { height:100%; width:0%; background:var(--red); border-radius:999px; }
+  .bar.rest { background:var(--green); }
+
+  .panel { display:flex; gap:2.4vw; align-items:stretch; justify-content:center; flex-wrap:wrap; padding:0 3vw 1.6vh; }
+  .set { background:var(--card); border:2px solid rgba(255,255,255,.09); border-radius:18px; padding:1.6vh 1.6vw; text-align:center; min-width:17vw; }
+  .set .lbl { font-size:2.2vh; letter-spacing:.28em; text-indent:.28em; color:var(--muted); margin-bottom:.8vh; }
+  .set .row { display:flex; align-items:center; justify-content:center; gap:1.2vw; }
+  .set button { font:inherit; color:var(--text); background:#3a3a3b; border:2px solid var(--line); border-radius:14px;
+                width:6.4vh; height:6.4vh; font-size:3.6vh; font-style:normal; cursor:pointer; }
+  .set button:active, .set button:focus-visible { border-color:var(--red); outline:none; background:#454547; }
+  .set .val { font-size:4.6vh; min-width:11vh; font-variant-numeric:tabular-nums; }
+
+  .actions { display:flex; gap:2vw; padding:0 0 3.4vh; }
+  .actions button { font:inherit; text-transform:uppercase; cursor:pointer; border-radius:999px; padding:1.9vh 5.4vw; font-size:3.4vh; letter-spacing:.14em; }
+  #startBtn { background:var(--red); color:#fff; border:none; box-shadow:0 12px 44px rgba(217,39,48,.35); }
+  #startBtn.running { background:#3a3a3b; border:2px solid var(--line); }
+  #resetBtn { background:none; color:var(--muted); border:2px solid var(--line); }
+  .actions button:focus-visible { outline:3px solid var(--red); outline-offset:3px; }
+
+  .hint { position:fixed; bottom:1vh; right:1.4vw; font-family:'Inter',sans-serif; font-style:normal; font-weight:600;
+          font-size:1.7vh; letter-spacing:.12em; color:rgba(255,255,255,.35); }
+  body.running .panel { display:none; }
+  body.running .clock { font-size:44vh; }
+  @media (max-width:640px) {
+    body { overflow:auto; }
+    main { flex:0 1 auto; padding-top:1vh; }
+    .clock { font-size:15vh; margin:.4vh 0; } body.running .clock { font-size:24vh; }
+    .phase { font-size:3.4vh; } .round { font-size:3vh; }
+    .barwrap { margin-top:1.2vh; }
+    .set { min-width:78vw; padding:1vh 4vw; } .panel { gap:1vh; padding-bottom:1vh; }
+    .set button { width:5.2vh; height:5.2vh; font-size:3vh; }
+    .set .val { font-size:3.6vh; }
+    .actions { padding-bottom:5vh; } .actions button { padding:1.5vh 10vw; font-size:2.8vh; }
+    .hint { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header><img src="assets/img/logo.png" alt="Ultimate Fight Fitness"></header>
+
+<main>
+  <div class="phase" id="phase">Ready</div>
+  <div class="clock" id="clock">3:00</div>
+  <div class="round" id="round">Round <b>1</b> / <b>5</b></div>
+  <div class="barwrap"><div class="bar" id="bar"></div></div>
+</main>
+
+<div class="panel">
+  <div class="set">
+    <div class="lbl">Rounds</div>
+    <div class="row"><button data-k="rounds" data-d="-1">&minus;</button><div class="val" id="vRounds">5</div><button data-k="rounds" data-d="1">+</button></div>
+  </div>
+  <div class="set">
+    <div class="lbl">Round Time</div>
+    <div class="row"><button data-k="work" data-d="-15">&minus;</button><div class="val" id="vWork">3:00</div><button data-k="work" data-d="15">+</button></div>
+  </div>
+  <div class="set">
+    <div class="lbl">Rest Time</div>
+    <div class="row"><button data-k="rest" data-d="-15">&minus;</button><div class="val" id="vRest">1:00</div><button data-k="rest" data-d="15">+</button></div>
+  </div>
+</div>
+
+<div class="actions">
+  <button id="startBtn">Start</button>
+  <button id="resetBtn">Reset</button>
+</div>
+<div class="hint">OK / SPACE&nbsp;=&nbsp;START &middot; PAUSE &nbsp;&nbsp; BACK / R&nbsp;=&nbsp;RESET</div>
+
+<script>
+(function () {
+  var S = { rounds: 5, work: 180, rest: 60 };
+  try {
+    var saved = JSON.parse(localStorage.getItem('uffTimer') || '{}');
+    ['rounds', 'work', 'rest'].forEach(function (k) { if (typeof saved[k] === 'number') S[k] = saved[k]; });
+  } catch (e) {}
+
+  var LIM = { rounds: [1, 30, 1], work: [15, 1800, 15], rest: [0, 600, 15] };
+  var el = {
+    phase: document.getElementById('phase'), clock: document.getElementById('clock'),
+    round: document.getElementById('round'), bar: document.getElementById('bar'),
+    vRounds: document.getElementById('vRounds'), vWork: document.getElementById('vWork'), vRest: document.getElementById('vRest'),
+    start: document.getElementById('startBtn'), reset: document.getElementById('resetBtn')
+  };
+
+  function fmt(s) { return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+  function save() { try { localStorage.setItem('uffTimer', JSON.stringify(S)); } catch (e) {} }
+  function renderSettings() {
+    el.vRounds.textContent = S.rounds;
+    el.vWork.textContent = fmt(S.work);
+    el.vRest.textContent = fmt(S.rest);
+  }
+
+  /* ---------- sound: WebAudio boxing bell + warning clacks ---------- */
+  var AC = window.AudioContext || window.webkitAudioContext, ctx = null, master = null;
+  function audio() {
+    if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.9; master.connect(ctx.destination); }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+  function bell(at, gain) {
+    var c = audio(); var t0 = c.currentTime + (at || 0); gain = gain || 1;
+    var parts = [[605, 1], [1222, .6], [1810, .45], [2513, .3], [3609, .18]];
+    parts.forEach(function (p) {
+      var o = c.createOscillator(), g = c.createGain();
+      o.type = 'sine'; o.frequency.value = p[0] * (1 + (Math.random() - .5) * .004);
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(.5 * p[1] * gain, t0 + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
+      o.connect(g); g.connect(master); o.start(t0); o.stop(t0 + 2.3);
+    });
+    var n = c.createBufferSource(), len = c.sampleRate * 0.02,
+        buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    var bp = c.createBiquadFilter(); bp.type = 'highpass'; bp.frequency.value = 2500;
+    var ng = c.createGain(); ng.gain.value = .5 * gain;
+    n.buffer = buf; n.connect(bp); bp.connect(ng); ng.connect(master); n.start(t0);
+  }
+  function bells(count, gap) { for (var i = 0; i < count; i++) bell(i * (gap || 0.45), 1); }
+  function clack(at) {
+    var c = audio(); var t0 = c.currentTime + (at || 0);
+    var len = c.sampleRate * 0.045, buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2);
+    var src = c.createBufferSource(); src.buffer = buf;
+    var bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1900; bp.Q.value = 1.4;
+    var g = c.createGain(); g.gain.value = .8;
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t0);
+  }
+  function clacks() { clack(0); clack(0.22); clack(0.44); }
+
+  /* ---------- timer engine ---------- */
+  // phases: idle | ready | work | rest | done
+  var T = { phase: 'idle', round: 1, remaining: S.work, running: false, endAt: 0, warned: false };
+  var READY = 10, tick = null, wakeLock = null;
+
+  function requestWake() {
+    if (navigator.wakeLock && navigator.wakeLock.request) {
+      navigator.wakeLock.request('screen').then(function (w) { wakeLock = w; }).catch(function () {});
+    }
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && T.running) requestWake();
+  });
+
+  function setPhase(p) {
+    T.phase = p; T.warned = false;
+    el.phase.className = 'phase' + (p === 'work' ? ' work' : p === 'rest' || p === 'ready' ? ' rest' : '');
+    el.bar.className = 'bar' + (p === 'rest' || p === 'ready' ? ' rest' : '');
+    el.phase.textContent = p === 'work' ? 'Round' : p === 'rest' ? 'Rest' : p === 'ready' ? 'Get Ready' : p === 'done' ? 'Done' : 'Ready';
+  }
+  function phaseLen() { return T.phase === 'work' ? S.work : T.phase === 'rest' ? S.rest : T.phase === 'ready' ? READY : S.work; }
+
+  function render() {
+    el.clock.textContent = fmt(Math.max(0, Math.ceil(T.remaining)));
+    el.clock.className = 'clock' + (T.phase === 'work' && T.remaining <= 10 && T.running ? ' warn' : '');
+    el.round.innerHTML = 'Round <b>' + T.round + '</b> / <b>' + S.rounds + '</b>';
+    var len = phaseLen();
+    el.bar.style.width = (len ? (1 - Math.max(0, T.remaining) / len) * 100 : 0) + '%';
+  }
+
+  function advance() {
+    if (T.phase === 'ready') { setPhase('work'); T.remaining = S.work; bell(0); }
+    else if (T.phase === 'work') {
+      if (T.round >= S.rounds) { setPhase('done'); T.remaining = 0; T.running = false; bells(3, 0.5); stopTick(); render(); el.start.textContent = 'Go again'; el.start.classList.remove('running'); document.body.classList.remove('running'); return; }
+      setPhase('rest'); T.remaining = S.rest; bells(2, 0.4);
+      if (S.rest === 0) { T.round++; setPhase('work'); T.remaining = S.work; }
+    } else if (T.phase === 'rest') { T.round++; setPhase('work'); T.remaining = S.work; bell(0); }
+    T.endAt = Date.now() + T.remaining * 1000;
+  }
+
+  function step() {
+    if (!T.running) return;
+    T.remaining = (T.endAt - Date.now()) / 1000;
+    if (T.phase === 'work' && !T.warned && T.remaining <= 10 && S.work > 20) { T.warned = true; clacks(); }
+    if (T.remaining <= 0) advance();
+    render();
+  }
+  function startTick() { stopTick(); tick = setInterval(step, 100); }
+  function stopTick() { if (tick) { clearInterval(tick); tick = null; } }
+
+  function start() {
+    audio();
+    if (T.phase === 'idle' || T.phase === 'done') {
+      T.round = 1; setPhase('ready'); T.remaining = READY; clack(0);
+    }
+    T.running = true; T.endAt = Date.now() + T.remaining * 1000;
+    el.start.textContent = 'Pause'; el.start.classList.add('running');
+    document.body.classList.add('running');
+    requestWake(); startTick(); render();
+  }
+  function pause() {
+    T.running = false; stopTick();
+    el.start.textContent = 'Resume'; el.start.classList.remove('running');
+    document.body.classList.remove('running');
+  }
+  function reset() {
+    T.running = false; stopTick();
+    T.round = 1; setPhase('idle'); T.remaining = S.work;
+    el.start.textContent = 'Start'; el.start.classList.remove('running');
+    document.body.classList.remove('running');
+    render();
+  }
+
+  el.start.addEventListener('click', function () { T.running ? pause() : start(); });
+  el.reset.addEventListener('click', reset);
+
+  document.querySelectorAll('.set button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.dataset.k, d = +b.dataset.d, lim = LIM[k];
+      S[k] = Math.min(lim[1], Math.max(lim[0], S[k] + d * (k === 'rounds' ? 1 : 1)));
+      save(); renderSettings();
+      if (!T.running && (T.phase === 'idle' || T.phase === 'done')) { T.remaining = S.work; render(); }
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'Enter') {
+      if (document.activeElement && document.activeElement.tagName === 'BUTTON' && e.key === 'Enter') return;
+      e.preventDefault(); T.running ? pause() : start();
+    }
+    if (e.key === 'r' || e.key === 'R' || e.key === 'Backspace') { e.preventDefault(); reset(); }
+  });
+
+  renderSettings(); setPhase('idle'); T.remaining = S.work; render();
+})();
+</script>
+</body>
+</html>
