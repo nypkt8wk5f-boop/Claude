@@ -14,18 +14,27 @@
   html, body { height:100%; }
   body { background:var(--bg); color:var(--text); font-family:'Oswald',sans-serif; font-weight:700; font-style:italic;
          text-transform:uppercase; display:flex; flex-direction:column; align-items:center; overflow:hidden; user-select:none; }
+  .bgphoto { position:fixed; inset:0; background:url(assets/img/muaythai-area.jpg) center 40%/cover; opacity:.16; }
+  .bgtint { position:fixed; inset:0; background:linear-gradient(180deg, rgba(20,20,21,.55) 0%, rgba(20,20,21,.82) 55%, rgba(20,20,21,.95) 100%); }
+  .corner { position:fixed; width:9vh; height:9vh; border:0 solid var(--red); z-index:6; pointer-events:none; }
+  .tl { top:2.6vh; left:2.6vh; border-top-width:.9vh; border-left-width:.9vh; }
+  .br { bottom:2.6vh; right:2.6vh; border-bottom-width:.9vh; border-right-width:.9vh; }
+  main, .panel, .actions { position:relative; z-index:5; }
   .grain { position:fixed; inset:0; opacity:.1; pointer-events:none; z-index:50;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-  header { padding:2.2vh 0 0; text-align:center; }
-  header img { height:7.5vh; max-height:64px; }
+  header { padding:2.4vh 0 0; text-align:center; position:relative; z-index:5; }
+  header img { height:12vh; max-height:112px; filter:drop-shadow(0 8px 26px rgba(0,0,0,.6)); }
 
   main { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; padding:0 4vw; }
-  .phase { font-size:5.2vh; letter-spacing:.4em; text-indent:.4em; color:var(--muted); }
-  .phase.work { color:var(--red); }
-  .phase.rest { color:var(--green); }
+  .phase { font-size:3.6vh; letter-spacing:.34em; text-indent:.34em; color:#fff; background:#3a3a3b; border:2px solid var(--line);
+           padding:1.2vh 3.4vw; border-radius:999px; }
+  .phase.work { background:var(--red); border-color:var(--red); }
+  .phase.rest { background:var(--green); border-color:var(--green); color:#10130f; }
   .clock { font-size:34vh; line-height:1; letter-spacing:.02em; font-variant-numeric:tabular-nums; margin:.5vh 0 1vh; }
   .clock.warn { animation:blink .5s steps(2) infinite; }
+  .clock.count { color:var(--red); font-size:52vh !important; animation:countPop 1s ease-out infinite; }
+  @keyframes countPop { 0% { transform:scale(1.16); } 30% { transform:scale(1); } 100% { transform:scale(1); } }
   @keyframes blink { 50% { opacity:.35; } }
   .round { font-size:4.6vh; letter-spacing:.24em; text-indent:.24em; color:var(--muted); }
   .round b { color:var(--text); }
@@ -68,7 +77,11 @@
 </style>
 </head>
 <body>
+<div class="bgphoto"></div>
+<div class="bgtint"></div>
 <div class="grain"></div>
+<div class="corner tl"></div>
+<div class="corner br"></div>
 <header><img src="assets/img/logo.png" alt="Ultimate Fight Fitness"></header>
 
 <main>
@@ -159,11 +172,24 @@
     src.connect(bp); bp.connect(g); g.connect(master); src.start(t0);
   }
   function clacks() { clack(0); clack(0.22); clack(0.44); }
+  function buzzer(at, dur) {
+    var c = audio(); var t0 = c.currentTime + (at || 0); dur = dur || 0.85;
+    var o1 = c.createOscillator(), o2 = c.createOscillator(), g = c.createGain(), lp = c.createBiquadFilter();
+    o1.type = 'square'; o1.frequency.value = 349;
+    o2.type = 'square'; o2.frequency.value = 354;
+    lp.type = 'lowpass'; lp.frequency.value = 1400;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(.4, t0 + 0.02);
+    g.gain.setValueAtTime(.4, t0 + dur - 0.06);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o1.connect(lp); o2.connect(lp); lp.connect(g); g.connect(master);
+    o1.start(t0); o2.start(t0); o1.stop(t0 + dur); o2.stop(t0 + dur);
+  }
 
   /* ---------- timer engine ---------- */
   // phases: idle | ready | work | rest | done
-  var T = { phase: 'idle', round: 1, remaining: S.work, running: false, endAt: 0, warned: false };
-  var READY = 10, tick = null, wakeLock = null;
+  var T = { phase: 'idle', round: 1, remaining: S.work, running: false, endAt: 0, warned: false, lastCount: 0 };
+  var READY = 5, tick = null, wakeLock = null;
 
   function requestWake() {
     if (navigator.wakeLock && navigator.wakeLock.request) {
@@ -183,8 +209,14 @@
   function phaseLen() { return T.phase === 'work' ? S.work : T.phase === 'rest' ? S.rest : T.phase === 'ready' ? READY : S.work; }
 
   function render() {
-    el.clock.textContent = fmt(Math.max(0, Math.ceil(T.remaining)));
-    el.clock.className = 'clock' + (T.phase === 'work' && T.remaining <= 10 && T.running ? ' warn' : '');
+    var counting = T.running && T.remaining <= 3 && T.remaining > 0 && (T.phase === 'ready' || T.phase === 'rest');
+    if (counting) {
+      el.clock.textContent = Math.ceil(T.remaining);
+      el.clock.className = 'clock count';
+    } else {
+      el.clock.textContent = fmt(Math.max(0, Math.ceil(T.remaining)));
+      el.clock.className = 'clock' + (T.phase === 'work' && T.remaining <= 10 && T.running ? ' warn' : '');
+    }
     el.round.innerHTML = 'Round <b>' + T.round + '</b> / <b>' + S.rounds + '</b>';
     var len = phaseLen();
     el.bar.style.width = (len ? (1 - Math.max(0, T.remaining) / len) * 100 : 0) + '%';
@@ -193,8 +225,8 @@
   function advance() {
     if (T.phase === 'ready') { setPhase('work'); T.remaining = S.work; bell(0); }
     else if (T.phase === 'work') {
-      if (T.round >= S.rounds) { setPhase('done'); T.remaining = 0; T.running = false; bells(3, 0.5); stopTick(); render(); el.start.textContent = 'Go again'; el.start.classList.remove('running'); document.body.classList.remove('running'); return; }
-      setPhase('rest'); T.remaining = S.rest; bells(2, 0.4);
+      if (T.round >= S.rounds) { setPhase('done'); T.remaining = 0; T.running = false; buzzer(0, 1.4); bells(3, 0.5); stopTick(); render(); el.start.textContent = 'Go again'; el.start.classList.remove('running'); document.body.classList.remove('running'); return; }
+      setPhase('rest'); T.remaining = S.rest; buzzer(0);
       if (S.rest === 0) { T.round++; setPhase('work'); T.remaining = S.work; }
     } else if (T.phase === 'rest') { T.round++; setPhase('work'); T.remaining = S.work; bell(0); }
     T.endAt = Date.now() + T.remaining * 1000;
@@ -204,6 +236,10 @@
     if (!T.running) return;
     T.remaining = (T.endAt - Date.now()) / 1000;
     if (T.phase === 'work' && !T.warned && T.remaining <= 10 && S.work > 20) { T.warned = true; clacks(); }
+    if ((T.phase === 'ready' || T.phase === 'rest') && T.remaining <= 3 && T.remaining > 0) {
+      var n = Math.ceil(T.remaining);
+      if (n !== T.lastCount) { T.lastCount = n; clack(0); }
+    } else { T.lastCount = 0; }
     if (T.remaining <= 0) advance();
     render();
   }
