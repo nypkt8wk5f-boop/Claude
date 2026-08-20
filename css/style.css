@@ -1160,7 +1160,7 @@ html.no-loader .loader { display: none; }
   .hero { min-height: 100svh; }
   .hero .hero-bg {
     background-image: url(../assets/img/muaythai-bags.jpg);
-    background-position: center 30%;
+    background-position: center 52%;
   }
   .hero-inner { padding-top: 92px; padding-bottom: 40px; }
   .hero .kicker { font-size: .66rem; letter-spacing: .18em; gap: 10px; }
