@@ -560,7 +560,8 @@ p.lead { font-size: 1.12rem; color: var(--text); }
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+  max-width: 760px;
   gap: 54px;
   align-items: start;
 }

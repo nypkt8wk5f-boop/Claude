@@ -454,13 +454,7 @@ document.addEventListener('click', e => {
     S.vel += (S.rawVel - S.vel) * 0.14;
     S.rawVel *= 0.86;
 
-    /* the ticker lurches with the scroll. Written straight to the one
-       element rather than a :root custom property, which would force a
-       document-wide style recalc on every single frame. */
-    if (marquee && Math.abs(S.vel - lastVel) > 0.004) {
-      lastVel = S.vel;
-      marquee.style.transform = 'rotate(-1.2deg) scale(1.04) translateX(' + (S.vel * -46).toFixed(1) + 'px)';
-    }
+
 
     /* hero camera: slow breath + pointer look + scroll dolly.
        The room and the words move against each other, so the hero
