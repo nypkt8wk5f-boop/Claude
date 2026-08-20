@@ -509,6 +509,7 @@ document.addEventListener('click', e => {
     }
 
     if (focusTiles.length) focusPass();
+    bagStep(dt);
 
     /* spotlight — only written when the pointer actually moved */
     if (spot && (S.mx !== lastMx || S.my !== lastMy)) {
@@ -527,7 +528,12 @@ document.addEventListener('click', e => {
   /* stat impact when the count-up lands */
   setTimeout(function () {
     document.querySelectorAll('.hero-stats b').forEach(function (b, i) {
-      setTimeout(function () { b.classList.add('landed'); }, 1150 + i * 90);
+      setTimeout(function () {
+        b.classList.add('landed');
+        var stat = b.closest('.stat') || b.parentNode;
+        dustBurst(stat);
+        if (i === 0) jolt();
+      }, 1150 + i * 90);
     });
   }, 400);
 
@@ -698,6 +704,26 @@ document.addEventListener('click', e => {
     var g = c.createGain(); g.gain.value = 0.13;
     src.connect(bp); bp.connect(g); g.connect(master); src.start(t0);
   }
+  function thump(gain) {
+    if (!on) return;
+    var c = audio(); if (!c) return;
+    var t0 = c.currentTime; gain = gain || 0.4;
+    var o = c.createOscillator(), g = c.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(95, t0);
+    o.frequency.exponentialRampToValueAtTime(42, t0 + 0.16);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(gain, t0 + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.22);
+    o.connect(g); g.connect(master); o.start(t0); o.stop(t0 + 0.24);
+    var len = Math.floor(c.sampleRate * 0.05);
+    var buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2);
+    var src = c.createBufferSource(); src.buffer = buf;
+    var bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 620; bp.Q.value = 0.9;
+    var ng = c.createGain(); ng.gain.value = gain * 0.9;
+    src.connect(bp); bp.connect(ng); ng.connect(master); src.start(t0);
+  }
   function bell(gain) {
     if (!on) return;
     var c = audio(); if (!c) return;
@@ -743,6 +769,155 @@ document.addEventListener('click', e => {
       wipe.classList.add('go');
       setTimeout(function () { location.href = href; }, 430);
     };
+  }
+
+  /* ---------- 13. punch the screen ---------- */
+  var mainEl = document.querySelector('main') || document.body;
+  var joltLock = false;
+  function jolt() {
+    if (joltLock) return;
+    joltLock = true;
+    mainEl.classList.add('jolt');
+    setTimeout(function () { mainEl.classList.remove('jolt'); joltLock = false; }, 180);
+  }
+  function shockwave(x, y) {
+    var p = document.createElement('span');
+    p.className = 'pow';
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    document.body.appendChild(p);
+    setTimeout(function () { p.remove(); }, 500);
+  }
+  var comboEl = document.createElement('div');
+  comboEl.id = 'combo';
+  comboEl.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(comboEl);
+  var comboN = 0, comboAt = 0;
+
+  document.addEventListener('pointerdown', function (e) {
+    if (e.button && e.button !== 0) return;
+    shockwave(e.clientX, e.clientY);
+    var interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, summary, label, .tab-btn');
+    if (!interactive) { jolt(); thump(0.32); }
+    /* fist jab */
+    if (cursor) {
+      cursor.classList.remove('jab');
+      void cursor.offsetWidth;
+      cursor.classList.add('jab');
+    }
+    /* combo counter (desktop, outside interactive elements) */
+    if (FINE && !interactive) {
+      var now = performance.now();
+      comboN = (now - comboAt < 750) ? comboN + 1 : 1;
+      comboAt = now;
+      if (comboN >= 2) {
+        comboEl.textContent = comboN + '-hit combo';
+        comboEl.style.left = e.clientX + 'px';
+        comboEl.style.top = e.clientY + 'px';
+        comboEl.classList.remove('hit');
+        void comboEl.offsetWidth;
+        comboEl.classList.add('hit');
+      }
+    }
+  }, { passive: true });
+
+  if (cursor && FINE) {
+    var glove = document.createElement('span');
+    glove.className = 'glove';
+    glove.textContent = '\uD83E\uDD4A';
+    cursor.appendChild(glove);
+  }
+
+  /* ---------- 14. the bag ---------- */
+  var bagSwing = document.getElementById('bagSwing');
+  var bagState = null;
+  if (bagSwing) {
+    var bagHitsEl = document.getElementById('bagHits');
+    var bagPrize = document.getElementById('bagPrize');
+    var hits = 0;
+    try { hits = parseInt(sessionStorage.uffBagHits || '0', 10) || 0; } catch (e) {}
+    if (bagHitsEl && hits) bagHitsEl.textContent = hits;
+    bagState = { th: 0, w: 0, active: false, px: 0, pt: 0, dragging: false };
+    if (io) io.observe(bagSwing.closest('.bagzone') || bagSwing);
+    inView.add(bagSwing);
+
+    var bagZone = bagSwing.closest('.bagzone');
+    if (bagZone && 'IntersectionObserver' in window) {
+      var bio = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { bagState.active = en.isIntersecting; });
+      }, { rootMargin: '60px' });
+      bio.observe(bagZone);
+    } else { bagState.active = true; }
+
+    function bagHit(strength, dir) {
+      bagState.w += dir * strength;
+      if (bagState.w > 5.2) bagState.w = 5.2;
+      if (bagState.w < -5.2) bagState.w = -5.2;
+      hits++;
+      try { sessionStorage.uffBagHits = String(hits); } catch (e) {}
+      if (bagHitsEl) {
+        bagHitsEl.textContent = hits;
+        bagHitsEl.classList.remove('bump');
+        void bagHitsEl.offsetWidth;
+        bagHitsEl.classList.add('bump');
+      }
+      thump(0.5);
+      var done = false;
+      try { done = sessionStorage.uffBag10 === '1'; } catch (e) {}
+      if (hits >= 10 && !done && bagPrize) {
+        try { sessionStorage.uffBag10 = '1'; } catch (e) {}
+        bagPrize.hidden = false;
+        bagPrize.classList.add('show');
+        bell(0.5);
+      }
+    }
+
+    var bagArena = bagSwing.closest('.bag-stage') || bagSwing;
+    bagArena.addEventListener('pointerdown', function (e) {
+      if (e.target.closest && e.target.closest('.bag-prize')) return;
+      bagState.dragging = true;
+      bagState.px = e.clientX;
+      bagState.pt = performance.now();
+      var r = bagSwing.getBoundingClientRect();
+      var mid = r.left + r.width / 2;
+      var off = Math.max(-1, Math.min(1, (e.clientX - mid) / (r.width * 0.7)));
+      bagHit(1.4 + Math.random() * 0.9 + Math.abs(off) * 0.8, off <= 0 ? 1 : -1);
+      e.preventDefault();
+    });
+    addEventListener('pointerup', function (e) {
+      if (!bagState.dragging) return;
+      bagState.dragging = false;
+      var dt = performance.now() - bagState.pt;
+      var vx = (e.clientX - bagState.px) / Math.max(40, dt);   /* px per ms */
+      if (Math.abs(vx) > 0.25) bagState.w += Math.max(-4, Math.min(4, vx * 2.4));
+    }, { passive: true });
+  }
+
+  function bagStep(dt) {
+    if (!bagState || !bagState.active) return;
+    var st = bagState, sec = Math.min(0.05, dt / 1000);
+    /* pendulum with damping + a faint idle sway so it is never dead still */
+    var acc = -8.2 * Math.sin(st.th) - 1.35 * st.w;
+    st.w += acc * sec;
+    st.th += st.w * sec + Math.sin(S.t * 0.7) * 0.00016;
+    if (st.th > 1.15) { st.th = 1.15; st.w *= -0.55; }
+    if (st.th < -1.15) { st.th = -1.15; st.w *= -0.55; }
+    bagSwing.style.transform = 'rotate(' + (st.th * 57.2958).toFixed(2) + 'deg)';
+  }
+
+  /* ---------- 15. stats that punch in ---------- */
+  function dustBurst(el) {
+    for (var i = 0; i < 6; i++) {
+      var d = document.createElement('span');
+      d.className = 'stat-dust';
+      var a = (i / 6) * 6.283 + Math.random() * 0.8;
+      d.style.setProperty('--dx', (Math.cos(a) * (26 + Math.random() * 22)).toFixed(0) + 'px');
+      d.style.setProperty('--dy', (Math.sin(a) * (20 + Math.random() * 18) - 8).toFixed(0) + 'px');
+      d.style.left = '50%';
+      d.style.top = '40%';
+      el.appendChild(d);
+      setTimeout(function (n) { return function () { n.remove(); }; }(d), 600);
+    }
   }
 
   /* ---------- utils ---------- */
