@@ -1208,3 +1208,481 @@ html.no-loader .loader { display: none; }
   html { scroll-behavior: auto; }
 }
 /* build 7ca5f01 */
+
+/* ============================================================
+   IMMERSION LAYER
+   Everything below is scoped to html.immersive, a class the
+   engine in main.js adds once it boots. No JS = the original
+   site, untouched. prefers-reduced-motion = engine never boots.
+   ============================================================ */
+
+:root {
+  --vel: 0;      /* scroll velocity, roughly -1 .. 1 */
+  --px: 0;       /* pointer x from centre, -1 .. 1  */
+  --py: 0;       /* pointer y from centre, -1 .. 1  */
+}
+
+/* ---------- 1. the room: hero atmosphere ---------- */
+
+.immersive .hero { perspective: 1200px; }
+.immersive .hero .wrap { position: relative; z-index: 2; }
+
+/* Desktop: the engine drives the background transform every frame.
+   Phones: hand it back to a compositor-only CSS drift — same sense of a
+   living room, none of the per-frame raster cost on a mid-range device. */
+.immersive.rich .hero .hero-bg { animation: none; will-change: transform; }
+.immersive:not(.rich) .hero .hero-bg,
+.immersive:not(.rich) .page-hero .hero-bg {
+  animation: heroDrift 26s ease-in-out infinite alternate both;
+  transform-origin: 58% 45%;
+}
+@keyframes heroDrift { from { transform: scale(1.015); } to { transform: scale(1.075); } }
+
+.hero-atmos {
+  position: absolute;
+  inset: -6%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* light falling through the roof lights */
+.hero-atmos .beam {
+  position: absolute;
+  top: -40%;
+  width: 42%;
+  height: 190%;
+  background: linear-gradient(100deg, rgba(255, 252, 240, 0) 0%, rgba(255, 252, 240, .055) 26%,
+              rgba(255, 252, 240, .075) 50%, rgba(255, 252, 240, .04) 72%, rgba(255, 252, 240, 0) 100%);
+  transform-origin: top center;
+}
+.hero-atmos .b1 { left: 4%;  transform: rotate(14deg);  animation: beamDrift 19s ease-in-out infinite; }
+.hero-atmos .b2 { left: 46%; transform: rotate(9deg);   opacity: .7; animation: beamDrift 25s ease-in-out infinite reverse; }
+@keyframes beamDrift {
+  0%, 100% { opacity: .5;  transform: rotate(13deg) translateX(0); }
+  50%      { opacity: .95; transform: rotate(16deg) translateX(26px); }
+}
+
+/* dust in the light */
+.hero-atmos .dust { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .75; }
+
+/* the lens */
+.hero-atmos .vig {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 85% at 50% 42%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, .34) 78%, rgba(0, 0, 0, .62) 100%);
+}
+
+/* film gate weave — the frame never sits perfectly still */
+
+@keyframes weave {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(.6px, -.5px); }
+  40%  { transform: translate(-.5px, .4px); }
+  60%  { transform: translate(.4px, .6px); }
+  80%  { transform: translate(-.6px, -.3px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ---------- 2. arrival: the doors open ---------- */
+
+.immersive .loader {
+  gap: 26px;
+  transition: none;
+  background: #141415;
+}
+.immersive .loader img {
+  animation: loaderBreathe 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, .7));
+}
+@keyframes loaderBreathe {
+  0%, 100% { transform: scale(1);    opacity: .92; }
+  50%      { transform: scale(1.045); opacity: 1; }
+}
+/* split the curtain: two halves pull apart on a red seam */
+.immersive .loader::before,
+.immersive .loader::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  height: 51%;
+  background: #141415;
+  z-index: -1;
+  transition: transform .95s cubic-bezier(.76, 0, .18, 1);
+}
+.immersive .loader::before { top: 0;    border-bottom: 2px solid transparent; }
+.immersive .loader::after  { bottom: 0; border-top: 2px solid transparent; }
+.immersive .loader.done {
+  transform: none;
+  background: transparent;
+  pointer-events: none;
+}
+.immersive .loader.done img,
+.immersive .loader.done .loader-bar { opacity: 0; transition: opacity .18s ease; }
+.immersive .loader.done::before { transform: translateY(-101%); border-bottom-color: var(--red); }
+.immersive .loader.done::after  { transform: translateY(101%);  border-top-color: var(--red); }
+
+/* the whole page settles out of a push-in as the doors part */
+.immersive.booting body > main,
+.immersive.booting .site-header { animation: cameraSettle 1.5s cubic-bezier(.16, .84, .24, 1) both; }
+@keyframes cameraSettle {
+  from { transform: scale(1.055); filter: blur(9px); opacity: .4; }
+  60%  { filter: blur(0); }
+  to   { transform: none; filter: none; opacity: 1; }
+}
+
+/* headline letters arrive with real depth */
+.immersive .display .ch {
+  animation-name: chDepth;
+  animation-duration: .78s;
+  animation-timing-function: cubic-bezier(.16, .9, .24, 1);
+}
+@keyframes chDepth {
+  from { opacity: 0; transform: translateY(.5em) translateZ(-160px) rotateX(-62deg); filter: blur(5px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+.immersive .hero .display { perspective: 700px; }
+.immersive .hero .display .accent .ch { animation-name: chDepthRed; }
+@keyframes chDepthRed {
+  from { opacity: 0; transform: translateY(.5em) translateZ(-160px) rotateX(-62deg); filter: blur(5px); text-shadow: 0 0 34px var(--red); }
+  70%  { text-shadow: 0 0 26px rgba(217, 39, 48, .75); }
+  to   { opacity: 1; transform: none; filter: none; text-shadow: none; }
+}
+
+/* ---------- 3. the camera: scroll ---------- */
+
+/* reveals come out of depth, not just up */
+@media (min-width: 900px) {
+  .immersive .reveal {
+    opacity: 0;
+    transform: translateY(34px) scale(.978);
+    transition: opacity .8s cubic-bezier(.2, .75, .2, 1), transform .8s cubic-bezier(.2, .75, .2, 1);
+  }
+  .immersive .reveal.in { opacity: 1; transform: none; }
+}
+
+/* section titles land like a punch, with a red line whipping under */
+.immersive .section-head.in .section-title,
+.immersive .split .reveal.in > .section-title {
+  animation: titlePunch .62s cubic-bezier(.18, .9, .22, 1) both;
+}
+@keyframes titlePunch {
+  0%   { opacity: 0; transform: translateY(20px) scale(1.06); letter-spacing: .04em; }
+  55%  { opacity: 1; transform: translateY(0) scale(.995); }
+  100% { opacity: 1; transform: none; letter-spacing: inherit; }
+}
+.immersive .section-head { position: relative; }
+.immersive .section-head.in .section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  height: 3px;
+  width: 92px;
+  background: var(--red);
+  transform-origin: left center;
+  animation: whip .55s .3s cubic-bezier(.2, .8, .2, 1) both;
+  box-shadow: 0 0 18px rgba(217, 39, 48, .6);
+}
+.immersive .section-head[style*="center"] .section-title::after,
+.immersive .band .section-title::after { left: 50%; transform: translateX(-50%); }
+@keyframes whip { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ---------- 4. pointer light ---------- */
+
+#spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 620px;
+  height: 620px;
+  margin: -310px 0 0 -310px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  /* deliberately NOT mix-blend-mode: a blend here forces the browser to
+     re-composite the whole page on every scrolled frame (measured: 60fps -> 28fps).
+     On a dark ground, plain alpha reads the same. */
+  background: radial-gradient(circle closest-side, rgba(255, 246, 240, .085) 0%, rgba(217, 39, 48, .055) 42%, rgba(0, 0, 0, 0) 72%);
+  transition: opacity .5s ease;
+  will-change: transform;
+}
+#spotlight.on { opacity: 1; }
+@media (pointer: coarse) { #spotlight { display: none; } }
+
+/* cursor gets a soft core so it reads as a light source */
+.immersive #cursor {
+  box-shadow: 0 0 22px rgba(255, 255, 255, .18), inset 0 0 12px rgba(255, 255, 255, .12);
+  transition: width .28s cubic-bezier(.2, .8, .2, 1), height .28s cubic-bezier(.2, .8, .2, 1),
+              border-color .28s ease, background-color .28s ease, opacity .3s ease;
+}
+.immersive #cursor.hot {
+  background: rgba(217, 39, 48, .13);
+  box-shadow: 0 0 34px rgba(217, 39, 48, .45), inset 0 0 16px rgba(217, 39, 48, .25);
+}
+
+/* ---------- 5. tiles with volume ---------- */
+
+.immersive .tile-grid { perspective: 1400px; }
+.immersive .tile {
+  transform-style: preserve-3d;
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1), box-shadow .5s ease;
+  will-change: transform;
+}
+.immersive .tile img { transition: transform .5s cubic-bezier(.2, .8, .2, 1), filter .5s ease; }
+.immersive .tile:hover {
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .55), 0 0 0 1px rgba(217, 39, 48, .35);
+  z-index: 3;
+}
+.immersive .tile:hover img { filter: saturate(1.12) contrast(1.05); }
+.immersive .tile-label { transform: translateZ(38px); transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+
+/* a specular pass sweeps the glass as you move over it */
+.immersive .tile .sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s ease;
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 62%);
+  mix-blend-mode: overlay;
+}
+.immersive .tile:hover .sheen { opacity: 1; }
+
+/* corner brackets draw themselves on approach */
+.immersive .tile .brk {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 0 solid var(--red);
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease, transform .45s cubic-bezier(.2, .8, .2, 1);
+}
+.immersive .tile .brk.tl { top: 14px;    left: 14px;  border-top-width: 3px;    border-left-width: 3px;  transform: translate(-8px, -8px); }
+.immersive .tile .brk.br { bottom: 14px; right: 14px; border-bottom-width: 3px; border-right-width: 3px; transform: translate(8px, 8px); }
+.immersive .tile:hover .brk { opacity: 1; transform: translate(0, 0); }
+
+/* cards and plans get a lighter version of the same physics */
+.immersive .card-grid, .immersive .price-grid, .immersive .steps { perspective: 1600px; }
+.immersive .card, .immersive .plan, .immersive .step {
+  transition: transform .55s cubic-bezier(.2, .8, .2, 1), box-shadow .55s ease;
+}
+
+/* ---------- 6. live now ---------- */
+
+.live-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 11px 20px 11px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(18, 18, 19, .82);
+  text-decoration: none;
+  color: var(--text);
+  font-size: .92rem;
+  line-height: 1.2;
+  transition: border-color .3s ease, background-color .3s ease, transform .3s cubic-bezier(.2, .8, .2, 1);
+  animation: rise .8s .95s cubic-bezier(.2, .7, .2, 1) both;
+}
+.live-now:hover { border-color: var(--red); background: rgba(28, 20, 21, .72); transform: translateY(-2px); }
+.live-now .dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.live-now .dot::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: 0;
+}
+.live-now.is-live .dot { background: var(--red); color: var(--red); }
+.live-now.is-live .dot::after { animation: ping 1.9s cubic-bezier(.2, .7, .2, 1) infinite; }
+.live-now.is-open .dot { background: #fff; }
+@keyframes ping {
+  0%   { opacity: .85; transform: scale(.7); }
+  70%  { opacity: 0;   transform: scale(2.1); }
+  100% { opacity: 0;   transform: scale(2.1); }
+}
+.live-now b {
+  font-family: var(--head);
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .8rem;
+  color: #fff;
+}
+.live-now.is-live b { color: var(--red); }
+.live-now span.txt { color: var(--muted); }
+.live-now .sep { color: var(--line); }
+@media (max-width: 560px) {
+  .live-now { font-size: .84rem; padding: 10px 16px 10px 13px; gap: 9px; }
+  .live-now b { font-size: .74rem; }
+}
+
+/* ---------- 7. time of day ---------- */
+
+.immersive .hero .hero-bg::after { transition: background 1.6s ease; }
+.immersive.tod-dawn  .hero .hero-bg::after { background: linear-gradient(180deg, rgba(46, 44, 42, .40) 0%, rgba(44, 43, 44, .52) 45%, rgba(49, 49, 49, .97) 100%); }
+.immersive.tod-day   .hero .hero-bg::after { background: linear-gradient(180deg, rgba(41, 41, 42, .40) 0%, rgba(41, 41, 42, .52) 45%, rgba(49, 49, 49, .97) 100%); }
+.immersive.tod-dusk  .hero .hero-bg::after { background: linear-gradient(180deg, rgba(48, 36, 36, .48) 0%, rgba(44, 39, 40, .58) 45%, rgba(49, 49, 49, .97) 100%); }
+.immersive.tod-night .hero .hero-bg::after { background: linear-gradient(180deg, rgba(28, 30, 36, .58) 0%, rgba(33, 33, 36, .64) 45%, rgba(49, 49, 49, .97) 100%); }
+.immersive.tod-dusk  .hero-atmos .beam { background: linear-gradient(180deg, rgba(255, 226, 214, .10) 0%, rgba(255, 226, 214, .034) 45%, rgba(255, 226, 214, 0) 78%); }
+.immersive.tod-night .hero-atmos .beam { opacity: .55; }
+
+/* ---------- 8. header condenses ---------- */
+
+.immersive .site-header { transition: background-color .4s ease, box-shadow .4s ease; }
+.immersive .site-header.condensed {
+  background: rgba(18, 18, 19, .94);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
+}
+.immersive .site-header.condensed .nav { padding-top: 8px; padding-bottom: 8px; transition: padding .35s ease; }
+
+/* ---------- 9. exit wipe ---------- */
+
+#wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  transform: translateY(101%);
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#wipe.go { animation: wipeUp .5s cubic-bezier(.76, 0, .24, 1) forwards; }
+@keyframes wipeUp { to { transform: translateY(0); } }
+#wipe img { height: 46px; opacity: 0; animation: wipeMark .5s .12s ease forwards; }
+@keyframes wipeMark { to { opacity: .9; } }
+.immersive body.leaving { opacity: 1; transition: none; }
+
+/* ---------- 10. sound toggle ---------- */
+
+#sound {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 260;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(18, 18, 19, .88);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0;
+  transition: border-color .3s ease, color .3s ease, transform .3s cubic-bezier(.2, .8, .2, 1);
+}
+#sound:hover { border-color: var(--red); color: #fff; transform: translateY(-2px); }
+#sound i {
+  display: block;
+  width: 2px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: height .25s ease;
+}
+#sound.on { color: #fff; border-color: var(--red); }
+#sound.on i { animation: eq 1.1s ease-in-out infinite; }
+#sound.on i:nth-child(2) { animation-delay: .16s; }
+#sound.on i:nth-child(3) { animation-delay: .32s; }
+@keyframes eq { 0%, 100% { height: 6px; } 50% { height: 17px; } }
+#sound:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+@media (max-width: 560px) { #sound { right: 12px; bottom: 12px; width: 42px; height: 42px; } }
+
+/* ---------- 11. stat impact ---------- */
+
+.immersive .hero-stats b.landed { animation: statHit .42s cubic-bezier(.2, .8, .2, 1); }
+@keyframes statHit {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.14); text-shadow: 0 0 26px rgba(217, 39, 48, .7); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- safety ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-atmos, #spotlight, #wipe, #sound { display: none !important; }
+}
+
+/* ---------- 12. the ticker lurches with the scroll ---------- */
+
+.immersive .marquee { will-change: transform; }
+.immersive .bg-word, .immersive .band .hero-bg { will-change: transform; }
+
+/* ---------- 13. inner pages get the same room ---------- */
+
+.immersive .page-hero { perspective: 1200px; }
+.immersive .page-hero .wrap { position: relative; z-index: 2; }
+.immersive .page-hero .hero-bg { will-change: transform; }
+.immersive .page-hero .hero-atmos .vig {
+  background: radial-gradient(120% 90% at 50% 40%, rgba(0,0,0,0) 46%, rgba(0,0,0,.30) 80%, rgba(0,0,0,.55) 100%);
+}
+.immersive .page-hero .live-now { margin-top: 22px; }
+
+/* ---------- 14. scroll cue ---------- */
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 3;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  pointer-events: none;
+  font-family: var(--head);
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  font-size: .64rem;
+  color: rgba(255, 255, 255, .5);
+  animation: rise .9s 1.4s cubic-bezier(.2, .7, .2, 1) both;
+}
+.scroll-cue .rail {
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .32), rgba(255, 255, 255, 0));
+  position: relative;
+  overflow: hidden;
+}
+.scroll-cue .rail::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 1px;
+  height: 14px;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
+  animation: cueDrop 2.1s cubic-bezier(.6, 0, .3, 1) infinite;
+}
+@keyframes cueDrop {
+  0%   { transform: translateY(0);    opacity: 0; }
+  25%  { opacity: 1; }
+  100% { transform: translateY(60px); opacity: 0; }
+}
+@media (max-width: 640px) { .scroll-cue { display: none; } }
+.immersive .spots-fill { transition: width 1.5s cubic-bezier(.2, .85, .2, 1); }
