@@ -9,6 +9,10 @@ if (loader) {
   const dismiss = () => {
     if (loader.classList.contains('done')) return;
     loader.classList.add('done');
+    // once the doors have opened, take the whole thing out of the page —
+    // parked-off-screen halves can peek back in when mobile browser chrome
+    // collapses, which reads as a black band with a red seam over content
+    setTimeout(() => { loader.style.display = 'none'; }, 1300);
     try { sessionStorage.uffSeen = '1'; } catch (e) {}
   };
   window.addEventListener('load', () => setTimeout(dismiss, 700));
@@ -216,6 +220,11 @@ document.addEventListener('click', e => {
   root.classList.add('immersive');
   if (RICH) root.classList.add('rich');
 
+  var film = document.createElement('div');
+  film.className = 'film';
+  film.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(film);
+
   /* ---------- shared state ---------- */
   var S = {
     sy: scrollY, vel: 0, rawVel: 0,
@@ -299,6 +308,9 @@ document.addEventListener('click', e => {
     document.querySelectorAll('.card, .plan, .step').forEach(function (el) {
       bindTilt(el, null, 4, 0);
     });
+    document.querySelectorAll('.coach-media, .gallery figure, .split .photo').forEach(function (el) {
+      bindTilt(el, null, 5, 0);
+    });
   }
 
   function bindTilt(el, inner, maxDeg, imgShift) {
@@ -356,6 +368,28 @@ document.addEventListener('click', e => {
     if (hero) io.observe(hero);
   }
 
+  /* ---------- 4b. touch: the tile under your eyes lifts ---------- */
+  var focusTiles = FINE ? [] : Array.prototype.slice.call(document.querySelectorAll('.tile, .plan, .card'));
+  var focused = null, lastFocusY = -1;
+  function focusPass() {
+    if (S.sy === lastFocusY) return;
+    lastFocusY = S.sy;
+    var mid = innerHeight / 2, best = null, bestD = 1e9, i, r, d;
+    for (i = 0; i < focusTiles.length; i++) {
+      r = focusTiles[i].getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) continue;
+      d = Math.abs(r.top + r.height / 2 - mid);
+      if (d < bestD) { bestD = d; best = focusTiles[i]; }
+    }
+    if (best !== focused && bestD < innerHeight * 0.46) {
+      if (focused) focused.classList.remove('focus');
+      focused = best;
+      if (focused) focused.classList.add('focus');
+    } else if (best !== focused && focused) {
+      focused.classList.remove('focus'); focused = null;
+    }
+  }
+
   /* ---------- 5. header + deep layers ---------- */
   var header = document.querySelector('.site-header');
   var heroWrap = hero && hero.querySelector('.wrap');
@@ -378,6 +412,17 @@ document.addEventListener('click', e => {
     S.sy = y;
     if (header) header.classList.toggle('condensed', y > 70);
   }, { passive: true });
+
+  if (!FINE) {
+    var gyroSeen = false;
+    addEventListener('deviceorientation', function (e) {
+      if (e.gamma === null || e.gamma === undefined) return;
+      if (!gyroSeen) { gyroSeen = true; root.classList.add('gyro'); }
+      /* gamma: left/right tilt, beta: front/back. Small window, heavy damping. */
+      S.tx = Math.max(-1, Math.min(1, e.gamma / 28));
+      S.ty = Math.max(-1, Math.min(1, (e.beta - 45) / 32));
+    }, { passive: true });
+  }
 
   if (FINE) {
     addEventListener('pointermove', function (e) {
@@ -420,8 +465,8 @@ document.addEventListener('click', e => {
     /* hero camera: slow breath + pointer look + scroll dolly.
        The room and the words move against each other, so the hero
        reads as a space with the text floating inside it. */
-    if (heroBg && S.heroIn && RICH) {
-      var breath = 1.075 + Math.sin(S.t * 0.16) * 0.014;
+    if (heroBg && S.heroIn) {
+      var breath = (RICH ? 1.075 : 1.055) + Math.sin(S.t * 0.16) * 0.014;
       var dolly = Math.min(1, S.sy / (heroH || innerHeight || 1));
       var tx = S.px * -16, ty = S.py * -11 + dolly * 42;
       heroBg.style.transform = 'scale(' + (breath + dolly * 0.05).toFixed(4) + ') translate3d(' +
@@ -468,6 +513,8 @@ document.addEventListener('click', e => {
         dustCtx.fill();
       }
     }
+
+    if (focusTiles.length) focusPass();
 
     /* spotlight — only written when the pointer actually moved */
     if (spot && (S.mx !== lastMx || S.my !== lastMy)) {
@@ -562,6 +609,22 @@ document.addEventListener('click', e => {
     }
     return { cls: '', label: 'Timetable', text: 'See the full week' };
   }
+
+  /* the hero ticker reads today's actual classes */
+  (function () {
+    var track = document.querySelector('.marquee-track');
+    if (!track) return;
+    var d = new Date().getDay();
+    var today = (SCHED[d] || []).slice().sort(function (a, b) { return a[0] - b[0]; });
+    if (!today.length) return;
+    var bits = ['<span class="o">Today at UFF</span><i>&#9679;</i>'];
+    for (var i = 0; i < today.length; i++) {
+      bits.push('<span>' + hhmm(today[i][0]) + ' ' + today[i][2] + '</span><i>&#9679;</i>');
+    }
+    bits.push('<span class="o">First session free</span><i>&#9679;</i>');
+    var seq = bits.join('');
+    track.innerHTML = seq + seq + seq;
+  })();
 
   var liveEl = null;
   if (hero) {
@@ -674,6 +737,7 @@ document.addEventListener('click', e => {
   if (!PREVIEW) {
     var wipe = document.createElement('div');
     wipe.id = 'wipe';
+    wipe.style.visibility = 'hidden';
     wipe.setAttribute('aria-hidden', 'true');
     var mark = document.createElement('img');
     mark.src = 'assets/img/logo-small.png';
@@ -681,6 +745,7 @@ document.addEventListener('click', e => {
     wipe.appendChild(mark);
     document.body.appendChild(wipe);
     window.__uffWipe = function (href) {
+      wipe.style.visibility = 'visible';
       wipe.classList.add('go');
       setTimeout(function () { location.href = href; }, 430);
     };
