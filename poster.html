@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Make Your Fight Poster | Ultimate Fight Fitness</title>
+  <meta name="description" content="Put your name on an Ultimate Fight Fitness fight poster and share it.">
+  <meta name="theme-color" content="#313131">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <style>
+    :root { color-scheme: dark; --bg:#313131; --bg2:#232324; --card:#2a2a2b; --line:#4a4a4c; --text:#f5f5f5; --muted:#c0c0c4; --red:#d92730; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh;
+           display:flex; flex-direction:column; align-items:center; padding:26px 18px 60px; }
+    .grain { position:fixed; inset:0; opacity:.09; pointer-events:none; z-index:50;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    a.home { display:block; margin-bottom:18px; }
+    a.home img { height:44px; }
+    h1 { font-family:'Oswald',sans-serif; font-style:italic; font-weight:700; text-transform:uppercase;
+         font-size:clamp(1.8rem,6vw,2.6rem); text-align:center; line-height:1.1; }
+    h1 b { color:var(--red); }
+    p.sub { color:var(--muted); margin:10px 0 26px; text-align:center; max-width:430px; font-size:.95rem; }
+    .panel { width:min(94vw,430px); background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; }
+    label { font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.2em;
+            font-size:.68rem; color:var(--muted); display:block; margin:0 0 7px; }
+    input[type=text] { width:100%; background:#1d1d1e; border:1px solid var(--line); border-radius:10px;
+            color:#fff; font:700 italic 1.4rem 'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.04em;
+            padding:12px 14px; outline:none; }
+    input[type=text]:focus { border-color:var(--red); }
+    .discs { display:flex; gap:8px; margin:16px 0 20px; }
+    .discs button { flex:1; font:600 .78rem 'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.12em;
+            padding:11px 4px; background:#1d1d1e; color:var(--muted); border:1px solid var(--line);
+            border-radius:10px; cursor:pointer; }
+    .discs button.on { background:var(--red); border-color:var(--red); color:#fff; }
+    .go { width:100%; font:600 .95rem 'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.16em;
+          padding:15px; background:var(--red); color:#fff; border:none; border-radius:10px; cursor:pointer; }
+    .go:active { transform:scale(.98); }
+    .out { margin-top:26px; width:min(94vw,430px); display:none; flex-direction:column; align-items:center; gap:14px; }
+    .out.show { display:flex; }
+    .out img { width:100%; border-radius:14px; border:1px solid var(--line); box-shadow:0 30px 80px rgba(0,0,0,.55); }
+    .hint { color:var(--muted); font-size:.85rem; text-align:center; }
+    .dl { font:600 .88rem 'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.16em; color:#fff;
+          background:#3a3a3b; border:1px solid var(--line); border-radius:999px; padding:12px 26px; cursor:pointer; text-decoration:none; }
+    .dl:hover { border-color:var(--red); }
+    canvas { display:none; }
+  </style>
+</head>
+<body>
+<div class="grain"></div>
+<a class="home" href="index.html"><img src="assets/img/logo.png" alt="Ultimate Fight Fitness"></a>
+<h1>Put your name<br>on the <b>poster</b></h1>
+<p class="sub">Type your name, pick your fight, and get your own UFF fight poster to post. Your debut's closer than you think.</p>
+
+<div class="panel">
+  <label for="pname">Fighter name</label>
+  <input id="pname" type="text" maxlength="16" placeholder="YOUR NAME" autocomplete="off">
+  <div class="discs" id="discs">
+    <button type="button" data-d="bjj" class="on">BJJ</button>
+    <button type="button" data-d="mt">Muay Thai</button>
+    <button type="button" data-d="sc">S&amp;C</button>
+  </div>
+  <button class="go" id="go">Make my poster</button>
+</div>
+
+<div class="out" id="out">
+  <img id="posterImg" alt="Your Ultimate Fight Fitness fight poster">
+  <p class="hint">Press and hold the poster to save it, then post it and tag <b style="color:#fff">@ultimatefight_fitness</b></p>
+  <a class="dl" id="dl" download="uff-fight-poster.png">Download</a>
+</div>
+
+<canvas id="cv" width="1080" height="1350"></canvas>
+
+<script>
+(function () {
+  var disc = 'bjj';
+  var DISCS = { bjj: 'BRAZILIAN JIU-JITSU', mt: 'MUAY THAI', sc: 'STRENGTH & CONDITIONING' };
+  /* next session per discipline, from the live timetable (day 0=Sun) */
+  var NEXT = {
+    bjj: { 1:[[750,'GI'],[1050,'GI'],[1125,'NO-GI']], 2:[[750,'NO-GI'],[1050,'NO-GI'],[1125,'GI']],
+           3:[[750,'GI'],[1050,'OPEN MAT']], 4:[[750,'NO-GI'],[1050,'NO-GI'],[1125,'GI']],
+           5:[[750,'GI'],[1050,'GI'],[1125,'NO-GI']], 6:[[750,'OPEN MAT']], 0:[[750,'OPEN MAT']] },
+    mt:  { 1:[[1125,'ADULTS']], 3:[[1125,'ADULTS']], 5:[[1125,'ADULTS']] },
+    sc:  { 1:[[375],[435],[555],[750]], 2:[[375],[435],[555],[750],[1110]],
+           3:[[375],[435],[555],[750]], 4:[[375],[435],[555],[750],[1110]], 5:[[375],[435],[555],[750]] }
+  };
+  var DAYS = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  function nextSession(d) {
+    var now = new Date(), day = now.getDay(), t = now.getHours() * 60 + now.getMinutes();
+    for (var k = 0; k <= 7; k++) {
+      var dd = (day + k) % 7, list = NEXT[d][dd] || [];
+      for (var i = 0; i < list.length; i++) {
+        if (k === 0 && list[i][0] <= t) continue;
+        var m = list[i][0], h = Math.floor(m / 60), mm = m % 60;
+        return (k === 0 ? 'TONIGHT' : k === 1 ? 'TOMORROW' : DAYS[dd]) + ' ' +
+               h + ':' + (mm < 10 ? '0' : '') + mm;
+      }
+    }
+    return 'THIS WEEK';
+  }
+
+  document.getElementById('discs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    disc = b.dataset.d;
+    document.querySelectorAll('#discs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+  });
+
+  var img = new Image();
+  img.src = 'assets/img/muaythai-bags.jpg';
+
+  function tape(ctx, y, rot, text) {
+    ctx.save();
+    ctx.translate(540, y);
+    ctx.rotate(rot);
+    ctx.fillStyle = '#c4202a';
+    ctx.fillRect(-760, -34, 1520, 68);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'italic 700 30px Oswald';
+    ctx.textAlign = 'left';
+    var seg = text + '   ●   ';
+    var w = ctx.measureText(seg).width, x = -760;
+    while (x < 780) { ctx.fillText(seg, x, 11); x += w; }
+    ctx.restore();
+  }
+
+  function render() {
+    var name = (document.getElementById('pname').value || 'YOU').trim().toUpperCase() || 'YOU';
+    var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+    /* the room */
+    ctx.fillStyle = '#191919'; ctx.fillRect(0, 0, 1080, 1350);
+    if (img.complete && img.naturalWidth) {
+      var s = Math.max(1080 / img.naturalWidth, 1350 / img.naturalHeight);
+      var iw = img.naturalWidth * s, ih = img.naturalHeight * s;
+      ctx.globalAlpha = 0.38;
+      ctx.drawImage(img, (1080 - iw) / 2, (1350 - ih) / 2 - 60, iw, ih);
+      ctx.globalAlpha = 1;
+    }
+    var g = ctx.createLinearGradient(0, 0, 0, 1350);
+    g.addColorStop(0, 'rgba(20,20,21,.55)'); g.addColorStop(.5, 'rgba(20,20,21,.72)'); g.addColorStop(1, 'rgba(20,20,21,.97)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 1080, 1350);
+    /* tapes */
+    tape(ctx, 150, -0.06, 'UFF PRESENTS');
+    tape(ctx, 1210, 0.045, 'FIRST SESSION FREE');
+    /* eyebrow */
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#e6e6ea';
+    ctx.font = 'italic 700 40px Oswald';
+    var sp = 'T H E   D E B U T';
+    ctx.fillText(sp, 540, 420);
+    /* the name — autofit */
+    var size = 210;
+    ctx.font = 'italic 700 ' + size + 'px Oswald';
+    while (ctx.measureText(name).width > 950 && size > 70) {
+      size -= 10;
+      ctx.font = 'italic 700 ' + size + 'px Oswald';
+    }
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 10;
+    ctx.fillText(name, 540, 460 + size * 0.9);
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    /* vs */
+    ctx.fillStyle = '#d92730';
+    ctx.font = 'italic 700 64px Oswald';
+    ctx.fillText('VS THE COMFORT ZONE', 540, 460 + size * 0.9 + 110);
+    /* fight details chip */
+    var when = nextSession(disc);
+    var line = DISCS[disc] + '  ·  ' + when;
+    ctx.font = '700 34px Inter';
+    var lw = ctx.measureText(line).width + 90;
+    var cy = 460 + size * 0.9 + 185;
+    ctx.fillStyle = '#fff';
+    rr(ctx, 540 - lw / 2, cy, lw, 78, 39);
+    ctx.fill();
+    ctx.fillStyle = '#1d1d1e';
+    ctx.fillText(line, 540, cy + 51);
+    /* venue + url */
+    ctx.fillStyle = '#c0c0c4';
+    ctx.font = '600 30px Inter';
+    ctx.fillText('UNIT 7 TWYFORD ROAD · BISHOP’S STORTFORD', 540, 1085);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'italic 700 44px Oswald';
+    ctx.fillText('ULTIMATEFIGHTFITNESS.CO.UK', 540, 1140);
+    /* corners */
+    ctx.strokeStyle = '#d92730'; ctx.lineWidth = 8;
+    ctx.beginPath(); ctx.moveTo(46, 116); ctx.lineTo(46, 46); ctx.lineTo(116, 46); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(1034, 1234); ctx.lineTo(1034, 1304); ctx.lineTo(964, 1304); ctx.stroke();
+    /* out — if the canvas is tainted (e.g. opened straight from a file), show it directly instead */
+    try {
+      var url = cv.toDataURL('image/png');
+      document.getElementById('posterImg').src = url;
+      document.getElementById('dl').href = url;
+      document.getElementById('posterImg').style.display = '';
+      cv.style.display = 'none';
+      document.getElementById('dl').style.display = '';
+    } catch (err) {
+      document.getElementById('posterImg').style.display = 'none';
+      document.getElementById('out').insertBefore(cv, document.getElementById('posterImg'));
+      cv.style.display = 'block';
+      cv.style.width = '100%';
+      cv.style.height = 'auto';
+      cv.style.borderRadius = '18px';
+      document.getElementById('dl').style.display = 'none';
+    }
+    document.getElementById('out').classList.add('show');
+    document.getElementById('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  document.getElementById('go').addEventListener('click', function () {
+    var done = false;
+    var run = function () { if (done) return; done = true; render(); };
+    if (document.fonts && document.fonts.load) {
+      Promise.all([
+        document.fonts.load('italic 700 100px Oswald'),
+        document.fonts.load('700 34px Inter')
+      ]).then(run, run);
+      setTimeout(run, 900);   /* never let a stuck font loader block the poster */
+    } else run();
+  });
+  document.getElementById('pname').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('go').click();
+  });
+})();
+</script>
+</body>
+</html>

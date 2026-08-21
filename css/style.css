@@ -1951,3 +1951,98 @@ main.jolt { animation: jolt .16s linear; }
   to   { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.3); }
 }
 .hero-stats .stat { position: relative; }
+
+/* ---------- 21. the gym pulse ---------- */
+
+.live-now .pulse {
+  width: 52px;
+  height: 14px;
+  flex: none;
+  display: block;
+}
+@media (max-width: 560px) { .live-now .pulse { width: 42px; } }
+
+/* ---------- 22. the building runs on gym time ---------- */
+
+.immersive.gym-shut .hero .hero-bg { filter: brightness(.66) saturate(.85); }
+.immersive.gym-shut .hero-atmos .beam { opacity: .35; }
+.immersive.gym-open.booting .hero .hero-bg { animation: lightsOn 1.15s steps(1, end) both; }
+@keyframes lightsOn {
+  0%   { filter: brightness(.12); }
+  18%  { filter: brightness(.85); }
+  26%  { filter: brightness(.2); }
+  38%  { filter: brightness(.95); }
+  46%  { filter: brightness(.35); }
+  60%  { filter: brightness(1.05); }
+  100% { filter: brightness(1); }
+}
+
+/* ---------- 23. FIGHT MODE ---------- */
+
+#fightmode {
+  position: fixed;
+  inset: 0;
+  z-index: 380;
+  overflow: hidden;
+  background: rgba(12, 12, 13, .55);
+  animation: fmIn .3s ease both;
+  transition: opacity .6s ease;
+}
+#fightmode.out { opacity: 0; pointer-events: none; }
+@keyframes fmIn { from { opacity: 0; } to { opacity: 1; } }
+#fightmode .fm-flash {
+  position: absolute;
+  inset: 0;
+  background: #d92730;
+  animation: fmFlash .5s ease-out both;
+}
+@keyframes fmFlash { 0% { opacity: .85; } 100% { opacity: 0; } }
+#fightmode .fm-tape {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  padding: 14px 0;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--head);
+  font-style: italic;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: .2em;
+  white-space: nowrap;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .5);
+}
+#fightmode .fm-tape span { display: inline-block; animation: fmSlide 9s linear infinite; }
+@keyframes fmSlide { to { transform: translateX(-33%); } }
+#fightmode .fm-t1 { top: 16%; transform: rotate(-7deg); animation: fmTape1 .5s .1s cubic-bezier(.2, .9, .2, 1) both; }
+#fightmode .fm-t2 { bottom: 17%; transform: rotate(5deg); animation: fmTape2 .5s .2s cubic-bezier(.2, .9, .2, 1) both; }
+#fightmode .fm-t2 span { animation-direction: reverse; }
+@keyframes fmTape1 { from { transform: rotate(-7deg) translateX(-110%); } to { transform: rotate(-7deg) translateX(0); } }
+@keyframes fmTape2 { from { transform: rotate(5deg) translateX(110%); } to { transform: rotate(5deg) translateX(0); } }
+#fightmode .fm-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92%, 440px);
+  text-align: center;
+  background: rgba(20, 20, 21, .97);
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  padding: 30px 28px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, .7), 0 0 60px rgba(217, 39, 48, .35);
+  animation: fmCard .55s .35s cubic-bezier(.2, .9, .2, 1) both;
+}
+@keyframes fmCard {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(1.6); filter: blur(10px); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: none; }
+}
+#fightmode .fm-card h3 {
+  font-size: 1.9rem;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+#fightmode .fm-card h3 b { color: var(--red); }
+#fightmode .fm-card p { color: var(--muted); font-size: .98rem; margin-bottom: 18px; }
+#fightmode .fm-card p b { color: #fff; }

@@ -510,6 +510,7 @@ document.addEventListener('click', e => {
 
     if (focusTiles.length) focusPass();
     bagStep(dt);
+    pulseStep(dt);
 
     /* spotlight — only written when the pointer actually moved */
     if (spot && (S.mx !== lastMx || S.my !== lastMy)) {
@@ -633,7 +634,7 @@ document.addEventListener('click', e => {
       liveEl = document.createElement('a');
       liveEl.className = 'live-now';
       liveEl.href = 'timetables.html';
-      liveEl.innerHTML = '<span class="dot"></span><b></b><span class="sep">|</span><span class="txt"></span>';
+      liveEl.innerHTML = '<span class="dot"></span><canvas class="pulse" width="104" height="28" aria-hidden="true"></canvas><b></b><span class="sep">|</span><span class="txt"></span>';
       if (anchor.classList.contains('hero-ctas')) anchor.parentNode.insertBefore(liveEl, anchor.nextSibling);
       else anchor.appendChild(liveEl);
       var paintLive = function () {
@@ -641,9 +642,13 @@ document.addEventListener('click', e => {
         liveEl.className = 'live-now ' + st.cls;
         liveEl.querySelector('b').textContent = st.label;
         liveEl.querySelector('.txt').textContent = st.text;
+        pulseBpm = st.cls === 'is-live' ? 128 : st.cls === 'is-open' ? 72 : 46;
       };
       paintLive();
       setInterval(paintLive, 20000);
+      pulseCv = liveEl.querySelector('.pulse');
+      pulseCtx = pulseCv.getContext('2d');
+      pulseCtx.fillStyle = '#00000000';
     }
   }
 
@@ -662,6 +667,63 @@ document.addEventListener('click', e => {
     }, { threshold: 0.35 });
     fio.observe(fill.parentNode || fill);
   })();
+
+  /* ---------- 9c. the gym pulse ---------- */
+  var pulseCv = pulseCv || null, pulseCtx = pulseCtx || null, pulseBpm = pulseBpm || 46, pulsePhase = 0, pulseCol = 0;
+  function ecgY(p) {
+    /* one heartbeat, p in 0..1 -> deflection -1..1 */
+    if (p < 0.10) return Math.sin(p / 0.10 * Math.PI) * 0.14;          /* P */
+    if (p < 0.14) return 0;
+    if (p < 0.17) return -(p - 0.14) / 0.03 * 0.22;                    /* Q */
+    if (p < 0.21) return -0.22 + (p - 0.17) / 0.04 * 1.22;             /* R */
+    if (p < 0.25) return 1.0 - (p - 0.21) / 0.04 * 1.35;               /* S */
+    if (p < 0.30) return -0.35 + (p - 0.25) / 0.05 * 0.35;
+    if (p < 0.45) return 0;
+    if (p < 0.60) return Math.sin((p - 0.45) / 0.15 * Math.PI) * 0.26; /* T */
+    return 0;
+  }
+  function pulseStep(dt) {
+    if (!pulseCtx || !S.heroIn || document.hidden) return;
+    var w = pulseCv.width, h = pulseCv.height, mid = h * 0.62;
+    var speed = 34; /* px per second */
+    pulseCol += speed * dt / 1000;
+    var cols = Math.floor(pulseCol);
+    if (cols < 1) return;
+    pulseCol -= cols;
+    if (cols > 6) cols = 6;
+    /* scroll left */
+    pulseCtx.globalCompositeOperation = 'copy';
+    pulseCtx.drawImage(pulseCv, -cols, 0);
+    pulseCtx.globalCompositeOperation = 'source-over';
+    pulseCtx.clearRect(w - cols, 0, cols, h);
+    pulseCtx.strokeStyle = '#d92730';
+    pulseCtx.lineWidth = 2;
+    pulseCtx.beginPath();
+    for (var i = cols; i >= 1; i--) {
+      pulsePhase += (pulseBpm / 60) * (1 / speed);
+      if (pulsePhase >= 1) pulsePhase -= 1;
+      var y = mid - ecgY(pulsePhase) * (h * 0.42);
+      var x = w - i + 0.5;
+      if (i === cols) pulseCtx.moveTo(x, y); else pulseCtx.lineTo(x, y);
+    }
+    pulseCtx.stroke();
+  }
+
+  /* ---------- 9d. the building runs on gym time ---------- */
+  function gymOpenNow() {
+    var now = new Date();
+    var o = HOURS[now.getDay()];
+    if (!o) return false;
+    var t = now.getHours() * 60 + now.getMinutes();
+    return t >= o[0] && t < o[1];
+  }
+  function paintGymState() {
+    var open = gymOpenNow();
+    root.classList.toggle('gym-open', open);
+    root.classList.toggle('gym-shut', !open);
+  }
+  paintGymState();
+  setInterval(paintGymState, 60000);
 
   /* ---------- 10. time of day ---------- */
   (function () {
@@ -704,8 +766,8 @@ document.addEventListener('click', e => {
     var g = c.createGain(); g.gain.value = 0.13;
     src.connect(bp); bp.connect(g); g.connect(master); src.start(t0);
   }
-  function thump(gain) {
-    if (!on) return;
+  function thump(gain, force) {
+    if (!on && !force) return;
     var c = audio(); if (!c) return;
     var t0 = c.currentTime; gain = gain || 0.4;
     var o = c.createOscillator(), g = c.createGain();
@@ -724,8 +786,8 @@ document.addEventListener('click', e => {
     var ng = c.createGain(); ng.gain.value = gain * 0.9;
     src.connect(bp); bp.connect(ng); ng.connect(master); src.start(t0);
   }
-  function bell(gain) {
-    if (!on) return;
+  function bell(gain, force) {
+    if (!on && !force) return;
     var c = audio(); if (!c) return;
     var t0 = c.currentTime; gain = gain || 0.5;
     [[605, 1], [1222, .55], [1810, .4], [2513, .25]].forEach(function (p) {
@@ -919,6 +981,53 @@ document.addEventListener('click', e => {
       setTimeout(function (n) { return function () { n.remove(); }; }(d), 600);
     }
   }
+
+  /* ---------- 16. FIGHT MODE (the secret) ---------- */
+  var fmBusy = false;
+  function fightMode() {
+    if (fmBusy) return;
+    fmBusy = true;
+    bell(0.55, true);
+    setTimeout(function () { thump(0.5, true); }, 350);
+    var fm = document.createElement('div');
+    fm.id = 'fightmode';
+    fm.innerHTML =
+      '<div class="fm-flash"></div>' +
+      '<div class="fm-tape fm-t1"><span>' + new Array(9).join('FIGHT MODE &nbsp;&#9679;&nbsp; ') + '</span></div>' +
+      '<div class="fm-tape fm-t2"><span>' + new Array(9).join('OSS &nbsp;&#9679;&nbsp; ') + '</span></div>' +
+      '<div class="fm-card"><h3>Fight mode <b>unlocked</b></h3>' +
+      '<p>You found it. Say <b>&ldquo;OSS&rdquo;</b> at the front desk when you come for your free session &mdash; the coaches will know. \uD83D\uDC4A</p>' +
+      '<a class="btn" href="classes.html">Claim the free session</a></div>';
+    document.body.appendChild(fm);
+    jolt();
+    setTimeout(jolt, 420);
+    setTimeout(function () { fm.classList.add('out'); }, 6200);
+    setTimeout(function () { fm.remove(); fmBusy = false; }, 6900);
+    fm.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('a')) return;
+      fm.classList.add('out');
+      setTimeout(function () { fm.remove(); fmBusy = false; }, 600);
+    });
+  }
+  /* trigger 1: three quick hits on the logo */
+  var logoEl = document.querySelector('.site-header .logo');
+  if (logoEl) {
+    var logoTaps = 0, logoAt = 0;
+    logoEl.addEventListener('click', function (e) {
+      var now = performance.now();
+      logoTaps = (now - logoAt < 900) ? logoTaps + 1 : 1;
+      logoAt = now;
+      if (logoTaps >= 3) { logoTaps = 0; e.preventDefault(); e.stopPropagation(); fightMode(); }
+    });
+  }
+  /* trigger 2: type OSS */
+  var kbuf = '';
+  document.addEventListener('keydown', function (e) {
+    if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if (!e.key || e.key.length !== 1) return;
+    kbuf = (kbuf + e.key.toLowerCase()).slice(-3);
+    if (kbuf === 'oss') { kbuf = ''; fightMode(); }
+  });
 
   /* ---------- utils ---------- */
   function debounce(fn, ms) {
