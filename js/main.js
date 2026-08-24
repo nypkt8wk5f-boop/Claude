@@ -3,28 +3,42 @@
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const PREVIEW = !!window.UFF_PREVIEW;
 
-// Loading curtain — shows once per browsing session
+// Loading curtain — a beat on first arrival, instant on every page after
 const loader = document.querySelector('.loader');
 if (loader) {
+  let seen = false;
+  try { seen = sessionStorage.uffSeen === '1'; } catch (e) {}
   const dismiss = () => {
     if (loader.classList.contains('done')) return;
     loader.classList.add('done');
     // once the doors have opened, take the whole thing out of the page —
     // parked-off-screen halves can peek back in when mobile browser chrome
     // collapses, which reads as a black band with a red seam over content
-    setTimeout(() => { loader.style.display = 'none'; }, 1300);
+    setTimeout(() => { loader.style.display = 'none'; }, 850);
     try { sessionStorage.uffSeen = '1'; } catch (e) {}
   };
-  window.addEventListener('load', () => setTimeout(dismiss, 700));
-  setTimeout(dismiss, 2400); // safety net
+  // don't wait for window.load — images can hold the logo hostage on mobile
+  const arm = () => setTimeout(dismiss, seen ? 0 : 350);
+  if (document.readyState !== 'loading') arm();
+  else document.addEventListener('DOMContentLoaded', arm);
+  setTimeout(dismiss, seen ? 600 : 1400); // safety net
 }
 
-// Scroll progress bar
+// Scroll progress bar — you rank up as you read: white, blue, purple, brown, black
 const progress = document.getElementById('progress');
 if (progress) {
+  const BELTS = ['#e9e7e2', '#2e6ad1', '#7b3fd6', '#7a4a2b', '#101011'];
+  let lastBelt = -1;
   const paint = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
-    progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+    const frac = max > 0 ? Math.min(1, scrollY / max) : 0;
+    progress.style.width = frac * 100 + '%';
+    const belt = Math.min(BELTS.length - 1, Math.floor(frac * BELTS.length));
+    if (belt !== lastBelt) {
+      lastBelt = belt;
+      // the red tip is the belt's rank bar
+      progress.style.background = 'linear-gradient(90deg,' + BELTS[belt] + ' 0 calc(100% - 20px), #d92730 0)';
+    }
   };
   addEventListener('scroll', paint, { passive: true });
   paint();
@@ -37,7 +51,7 @@ if (cursor && matchMedia('(pointer: fine)').matches && !REDUCED) {
   addEventListener('mousemove', e => {
     tx = e.clientX; ty = e.clientY;
     cursor.classList.add('on');
-    cursor.classList.toggle('hot', !!e.target.closest('a, button, summary, .tile, .plan'));
+    cursor.classList.toggle('hot', !!e.target.closest('a, button, summary, label, input, .tile, .plan, .tab-btn'));
   }, { passive: true });
   (function follow() {
     x += (tx - x) * 0.2; y += (ty - y) * 0.2;
@@ -47,17 +61,61 @@ if (cursor && matchMedia('(pointer: fine)').matches && !REDUCED) {
   addEventListener('mouseout', e => { if (!e.relatedTarget) cursor.classList.remove('on'); });
 }
 
-// Magnetic buttons
+// Magnetic controls — every button, nav link and chip leans toward the cursor
+// from a radius around it, and springs back when you leave. One rAF, rects
+// batch-measured at most every 120ms, styles written only while moving.
 if (matchMedia('(pointer: fine)').matches && !REDUCED) {
-  document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-      const r = btn.getBoundingClientRect();
-      const dx = (e.clientX - r.left - r.width / 2) / r.width;
-      const dy = (e.clientY - r.top - r.height / 2) / r.height;
-      btn.style.transform = 'translate(' + dx * 5 + 'px,' + (dy * 4 - 1) + 'px)';
+  (function () {
+    const els = document.querySelectorAll(
+      '.btn, .site-nav a, .tab-btn, #sound, .site-footer .link, .hero-ctas a');
+    const items = [];
+    els.forEach(el => {
+      el.style.willChange = 'transform';
+      items.push({ el, x: 0, y: 0, tx: 0, ty: 0, r: null, idle: true });
     });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-  });
+    if (!items.length) return;
+    let mx = -1e4, my = -1e4, raf = null, measured = 0, moving = false;
+    const measure = () => {
+      const now = performance.now();
+      if (now - measured < 120) return;
+      measured = now;
+      for (const it of items) it.r = it.el.getBoundingClientRect();
+    };
+    const tick = () => {
+      let busy = false;
+      for (const it of items) {
+        const r = it.r;
+        if (r) {
+          const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          const dx = mx - cx, dy = my - cy;
+          const range = Math.max(r.width, r.height) / 2 + 64;
+          const d = Math.hypot(dx, dy);
+          if (d < range) {
+            const pull = 1 - d / range;
+            it.tx = Math.max(-13, Math.min(13, dx * pull * 0.30));
+            it.ty = Math.max(-9, Math.min(9, dy * pull * 0.24));
+          } else { it.tx = 0; it.ty = 0; }
+        }
+        it.x += (it.tx - it.x) * 0.22;
+        it.y += (it.ty - it.y) * 0.22;
+        const settled = !it.tx && !it.ty && Math.abs(it.x) < 0.12 && Math.abs(it.y) < 0.12;
+        if (settled) {
+          if (!it.idle) { it.idle = true; it.el.style.transform = ''; }
+        } else {
+          it.idle = false; busy = true;
+          it.el.style.transform = 'translate(' + it.x.toFixed(2) + 'px,' + it.y.toFixed(2) + 'px)';
+        }
+      }
+      if (busy || moving) { moving = false; raf = requestAnimationFrame(tick); }
+      else raf = null;
+    };
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY; moving = true;
+      measure();
+      if (!raf) raf = requestAnimationFrame(tick);
+    }, { passive: true });
+    addEventListener('scroll', () => { measured = 0; }, { passive: true });
+  })();
 }
 
 // Gentle parallax on feature photos
@@ -652,6 +710,36 @@ document.addEventListener('click', e => {
     }
   }
 
+  /* the browser-tab favicon wears a red dot while a class is on the mats */
+  (function () {
+    var link = document.querySelector('link[rel="icon"]');
+    if (!link) return;
+    var home = link.href, dot = null, isLive = false;
+    function setFav(live) {
+      if (live === isLive) return;
+      isLive = live;
+      if (!live) { link.href = home; return; }
+      if (dot) { link.href = dot; return; }
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var c = document.createElement('canvas'); c.width = 64; c.height = 64;
+          var x = c.getContext('2d');
+          x.drawImage(img, 0, 0, 64, 64);
+          x.beginPath(); x.arc(49, 15, 12, 0, 6.3);
+          x.fillStyle = '#d92730'; x.fill();
+          x.lineWidth = 4; x.strokeStyle = '#141415'; x.stroke();
+          dot = c.toDataURL('image/png');
+          if (isLive) link.href = dot;
+        } catch (e) {}
+      };
+      img.src = home;
+    }
+    var favPaint = function () { setFav(liveState().cls === 'is-live'); };
+    favPaint();
+    setInterval(favPaint, 60000);
+  })();
+
   /* ---------- 9b. the founding bar drains in as you reach it ---------- */
   (function () {
     var fill = document.querySelector('.spots-fill');
@@ -953,6 +1041,22 @@ document.addEventListener('click', e => {
       var vx = (e.clientX - bagState.px) / Math.max(40, dt);   /* px per ms */
       if (Math.abs(vx) > 0.25) bagState.w += Math.max(-4, Math.min(4, vx * 2.4));
     }, { passive: true });
+
+    /* if you stop moving, the gym doesn't — the bag takes a hit on its own */
+    var idleAt = performance.now();
+    var pokeIn = 34000 + Math.random() * 20000;
+    ['pointerdown', 'pointermove', 'keydown', 'scroll'].forEach(function (ev) {
+      addEventListener(ev, function () { idleAt = performance.now(); }, { passive: true });
+    });
+    setInterval(function () {
+      if (document.hidden) return;
+      if (performance.now() - idleAt < pokeIn) return;
+      var r = bagArena.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      bagHit(0.55 + Math.random() * 0.5, Math.random() < 0.5 ? -1 : 1);
+      idleAt = performance.now();
+      pokeIn = 34000 + Math.random() * 20000;
+    }, 4000);
   }
 
   function bagStep(dt) {
@@ -981,6 +1085,11 @@ document.addEventListener('click', e => {
       setTimeout(function (n) { return function () { n.remove(); }; }(d), 600);
     }
   }
+
+  /* every CTA lands with a puff of chalk */
+  document.querySelectorAll('.btn').forEach(function (b) {
+    b.addEventListener('click', function () { dustBurst(b); });
+  });
 
   /* ---------- 16. FIGHT MODE (the secret) ---------- */
   var fmBusy = false;

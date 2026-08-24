@@ -167,9 +167,9 @@ p.lead { font-size: 1.12rem; color: var(--text); }
   color: #fff;
   border: 1px solid var(--red);
   cursor: pointer;
-  transition: background .15s, transform .1s;
+  transition: background .15s;
 }
-.btn:hover { background: var(--red-dark); transform: translateY(-1px); }
+.btn:hover { background: var(--red-dark); }
 
 .btn-ghost {
   background: transparent;
@@ -1304,7 +1304,7 @@ html.no-loader .loader { display: none; }
   height: 51%;
   background: #141415;
   z-index: -1;
-  transition: transform .95s cubic-bezier(.76, 0, .18, 1);
+  transition: transform .72s cubic-bezier(.76, 0, .18, 1);
 }
 .immersive .loader::before { top: 0;    border-bottom: 2px solid transparent; }
 .immersive .loader::after  { bottom: 0; border-top: 2px solid transparent; }
@@ -2046,3 +2046,10 @@ main.jolt { animation: jolt .16s linear; }
 #fightmode .fm-card h3 b { color: var(--red); }
 #fightmode .fm-card p { color: var(--muted); font-size: .98rem; margin-bottom: 18px; }
 #fightmode .fm-card p b { color: #fff; }
+
+/* ---------- 24. touch press feedback ---------- */
+@media (pointer: coarse) {
+  .immersive .btn:active,
+  .immersive .tab-btn:active { transform: scale(.955); transition: transform .08s ease; }
+  .immersive .tile:active img { transform: scale(1.04); }
+}
