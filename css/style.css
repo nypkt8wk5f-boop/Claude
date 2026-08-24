@@ -5,6 +5,7 @@
 @import url("../assets/fonts/fonts.css");
 
 :root {
+  --red-text: #e2545c;  --red-hot: #d92730;  /* passes contrast on the dark cards; fills stay --red */
   color-scheme: dark;
   --bg: #313131;           /* matches the logo grey */
   --bg-2: #2a2a2b;
@@ -78,9 +79,7 @@ p.lead { font-size: 1.12rem; color: var(--text); }
   position: sticky;
   top: 0;
   z-index: 60;
-  background: rgba(43, 43, 44, .92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(43, 43, 44, .97);
   border-bottom: 1px solid var(--line);
 }
 
@@ -134,6 +133,9 @@ p.lead { font-size: 1.12rem; color: var(--text); }
 @media (max-width: 920px) {
   .burger { display: flex; }
   .nav-links {
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     position: absolute;
     top: 100%;
     left: 0;
@@ -155,6 +157,7 @@ p.lead { font-size: 1.12rem; color: var(--text); }
 /* ---------- buttons ---------- */
 
 .btn {
+  position: relative;
   display: inline-block;
   font-family: var(--head);
   font-weight: 600;
@@ -432,7 +435,7 @@ p.lead { font-size: 1.12rem; color: var(--text); }
 .day .t {
   font-family: var(--head);
   font-weight: 600;
-  color: var(--red);
+  color: var(--red-text);
   min-width: 62px;
   letter-spacing: .04em;
 }
@@ -443,10 +446,10 @@ p.lead { font-size: 1.12rem; color: var(--text); }
   font-style: normal;
   font-family: var(--head);
   font-weight: 600;
-  font-size: .6rem;
+  font-size: .72rem;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--red-text);
   border: 1px solid var(--red);
   border-radius: 999px;
   padding: 1px 8px;
@@ -593,15 +596,6 @@ p.lead { font-size: 1.12rem; color: var(--text); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
 
-.info-block { margin-bottom: 26px; }
-.info-block h3 {
-  font-size: 1.05rem;
-  letter-spacing: .14em;
-  color: #fff;
-  margin-bottom: 8px;
-}
-.info-block p { color: var(--muted); }
-.info-block a.link { color: var(--red); font-weight: 600; }
 
 /* ---------- policies ---------- */
 
@@ -651,6 +645,7 @@ p.lead { font-size: 1.12rem; color: var(--text); }
   font-size: .86rem;
 }
 .footer-bottom nav { display: flex; gap: 20px; align-items: center; }
+.footer-bottom nav a { display: inline-block; padding: 10px 0; }
 
 .ig {
   display: inline-flex;
@@ -791,6 +786,9 @@ body.leaving { opacity: 0; transition: opacity .22s ease; }
 }
 @keyframes loadfill { from { width: 0; } to { width: 100%; } }
 .loader.done { transform: translateY(-101%); }
+/* if scripts never run, the curtain must not hold the site hostage */
+.loader { animation: loaderBail 0s 3.2s forwards; }
+@keyframes loaderBail { to { visibility: hidden; opacity: 0; } }
 html.no-loader .loader { display: none; }
 
 /* ---------- scroll progress ---------- */
@@ -800,7 +798,9 @@ html.no-loader .loader { display: none; }
   top: 0;
   left: 0;
   height: 3px;
-  width: 0;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 0;
   background: var(--red);
   z-index: 350;
   pointer-events: none;
@@ -817,7 +817,7 @@ html.no-loader .loader { display: none; }
   border: 1.5px solid rgba(255, 255, 255, .55);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 500;
+  z-index: 510;
   transform: translate(-50%, -50%);
   transition: width .22s, height .22s, border-color .22s, opacity .3s;
   opacity: 0;
@@ -1135,7 +1135,7 @@ html.no-loader .loader { display: none; }
 .lightbox {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 360;
   background: rgba(15, 15, 16, .94);
   display: flex;
   align-items: center;
@@ -1158,13 +1158,13 @@ html.no-loader .loader { display: none; }
 /* ---------- phone-size tuning ---------- */
 
 @media (max-width: 640px) {
-  .hero { min-height: 100svh; }
+  .hero { min-height: 94svh; }
   .hero .hero-bg {
     background-image: url(../assets/img/muaythai-bags.jpg);
     background-position: center 52%;
   }
   .hero-inner { padding-top: 92px; padding-bottom: 40px; }
-  .hero .kicker { font-size: .66rem; letter-spacing: .18em; gap: 10px; }
+  .hero .kicker { font-size: .74rem; letter-spacing: .14em; gap: 10px; }
   .hero .kicker::before { width: 22px; }
   .display { font-size: clamp(2.5rem, 12.5vw, 3.4rem); }
   .hero-sub { font-size: 1rem; margin: 14px 0 22px; }
@@ -1175,13 +1175,13 @@ html.no-loader .loader { display: none; }
     padding-top: 18px;
   }
   .hero-stats b { font-size: 1.65rem; }
-  .hero-stats span { font-size: .6rem; letter-spacing: .14em; margin-top: 4px; }
+  .hero-stats span { font-size: .72rem; letter-spacing: .1em; margin-top: 4px; }
 
-  .announce { font-size: .6rem; letter-spacing: .08em; padding: 7px 12px; }
+  .announce { font-size: .74rem; letter-spacing: .06em; padding: 12px 14px; }
   .section { padding: 58px 0; }
   .section-head { margin-bottom: 30px; }
   h2.section-title { font-size: 1.65rem; }
-  .kicker { font-size: .72rem; letter-spacing: .2em; }
+  .kicker { font-size: .75rem; letter-spacing: .16em; }
   .bg-word { font-size: 17vw; top: 14px; }
 
   .marquee { padding: 12px 0; }
@@ -1250,8 +1250,8 @@ html.no-loader .loader { display: none; }
               rgba(255, 252, 240, .075) 50%, rgba(255, 252, 240, .04) 72%, rgba(255, 252, 240, 0) 100%);
   transform-origin: top center;
 }
-.hero-atmos .b1 { left: 4%;  transform: rotate(14deg);  animation: beamDrift 19s ease-in-out infinite; }
-.hero-atmos .b2 { left: 46%; transform: rotate(9deg);   opacity: .7; animation: beamDrift 25s ease-in-out infinite reverse; }
+.hero-atmos .b1 { left: 4%;  animation: beamDrift 19s ease-in-out infinite; }
+.hero-atmos .b2 { left: 46%; animation: beamDrift 25s ease-in-out -8s infinite reverse; }
 @keyframes beamDrift {
   0%, 100% { opacity: .5;  transform: rotate(13deg) translateX(0); }
   50%      { opacity: .95; transform: rotate(16deg) translateX(26px); }
@@ -1266,17 +1266,6 @@ html.no-loader .loader { display: none; }
   inset: 0;
   background:
     radial-gradient(120% 85% at 50% 42%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, .34) 78%, rgba(0, 0, 0, .62) 100%);
-}
-
-/* film gate weave — the frame never sits perfectly still */
-
-@keyframes weave {
-  0%   { transform: translate(0, 0); }
-  20%  { transform: translate(.6px, -.5px); }
-  40%  { transform: translate(-.5px, .4px); }
-  60%  { transform: translate(.4px, .6px); }
-  80%  { transform: translate(-.6px, -.3px); }
-  100% { transform: translate(0, 0); }
 }
 
 /* ---------- 2. arrival: the doors open ---------- */
@@ -1322,9 +1311,8 @@ html.no-loader .loader { display: none; }
 .immersive.booting body > main,
 .immersive.booting .site-header { animation: cameraSettle 1.5s cubic-bezier(.16, .84, .24, 1) both; }
 @keyframes cameraSettle {
-  from { transform: scale(1.055); filter: blur(9px); opacity: .4; }
-  60%  { filter: blur(0); }
-  to   { transform: none; filter: none; opacity: 1; }
+  from { transform: scale(1.055); opacity: .4; }
+  to   { transform: none; opacity: 1; }
 }
 
 /* headline letters arrive with real depth */
@@ -1359,7 +1347,7 @@ html.no-loader .loader { display: none; }
 
 /* section titles land like a punch, with a red line whipping under */
 .immersive .section-head.in .section-title,
-.immersive .split .reveal.in > .section-title {
+.immersive .reveal.in > .section-title {
   animation: titlePunch .62s cubic-bezier(.18, .9, .22, 1) both;
 }
 @keyframes titlePunch {
@@ -1368,6 +1356,8 @@ html.no-loader .loader { display: none; }
   100% { opacity: 1; transform: none; letter-spacing: inherit; }
 }
 .immersive .section-head { position: relative; }
+.immersive .reveal > .section-title { position: relative; }
+.immersive .reveal.in > .section-title::after,
 .immersive .section-head.in .section-title::after {
   content: "";
   position: absolute;
@@ -1381,7 +1371,7 @@ html.no-loader .loader { display: none; }
   box-shadow: 0 0 18px rgba(217, 39, 48, .6);
 }
 .immersive .section-head[style*="center"] .section-title::after,
-.immersive .band .section-title::after { left: 50%; transform: translateX(-50%); }
+.immersive .band .section-title::after { left: calc(50% - 46px); transform-origin: center; }
 @keyframes whip { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 /* ---------- 4. pointer light ---------- */
@@ -1423,10 +1413,10 @@ html.no-loader .loader { display: none; }
 .immersive .tile-grid { perspective: 1400px; }
 .immersive .tile {
   transform-style: preserve-3d;
-  transition: transform .5s cubic-bezier(.2, .8, .2, 1), box-shadow .5s ease;
-  will-change: transform;
+  transition: box-shadow .5s ease;
 }
-.immersive .tile img { transition: transform .5s cubic-bezier(.2, .8, .2, 1), filter .5s ease; }
+.rich .tile { will-change: transform; }
+.immersive .tile img { transition: filter .5s ease; }
 .immersive .tile:hover {
   box-shadow: 0 40px 90px rgba(0, 0, 0, .55), 0 0 0 1px rgba(217, 39, 48, .35);
   z-index: 3;
@@ -1442,8 +1432,8 @@ html.no-loader .loader { display: none; }
   pointer-events: none;
   opacity: 0;
   transition: opacity .4s ease;
-  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 62%);
-  mix-blend-mode: overlay;
+  /* plain alpha, no blend mode — measured: blends tank the raster thread */
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .22), rgba(255, 255, 255, 0) 62%);
 }
 .immersive .tile:hover .sheen { opacity: 1; }
 
@@ -1465,7 +1455,7 @@ html.no-loader .loader { display: none; }
 /* cards and plans get a lighter version of the same physics */
 .immersive .card-grid, .immersive .price-grid, .immersive .steps { perspective: 1600px; }
 .immersive .card, .immersive .plan, .immersive .step {
-  transition: transform .55s cubic-bezier(.2, .8, .2, 1), box-shadow .55s ease;
+  transition: box-shadow .55s ease;
 }
 
 /* ---------- 6. live now ---------- */
@@ -1529,13 +1519,13 @@ html.no-loader .loader { display: none; }
 
 /* ---------- 7. time of day ---------- */
 
-.immersive .hero .hero-bg::after { transition: background 1.6s ease; }
-.immersive.tod-dawn  .hero .hero-bg::after { background: linear-gradient(180deg, rgba(46, 44, 42, .40) 0%, rgba(44, 43, 44, .52) 45%, rgba(49, 49, 49, .97) 100%); }
+.immersive :is(.hero, .page-hero) .hero-bg::after { transition: background 1.6s ease; }
+.immersive.tod-dawn  :is(.hero, .page-hero) .hero-bg::after { background: linear-gradient(180deg, rgba(46, 44, 42, .40) 0%, rgba(44, 43, 44, .52) 45%, rgba(49, 49, 49, .97) 100%); }
 .immersive.tod-day   .hero .hero-bg::after { background: linear-gradient(180deg, rgba(41, 41, 42, .40) 0%, rgba(41, 41, 42, .52) 45%, rgba(49, 49, 49, .97) 100%); }
-.immersive.tod-dusk  .hero .hero-bg::after { background: linear-gradient(180deg, rgba(48, 36, 36, .48) 0%, rgba(44, 39, 40, .58) 45%, rgba(49, 49, 49, .97) 100%); }
-.immersive.tod-night .hero .hero-bg::after { background: linear-gradient(180deg, rgba(28, 30, 36, .58) 0%, rgba(33, 33, 36, .64) 45%, rgba(49, 49, 49, .97) 100%); }
+.immersive.tod-dusk  :is(.hero, .page-hero) .hero-bg::after { background: linear-gradient(180deg, rgba(48, 36, 36, .48) 0%, rgba(44, 39, 40, .58) 45%, rgba(49, 49, 49, .97) 100%); }
+.immersive.tod-night :is(.hero, .page-hero) .hero-bg::after { background: linear-gradient(180deg, rgba(28, 30, 36, .58) 0%, rgba(33, 33, 36, .64) 45%, rgba(49, 49, 49, .97) 100%); }
 .immersive.tod-dusk  .hero-atmos .beam { background: linear-gradient(180deg, rgba(255, 226, 214, .10) 0%, rgba(255, 226, 214, .034) 45%, rgba(255, 226, 214, 0) 78%); }
-.immersive.tod-night .hero-atmos .beam { opacity: .55; }
+.immersive.tod-night .hero-atmos { opacity: .55; }
 
 /* ---------- 8. header condenses ---------- */
 
@@ -1591,17 +1581,22 @@ html.no-loader .loader { display: none; }
 #sound i {
   display: block;
   width: 2px;
-  height: 8px;
+  height: 17px;
+  transform: scaleY(.35);
+  transform-origin: center bottom;
   background: currentColor;
   border-radius: 2px;
-  transition: height .25s ease;
+  transition: transform .25s ease;
 }
 #sound.on { color: #fff; border-color: var(--red); }
 #sound.on i { animation: eq 1.1s ease-in-out infinite; }
 #sound.on i:nth-child(2) { animation-delay: .16s; }
 #sound.on i:nth-child(3) { animation-delay: .32s; }
-@keyframes eq { 0%, 100% { height: 6px; } 50% { height: 17px; } }
+@keyframes eq { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
 #sound:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+.btn:focus-visible, .tab-btn:focus-visible, .nav-links a:focus-visible,
+.burger:focus-visible, .announce:focus-visible, .faq summary:focus-visible,
+.footer-bottom nav a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 @media (max-width: 560px) { #sound { right: 12px; bottom: 12px; width: 42px; height: 42px; } }
 
 /* ---------- 11. stat impact ---------- */
@@ -1621,7 +1616,6 @@ html.no-loader .loader { display: none; }
 
 /* ---------- 12. the ticker lurches with the scroll ---------- */
 
-.immersive .marquee { will-change: transform; }
 .immersive .bg-word, .immersive .band .hero-bg { will-change: transform; }
 
 /* ---------- 13. inner pages get the same room ---------- */
@@ -1965,7 +1959,7 @@ main.jolt { animation: jolt .16s linear; }
 /* ---------- 22. the building runs on gym time ---------- */
 
 .immersive.gym-shut .hero .hero-bg { filter: brightness(.66) saturate(.85); }
-.immersive.gym-shut .hero-atmos .beam { opacity: .35; }
+.immersive.gym-shut .hero-atmos { opacity: .35; }
 .immersive.gym-open.booting .hero .hero-bg { animation: lightsOn 1.15s steps(1, end) both; }
 @keyframes lightsOn {
   0%   { filter: brightness(.12); }
@@ -1993,7 +1987,7 @@ main.jolt { animation: jolt .16s linear; }
 #fightmode .fm-flash {
   position: absolute;
   inset: 0;
-  background: #d92730;
+  background: var(--red-hot);
   animation: fmFlash .5s ease-out both;
 }
 @keyframes fmFlash { 0% { opacity: .85; } 100% { opacity: 0; } }
@@ -2049,7 +2043,11 @@ main.jolt { animation: jolt .16s linear; }
 
 /* ---------- 24. touch press feedback ---------- */
 @media (pointer: coarse) {
+  .immersive .btn,
+  .immersive .tab-btn { transition: background .15s, border-color .15s, transform .14s ease; }
   .immersive .btn:active,
-  .immersive .tab-btn:active { transform: scale(.955); transition: transform .08s ease; }
-  .immersive .tile:active img { transform: scale(1.04); }
+  .immersive .tab-btn:active { transform: scale(.955); }
+  /* press never shrinks the auto-focused tile below its resting scale */
+  .immersive .tile:not(.focus):active img { transform: scale(1.04); }
+  .immersive .tile.focus:active img { transform: scale(1.1); }
 }

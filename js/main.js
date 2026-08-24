@@ -27,12 +27,14 @@ if (loader) {
 // Scroll progress bar — you rank up as you read: white, blue, purple, brown, black
 const progress = document.getElementById('progress');
 if (progress) {
-  const BELTS = ['#e9e7e2', '#2e6ad1', '#7b3fd6', '#7a4a2b', '#101011'];
-  let lastBelt = -1;
+  const BELTS = ['#e9e7e2', '#2e6ad1', '#7b3fd6', '#8d5a36', '#3a3a3e'];
+  let lastBelt = -1, ticking = false;
   const paint = () => {
+    ticking = false;
     const max = document.documentElement.scrollHeight - innerHeight;
     const frac = max > 0 ? Math.min(1, scrollY / max) : 0;
-    progress.style.width = frac * 100 + '%';
+    // scaleX composites; width would relayout on every scroll event
+    progress.style.transform = 'scaleX(' + frac.toFixed(4) + ')';
     const belt = Math.min(BELTS.length - 1, Math.floor(frac * BELTS.length));
     if (belt !== lastBelt) {
       lastBelt = belt;
@@ -40,24 +42,28 @@ if (progress) {
       progress.style.background = 'linear-gradient(90deg,' + BELTS[belt] + ' 0 calc(100% - 20px), #d92730 0)';
     }
   };
-  addEventListener('scroll', paint, { passive: true });
+  addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+  }, { passive: true });
   paint();
 }
 
 // Custom cursor ring (desktop pointers only)
 const cursor = document.getElementById('cursor');
 if (cursor && matchMedia('(pointer: fine)').matches && !REDUCED) {
-  let tx = -100, ty = -100, x = -100, y = -100;
+  let tx = -100, ty = -100, x = -100, y = -100, raf = null;
+  const follow = () => {
+    x += (tx - x) * 0.2; y += (ty - y) * 0.2;
+    cursor.style.transform = 'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%)';
+    if (Math.abs(tx - x) > 0.1 || Math.abs(ty - y) > 0.1) raf = requestAnimationFrame(follow);
+    else raf = null; // parked — the next mousemove restarts it
+  };
   addEventListener('mousemove', e => {
     tx = e.clientX; ty = e.clientY;
     cursor.classList.add('on');
     cursor.classList.toggle('hot', !!e.target.closest('a, button, summary, label, input, .tile, .plan, .tab-btn'));
+    if (!raf) raf = requestAnimationFrame(follow);
   }, { passive: true });
-  (function follow() {
-    x += (tx - x) * 0.2; y += (ty - y) * 0.2;
-    cursor.style.transform = 'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%)';
-    requestAnimationFrame(follow);
-  })();
   addEventListener('mouseout', e => { if (!e.relatedTarget) cursor.classList.remove('on'); });
 }
 
@@ -66,27 +72,26 @@ if (cursor && matchMedia('(pointer: fine)').matches && !REDUCED) {
 // batch-measured at most every 120ms, styles written only while moving.
 if (matchMedia('(pointer: fine)').matches && !REDUCED) {
   (function () {
-    const els = document.querySelectorAll(
-      '.btn, .site-nav a, .tab-btn, #sound, .site-footer .link, .hero-ctas a');
+    const els = document.querySelectorAll('.btn, .nav-links a, .tab-btn, .site-footer .link');
     const items = [];
     els.forEach(el => {
-      el.style.willChange = 'transform';
-      items.push({ el, x: 0, y: 0, tx: 0, ty: 0, r: null, idle: true });
+      items.push({ el, x: 0, y: 0, tx: 0, ty: 0, r: null, idle: true, last: '' });
     });
     if (!items.length) return;
     let mx = -1e4, my = -1e4, raf = null, measured = 0, moving = false;
     const measure = () => {
-      const now = performance.now();
-      if (now - measured < 120) return;
-      measured = now;
       for (const it of items) it.r = it.el.getBoundingClientRect();
+      measured = performance.now();
     };
     const tick = () => {
+      // measure at the top of the frame, before any transform writes
+      if (performance.now() - measured > 120) measure();
       let busy = false;
       for (const it of items) {
         const r = it.r;
         if (r) {
-          const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          // subtract our own offset so the pull target doesn't chase itself
+          const cx = r.left + r.width / 2 - it.x, cy = r.top + r.height / 2 - it.y;
           const dx = mx - cx, dy = my - cy;
           const range = Math.max(r.width, r.height) / 2 + 64;
           const d = Math.hypot(dx, dy);
@@ -98,23 +103,32 @@ if (matchMedia('(pointer: fine)').matches && !REDUCED) {
         }
         it.x += (it.tx - it.x) * 0.22;
         it.y += (it.ty - it.y) * 0.22;
-        const settled = !it.tx && !it.ty && Math.abs(it.x) < 0.12 && Math.abs(it.y) < 0.12;
-        if (settled) {
-          if (!it.idle) { it.idle = true; it.el.style.transform = ''; }
+        const home = !it.tx && !it.ty && Math.abs(it.x) < 0.12 && Math.abs(it.y) < 0.12;
+        const atTarget = Math.abs(it.tx - it.x) < 0.06 && Math.abs(it.ty - it.y) < 0.06;
+        if (home) {
+          if (!it.idle) {
+            it.idle = true; it.last = '';
+            it.el.style.transform = ''; it.el.style.willChange = '';
+          }
         } else {
-          it.idle = false; busy = true;
-          it.el.style.transform = 'translate(' + it.x.toFixed(2) + 'px,' + it.y.toFixed(2) + 'px)';
+          if (it.idle) { it.idle = false; it.el.style.willChange = 'transform'; }
+          if (!atTarget) {
+            busy = true;
+            const t = 'translate(' + it.x.toFixed(2) + 'px,' + it.y.toFixed(2) + 'px)';
+            if (t !== it.last) { it.last = t; it.el.style.transform = t; }
+          }
         }
       }
       if (busy || moving) { moving = false; raf = requestAnimationFrame(tick); }
       else raf = null;
     };
-    addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY; moving = true;
-      measure();
-      if (!raf) raf = requestAnimationFrame(tick);
-    }, { passive: true });
-    addEventListener('scroll', () => { measured = 0; }, { passive: true });
+    const wake = () => { moving = true; if (!raf) raf = requestAnimationFrame(tick); };
+    addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; wake(); }, { passive: true });
+    addEventListener('scroll', () => { measured = 0; wake(); }, { passive: true });
+    // pointer leaves the window: let everything spring home
+    addEventListener('mouseout', e => {
+      if (!e.relatedTarget) { mx = -1e4; my = -1e4; wake(); }
+    });
   })();
 }
 
@@ -124,8 +138,10 @@ if (!REDUCED) {
   if (pxEls.length) {
     let ticking = false;
     const move = () => {
-      pxEls.forEach(img => {
-        const r = img.getBoundingClientRect();
+      // read every rect, then write every transform — no interleaved layout
+      const rects = pxEls.map(img => img.getBoundingClientRect());
+      pxEls.forEach((img, i) => {
+        const r = rects[i];
         if (r.bottom < 0 || r.top > innerHeight) return;
         const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
         img.style.transform = 'translateY(' + (p * -16).toFixed(1) + 'px) scale(1.06)';
@@ -142,14 +158,24 @@ if (!REDUCED) {
 // Page-to-page fade (real site only, not the single-file preview)
 if (!PREVIEW && !REDUCED) {
   document.addEventListener('click', e => {
+    // leave modified clicks (new tab / new window) to the browser
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.defaultPrevented) return;
     const a = e.target.closest('a[href$=".html"], a[href*=".html#"]');
-    if (!a || a.target === '_blank') return;
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+    if (a.closest('.site-header') && a.classList.contains('logo')) return; // logo taps feed FIGHT MODE
     const href = a.getAttribute('href');
     if (/^https?:|^mailto:/.test(href)) return;
     e.preventDefault();
     if (window.__uffWipe) { window.__uffWipe(href); return; }
     document.body.classList.add('leaving');
     setTimeout(() => { window.location.href = href; }, 200);
+  });
+  // back-swipe out of the bfcache must not land on a leftover wipe/fade
+  addEventListener('pageshow', e => {
+    if (!e.persisted) return;
+    document.body.classList.remove('leaving');
+    const w = document.getElementById('wipe');
+    if (w) { w.classList.remove('go'); w.style.visibility = 'hidden'; }
   });
 }
 
@@ -253,10 +279,10 @@ document.addEventListener('click', e => {
   full.src = img.src;
   full.alt = img.alt || '';
   box.appendChild(full);
-  box.addEventListener('click', () => box.remove());
-  document.addEventListener('keydown', function esc(ev) {
-    if (ev.key === 'Escape') { box.remove(); document.removeEventListener('keydown', esc); }
-  });
+  const esc = ev => { if (ev.key === 'Escape') close(); };
+  const close = () => { box.remove(); document.removeEventListener('keydown', esc); };
+  box.addEventListener('click', close);
+  document.addEventListener('keydown', esc);
   document.body.appendChild(box);
 });
 
@@ -353,16 +379,18 @@ document.addEventListener('click', e => {
   }
 
   /* ---------- 3. tiles with volume ---------- */
+  var pulseCv = null, pulseCtx = null, pulseBpm = 46;
+
   var tilts = [];
+  document.querySelectorAll('.tile').forEach(function (tile) {
+    var sheen = document.createElement('span');
+    sheen.className = 'sheen';
+    var b1 = document.createElement('span'); b1.className = 'brk tl';
+    var b2 = document.createElement('span'); b2.className = 'brk br';
+    tile.appendChild(sheen); tile.appendChild(b1); tile.appendChild(b2);
+    if (RICH) bindTilt(tile, tile.querySelector('img'), 9, 34);
+  });
   if (RICH) {
-    document.querySelectorAll('.tile').forEach(function (tile) {
-      var sheen = document.createElement('span');
-      sheen.className = 'sheen';
-      var b1 = document.createElement('span'); b1.className = 'brk tl';
-      var b2 = document.createElement('span'); b2.className = 'brk br';
-      tile.appendChild(sheen); tile.appendChild(b1); tile.appendChild(b2);
-      bindTilt(tile, tile.querySelector('img'), 9, 34);
-    });
     document.querySelectorAll('.card, .plan, .step').forEach(function (el) {
       bindTilt(el, null, 4, 0);
     });
@@ -412,8 +440,6 @@ document.addEventListener('click', e => {
      re-rasterising large blocks of text every frame, which cost far
      more than it was worth. */
   var marquee = document.querySelector('.marquee');
-  var leaners = [];
-
   var inView = new Set();
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (ents) {
@@ -422,7 +448,6 @@ document.addEventListener('click', e => {
         if (en.target === hero) S.heroIn = en.isIntersecting;
       });
     }, { rootMargin: '80px' });
-    leaners.forEach(function (el) { io.observe(el); });
     if (hero) io.observe(hero);
   }
 
@@ -493,7 +518,7 @@ document.addEventListener('click', e => {
   }
 
   /* ---------- 7. the one loop ---------- */
-  var last = performance.now(), lastVel = 0, frameN = 0, heroH = 0, lastDeepY = -1, lastMx = -1, lastMy = -1;
+  var last = performance.now(), lastVel = 0, frameN = 0, heroH = 0, lastDeepY = -1, lastMx = -1, lastMy = -1, lastHeroBg = '', lastHeroWrap = '';
   var measure = function () { heroH = hero ? hero.offsetHeight : 0; };
   measure();
   addEventListener('resize', debounce(measure, 250), { passive: true });
@@ -512,7 +537,8 @@ document.addEventListener('click', e => {
     S.vel += (S.rawVel - S.vel) * 0.14;
     S.rawVel *= 0.86;
 
-
+    /* all rect READS first (focusPass), then the frame's writes below */
+    if (focusTiles.length) focusPass();
 
     /* hero camera: slow breath + pointer look + scroll dolly.
        The room and the words move against each other, so the hero
@@ -521,12 +547,18 @@ document.addEventListener('click', e => {
       var breath = (RICH ? 1.075 : 1.055) + Math.sin(S.t * 0.16) * 0.014;
       var dolly = Math.min(1, S.sy / (heroH || innerHeight || 1));
       var tx = S.px * -16, ty = S.py * -11 + dolly * 42;
-      heroBg.style.transform = 'scale(' + (breath + dolly * 0.05).toFixed(4) + ') translate3d(' +
+      var hb = 'scale(' + (breath + dolly * 0.05).toFixed(4) + ') translate3d(' +
         tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0)';
+      if (hb !== lastHeroBg) { lastHeroBg = hb; heroBg.style.transform = hb; }
       if (heroWrap) {
-        heroWrap.style.transform = 'translate3d(' + (S.px * 7).toFixed(1) + 'px,' +
-          (S.py * 5 - dolly * 74).toFixed(1) + 'px,0)';
-        heroWrap.style.opacity = Math.max(0, 1 - dolly * 1.25).toFixed(3);
+        var hw = 'translate3d(' + (S.px * 7).toFixed(1) + 'px,' +
+          (S.py * 5 - dolly * 74).toFixed(1) + 'px,0)|' + Math.max(0, 1 - dolly * 1.25).toFixed(3);
+        if (hw !== lastHeroWrap) {
+          lastHeroWrap = hw;
+          var parts = hw.split('|');
+          heroWrap.style.transform = parts[0];
+          heroWrap.style.opacity = parts[1];
+        }
       }
     }
 
@@ -566,7 +598,6 @@ document.addEventListener('click', e => {
       }
     }
 
-    if (focusTiles.length) focusPass();
     bagStep(dt);
     pulseStep(dt);
 
@@ -599,30 +630,44 @@ document.addEventListener('click', e => {
   /* ---------- 9. live now ---------- */
   /* minutes from midnight -> [start, minutes, name, sub] */
   var M = function (h, m) { return h * 60 + m; };
-  var BJJ = 60, SC = 45, MT = 60;
+  var BJJ = 60, SC = 45, MT = 60, KID = 45;
+  /* entries with a 5th element start on 1 Sept 2026 (after the school holidays) */
   var SCHED = {
-    1: [[M(6,15), SC, 'Hybrid', 'S&C'], [M(7,15), SC, 'Sweat', 'S&C'], [M(9,15), SC, 'Strength', 'S&C'],
+    1: [[M(6,15), SC, 'Hybrid', 'S&C'], [M(7,0), BJJ, 'BJJ Beginners & Intermediates', 'Gi', 1],
+        [M(7,15), SC, 'Sweat', 'S&C'], [M(9,15), SC, 'Strength', 'S&C'],
         [M(12,30), SC, 'Small Group PT', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
+        [M(16,15), KID, 'BJJ Kids (4–11)', '', 1],
         [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'], [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
         [M(18,45), MT, 'Muay Thai Adults', 'All levels']],
-    2: [[M(6,15), SC, 'Sweat', 'S&C'], [M(7,15), SC, 'Hybrid', 'S&C'], [M(9,15), SC, 'Small Group PT', 'S&C'],
+    2: [[M(6,15), SC, 'Sweat', 'S&C'], [M(7,0), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi', 1],
+        [M(7,15), SC, 'Hybrid', 'S&C'], [M(9,15), SC, 'Small Group PT', 'S&C'],
         [M(12,30), SC, 'Strength', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+        [M(16,15), KID, 'BJJ Kids (12–15)', '', 1], [M(17,30), MT, 'Muay Thai Kids', '', 1],
         [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'], [M(18,30), SC, 'Hybrid', 'S&C'],
         [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'Gi']],
     3: [[M(6,15), SC, 'Small Group PT', 'S&C'], [M(7,15), SC, 'Strength', 'S&C'], [M(9,15), SC, 'Hybrid', 'S&C'],
         [M(12,30), SC, 'Sweat', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
         [M(17,30), BJJ, 'Open Mat', 'BJJ'], [M(18,45), MT, 'Muay Thai Adults', 'All levels']],
-    4: [[M(6,15), SC, 'Strength', 'S&C'], [M(7,15), SC, 'Small Group PT', 'S&C'], [M(9,15), SC, 'Sweat', 'S&C'],
+    4: [[M(6,15), SC, 'Strength', 'S&C'], [M(7,0), BJJ, 'Open Mat', 'Blue Belt & Above', 1],
+        [M(7,15), SC, 'Small Group PT', 'S&C'], [M(9,15), SC, 'Sweat', 'S&C'],
         [M(12,30), SC, 'Hybrid', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+        [M(16,15), KID, 'BJJ Kids (12–15)', '', 1],
         [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'], [M(18,30), SC, 'Strength', 'S&C'],
         [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'Gi']],
-    5: [[M(6,15), SC, 'Hybrid', 'S&C'], [M(7,15), SC, 'Sweat', 'S&C'], [M(9,15), SC, 'Small Group PT', 'S&C'],
+    5: [[M(6,15), SC, 'Hybrid', 'S&C'], [M(7,0), BJJ, 'BJJ Beginners & Intermediates', 'Gi', 1],
+        [M(7,15), SC, 'Sweat', 'S&C'], [M(9,15), SC, 'Small Group PT', 'S&C'],
         [M(12,30), SC, 'Strength', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
+        [M(16,15), KID, 'BJJ Kids (4–11)', '', 1],
         [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'], [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
         [M(18,45), MT, 'Muay Thai Adults', 'All levels']],
-    6: [[M(12,30), BJJ, 'Open Mat', 'BJJ']],
+    6: [[M(10,0), KID, 'Muay Thai Kids', '', 1], [M(12,30), BJJ, 'Open Mat', 'BJJ']],
     0: [[M(12,30), BJJ, 'Open Mat', 'BJJ']]
   };
+  function schedFor(d) {
+    var sept = new Date() >= new Date(2026, 8, 1);
+    return (SCHED[d] || []).filter(function (c) { return !c[4] || sept; })
+      .slice().sort(function (a, b) { return a[0] - b[0]; });
+  }
   var HOURS = { 1: [360, 1200], 2: [360, 1200], 3: [360, 1200], 4: [360, 1200], 5: [360, 1200], 6: [600, 840], 0: [720, 840] };
   var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -639,7 +684,7 @@ document.addEventListener('click', e => {
   function liveState() {
     var now = new Date();
     var d = now.getDay(), t = now.getHours() * 60 + now.getMinutes();
-    var today = (SCHED[d] || []).slice().sort(function (a, b) { return a[0] - b[0]; });
+    var today = schedFor(d);
     var open = HOURS[d];
 
     for (var i = 0; i < today.length; i++) {
@@ -660,7 +705,7 @@ document.addEventListener('click', e => {
       return { cls: 'is-open', label: 'Gym open', text: 'Open floor until ' + hhmm(open[1]) };
     }
     for (var k = 1; k <= 7; k++) {
-      var nd = (d + k) % 7, list = (SCHED[nd] || []).slice().sort(function (a, b) { return a[0] - b[0]; });
+      var nd = (d + k) % 7, list = schedFor(nd);
       if (list.length) {
         var when = k === 1 ? 'Tomorrow' : DAYS[nd];
         return { cls: '', label: 'Next session', text: when + ' · ' + list[0][2] + ' · ' + hhmm(list[0][0]) };
@@ -669,21 +714,33 @@ document.addEventListener('click', e => {
     return { cls: '', label: 'Timetable', text: 'See the full week' };
   }
 
-  /* the hero ticker reads today's actual classes */
-  (function () {
+  /* the hero ticker reads today's actual classes; rebuilt if the day rolls over */
+  var tickerDay = -1;
+  function buildTicker() {
     var track = document.querySelector('.marquee-track');
-    if (!track) return;
     var d = new Date().getDay();
-    var today = (SCHED[d] || []).slice().sort(function (a, b) { return a[0] - b[0]; });
-    if (!today.length) return;
-    var bits = ['<span class="o">Today at UFF</span><i>&#9679;</i>'];
-    for (var i = 0; i < today.length; i++) {
-      bits.push('<span>' + hhmm(today[i][0]) + ' ' + today[i][2] + '</span><i>&#9679;</i>');
+    if (d === tickerDay) return;
+    tickerDay = d;
+    if (track) {
+      var today = schedFor(d);
+      if (today.length) {
+        var bits = ['<span class="o">Today at UFF</span><i>&#9679;</i>'];
+        for (var i = 0; i < today.length; i++) {
+          bits.push('<span>' + hhmm(today[i][0]) + ' ' + today[i][2] + '</span><i>&#9679;</i>');
+        }
+        bits.push('<span class="o">First session free</span><i>&#9679;</i>');
+        /* two copies: the CSS loop shifts -50%, which is seamless only on even counts */
+        var seq = bits.join('');
+        track.innerHTML = seq + seq;
+      }
     }
-    bits.push('<span class="o">First session free</span><i>&#9679;</i>');
-    var seq = bits.join('');
-    track.innerHTML = seq + seq + seq;
-  })();
+    /* keep the timetable's Today column honest across midnight too */
+    var dayName = DAYS[d];
+    document.querySelectorAll('.day h4').forEach(function (h) {
+      h.parentElement.classList.toggle('today', h.textContent.trim() === dayName);
+    });
+  }
+  buildTicker();
 
   var liveEl = null;
   if (hero) {
@@ -696,6 +753,8 @@ document.addEventListener('click', e => {
       if (anchor.classList.contains('hero-ctas')) anchor.parentNode.insertBefore(liveEl, anchor.nextSibling);
       else anchor.appendChild(liveEl);
       var paintLive = function () {
+        if (document.hidden) return;
+        buildTicker(); /* no-op unless the day rolled over */
         var st = liveState();
         liveEl.className = 'live-now ' + st.cls;
         liveEl.querySelector('b').textContent = st.label;
@@ -704,7 +763,14 @@ document.addEventListener('click', e => {
       };
       paintLive();
       setInterval(paintLive, 20000);
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) paintLive();
+      });
       pulseCv = liveEl.querySelector('.pulse');
+      /* size the backing store from the CSS box so the trace never squashes */
+      var pr = Math.min(2, window.devicePixelRatio || 1);
+      var pb = pulseCv.getBoundingClientRect();
+      if (pb.width > 4) { pulseCv.width = Math.round(pb.width * pr); pulseCv.height = Math.round(pb.height * pr); }
       pulseCtx = pulseCv.getContext('2d');
       pulseCtx.fillStyle = '#00000000';
     }
@@ -757,7 +823,8 @@ document.addEventListener('click', e => {
   })();
 
   /* ---------- 9c. the gym pulse ---------- */
-  var pulseCv = pulseCv || null, pulseCtx = pulseCtx || null, pulseBpm = pulseBpm || 46, pulsePhase = 0, pulseCol = 0;
+  /* declared up-front; section 9 assigns them when the pill exists */
+  var pulsePhase = 0, pulseCol = 0;
   function ecgY(p) {
     /* one heartbeat, p in 0..1 -> deflection -1..1 */
     if (p < 0.10) return Math.sin(p / 0.10 * Math.PI) * 0.14;          /* P */
@@ -805,20 +872,26 @@ document.addEventListener('click', e => {
     var t = now.getHours() * 60 + now.getMinutes();
     return t >= o[0] && t < o[1];
   }
+  var lastTod = '';
   function paintGymState() {
+    if (document.hidden) return;
     var open = gymOpenNow();
     root.classList.toggle('gym-open', open);
     root.classList.toggle('gym-shut', !open);
+    /* time of day follows the clock, not just the first paint */
+    var h = new Date().getHours();
+    var tod = h < 8 ? 'dawn' : h < 16 ? 'day' : h < 20 ? 'dusk' : 'night';
+    if (tod !== lastTod) {
+      if (lastTod) root.classList.remove('tod-' + lastTod);
+      root.classList.add('tod-' + tod);
+      lastTod = tod;
+    }
   }
   paintGymState();
   setInterval(paintGymState, 60000);
-
-  /* ---------- 10. time of day ---------- */
-  (function () {
-    var h = new Date().getHours();
-    var tod = h < 8 ? 'dawn' : h < 16 ? 'day' : h < 20 ? 'dusk' : 'night';
-    root.classList.add('tod-' + tod);
-  })();
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) paintGymState();
+  });
 
   /* ---------- 11. sound layer (opt in) ---------- */
   var ctx = null, master = null, on = false, lastTick = 0;
@@ -946,6 +1019,8 @@ document.addEventListener('click', e => {
 
   document.addEventListener('pointerdown', function (e) {
     if (e.button && e.button !== 0) return;
+    /* touch scrolling must not shake the page — desktop pointers only */
+    if (!FINE || e.pointerType === 'touch') return;
     shockwave(e.clientX, e.clientY);
     var interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, summary, label, .tab-btn');
     if (!interactive) { jolt(); thump(0.32); }
@@ -999,10 +1074,11 @@ document.addEventListener('click', e => {
       bio.observe(bagZone);
     } else { bagState.active = true; }
 
-    function bagHit(strength, dir) {
+    function bagHit(strength, dir, auto) {
       bagState.w += dir * strength;
       if (bagState.w > 5.2) bagState.w = 5.2;
       if (bagState.w < -5.2) bagState.w = -5.2;
+      if (auto) return; /* the gym's own nudge: no score, no sound, no prize */
       hits++;
       try { sessionStorage.uffBagHits = String(hits); } catch (e) {}
       if (bagHitsEl) {
@@ -1041,6 +1117,9 @@ document.addEventListener('click', e => {
       var vx = (e.clientX - bagState.px) / Math.max(40, dt);   /* px per ms */
       if (Math.abs(vx) > 0.25) bagState.w += Math.max(-4, Math.min(4, vx * 2.4));
     }, { passive: true });
+    /* a vertical swipe that starts on the bag cancels the pointer — don't
+       let the next unrelated tap inherit stale drag state */
+    addEventListener('pointercancel', function () { bagState.dragging = false; }, { passive: true });
 
     /* if you stop moving, the gym doesn't — the bag takes a hit on its own */
     var idleAt = performance.now();
@@ -1053,7 +1132,7 @@ document.addEventListener('click', e => {
       if (performance.now() - idleAt < pokeIn) return;
       var r = bagArena.getBoundingClientRect();
       if (r.bottom < 0 || r.top > innerHeight) return;
-      bagHit(0.55 + Math.random() * 0.5, Math.random() < 0.5 ? -1 : 1);
+      bagHit(0.55 + Math.random() * 0.5, Math.random() < 0.5 ? -1 : 1, true);
       idleAt = performance.now();
       pokeIn = 34000 + Math.random() * 20000;
     }, 4000);
@@ -1118,15 +1197,24 @@ document.addEventListener('click', e => {
       setTimeout(function () { fm.remove(); fmBusy = false; }, 600);
     });
   }
-  /* trigger 1: three quick hits on the logo */
+  /* trigger 1: three quick hits on the logo. The logo owns its own navigation:
+     every tap is held for 650ms so a triple-tap (works on touch too) can win;
+     a lone tap still goes home, just a beat later. */
   var logoEl = document.querySelector('.site-header .logo');
   if (logoEl) {
-    var logoTaps = 0, logoAt = 0;
+    var logoTaps = 0, logoAt = 0, logoNav = null;
     logoEl.addEventListener('click', function (e) {
+      e.preventDefault();
       var now = performance.now();
       logoTaps = (now - logoAt < 900) ? logoTaps + 1 : 1;
       logoAt = now;
-      if (logoTaps >= 3) { logoTaps = 0; e.preventDefault(); e.stopPropagation(); fightMode(); }
+      if (logoNav) clearTimeout(logoNav);
+      if (logoTaps >= 3) { logoTaps = 0; fightMode(); return; }
+      var href = logoEl.getAttribute('href');
+      logoNav = setTimeout(function () {
+        if (window.__uffWipe) window.__uffWipe(href);
+        else window.location.href = href;
+      }, 650);
     });
   }
   /* trigger 2: type OSS */
