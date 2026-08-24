@@ -417,7 +417,11 @@ document.addEventListener('click', e => {
         raf = requestAnimationFrame(frame);
       } else {
         raf = null;
-        if (!active) { el.style.transform = ''; if (inner) inner.style.transform = ''; }
+        if (!active) {
+          el.style.transform = ''; if (inner) inner.style.transform = '';
+          /* restore whatever transitions the element normally has (.reveal etc.) */
+          el.style.transitionProperty = '';
+        }
       }
     }
     el.addEventListener('pointermove', function (e) {
@@ -426,6 +430,9 @@ document.addEventListener('click', e => {
       tY = (e.clientY - r.top) / r.height - 0.5;
       el.style.setProperty('--mx', ((tX + 0.5) * 100).toFixed(1) + '%');
       el.style.setProperty('--my', ((tY + 0.5) * 100).toFixed(1) + '%');
+      /* while tilting, a lingering transform transition (from .reveal) would
+         retarget every frame and fight the lerp — park it until we rest */
+      if (!active) el.style.transitionProperty = 'opacity, box-shadow, filter';
       active = true;
       if (!raf) raf = requestAnimationFrame(frame);
     }, { passive: true });
@@ -464,13 +471,18 @@ document.addEventListener('click', e => {
       d = Math.abs(r.top + r.height / 2 - mid);
       if (d < bestD) { bestD = d; best = focusTiles[i]; }
     }
-    if (best !== focused && bestD < innerHeight * 0.46) {
-      if (focused) focused.classList.remove('focus');
-      focused = best;
-      if (focused) focused.classList.add('focus');
-    } else if (best !== focused && focused) {
-      focused.classList.remove('focus'); focused = null;
-    }
+    /* return the change instead of applying it here — the caller applies it
+       after the frame's other rect reads, so the toggle can't force a relayout
+       mid-read */
+    if (best !== focused && bestD < innerHeight * 0.46) return best;
+    if (best !== focused && focused) return null;
+    return focused;
+  }
+  function applyFocus(next) {
+    if (next === focused) return;
+    if (focused) focused.classList.remove('focus');
+    focused = next;
+    if (focused) focused.classList.add('focus');
   }
 
   /* ---------- 5. header + deep layers ---------- */
@@ -537,8 +549,10 @@ document.addEventListener('click', e => {
     S.vel += (S.rawVel - S.vel) * 0.14;
     S.rawVel *= 0.86;
 
-    /* all rect READS first (focusPass), then the frame's writes below */
-    if (focusTiles.length) focusPass();
+    /* all rect READS first (focusPass), then the frame's writes below;
+       the class toggle itself is applied at the end of the frame */
+    var focusNext;
+    if (focusTiles.length) focusNext = focusPass();
 
     /* hero camera: slow breath + pointer look + scroll dolly.
        The room and the words move against each other, so the hero
@@ -600,6 +614,7 @@ document.addEventListener('click', e => {
 
     bagStep(dt);
     pulseStep(dt);
+    if (focusNext !== undefined) applyFocus(focusNext);
 
     /* spotlight — only written when the pointer actually moved */
     if (spot && (S.mx !== lastMx || S.my !== lastMy)) {
