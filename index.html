@@ -1,0 +1,2552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ultimate Fight Fitness &mdash; Muay Thai, BJJ &amp; S&amp;C in Bishop's Stortford</title>
+<meta name="description" content="Ultimate Fight Fitness is a Muay Thai, BJJ and strength &amp; conditioning gym in Bishop's Stortford with over 35 classes per week across two floors. First session free.">
+<link rel="icon" type="image/png" href="assets/img01.png">
+<meta property="og:title" content="Ultimate Fight Fitness">
+<meta property="og:description" content="Muay Thai, BJJ and S&amp;C in Bishop's Stortford. Over 35 classes per week. First session free.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.ultimatefightfitness.co.uk/">
+</head>
+<body>
+<script>window.UFF_PREVIEW = true; try { if (sessionStorage.uffSeen) document.documentElement.classList.add('no-loader'); } catch (e) {}</script>
+<style>
+/* =========================================================
+   Ultimate Fight Fitness — main stylesheet
+   ========================================================= */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/font01.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/font01.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/font01.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/font02.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/font02.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/font02.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #313131;           /* matches the logo grey */
+  --bg-2: #2a2a2b;
+  --card: #3a3a3b;
+  --line: #4a4a4c;
+  --text: #f5f5f5;
+  --muted: #c0c0c4;
+  --red: #c4202a;          /* logo red */
+  --red-dark: #9d1a21;
+  --radius: 14px;
+  --head: "Oswald", "Arial Narrow", sans-serif;
+  --body: "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16.5px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 22px; }
+
+/* ---------- typography ---------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--head);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  line-height: 1.12;
+  font-weight: 700;
+}
+
+.display {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  letter-spacing: .01em;
+}
+
+h2.section-title { font-size: clamp(1.7rem, 3.6vw, 2.6rem); margin-bottom: .5rem; }
+
+.kicker {
+  font-family: var(--head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .28em;
+  font-size: .82rem;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.kicker::before { content: ""; width: 34px; height: 2px; background: var(--red); }
+
+p.lead { font-size: 1.12rem; color: var(--text); }
+.muted { color: var(--muted); }
+
+/* ---------- header ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(43, 43, 44, .92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 72px;
+}
+
+.logo { display: inline-flex; align-items: center; padding: 8px 0; }
+.logo img { height: 42px; width: auto; }
+.footer-logo img { height: 52px; width: auto; margin-bottom: 16px; }
+
+.nav-links { display: flex; align-items: center; gap: 26px; list-style: none; }
+.nav-links a {
+  font-family: var(--head);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .86rem;
+  color: var(--text);
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.nav-links a:hover { color: var(--red); }
+.nav-links a.active { color: #fff; border-color: var(--red); }
+
+.nav-cta { margin-left: 4px; }
+
+.burger {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 44px;
+  height: 40px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.burger span { width: 20px; height: 2px; background: #fff; transition: transform .2s, opacity .2s; }
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 920px) {
+  .burger { display: flex; }
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: #2c2c2d;
+    border-bottom: 1px solid var(--line);
+    padding: 8px 22px 18px;
+    display: none;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { border-bottom: 1px solid var(--line); }
+  .nav-links li:last-child { border-bottom: 0; padding-top: 14px; }
+  .nav-links a { display: block; padding: 13px 0; font-size: 1rem; border-bottom: 0; }
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-block;
+  font-family: var(--head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .88rem;
+  padding: 13px 26px;
+  border-radius: 8px;
+  background: var(--red);
+  color: #fff;
+  border: 1px solid var(--red);
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.btn:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+.btn-ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, .35);
+}
+.btn-ghost:hover { background: rgba(255, 255, 255, .08); border-color: #fff; }
+
+.btn-sm { padding: 9px 18px; font-size: .78rem; }
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 88vh;
+  display: flex;
+  align-items: flex-end;
+  isolation: isolate;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+}
+.hero .hero-bg { background-image: url(assets/img01.jpg); }
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(41,41,42,.45) 0%, rgba(41,41,42,.55) 45%, rgba(49,49,49,.97) 100%);
+}
+.hero-inner { padding-top: 120px; padding-bottom: 72px; width: 100%; }
+.hero .display .accent { color: var(--red); }
+.hero-sub {
+  max-width: 620px;
+  margin: 18px 0 30px;
+  font-size: 1.12rem;
+  color: #d8d8de;
+}
+.hero-sub strong { color: #fff; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+
+.page-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 96px 0 64px;
+}
+.page-hero .hero-bg::after {
+  background: linear-gradient(180deg, rgba(41,41,42,.74) 0%, rgba(49,49,49,.98) 100%);
+}
+
+/* ---------- sections ---------- */
+
+.section { padding: 84px 0; }
+.section.alt { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.section-head { max-width: 760px; margin-bottom: 42px; }
+
+.split {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 54px;
+  align-items: center;
+}
+@media (max-width: 880px) { .split { grid-template-columns: 1fr; gap: 30px; } }
+
+.split .photo { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+.split .photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- class tiles ---------- */
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 920px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .tile-grid { grid-template-columns: 1fr; } }
+
+.tile {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--line);
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+}
+.tile img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(41,41,42,.05) 30%, rgba(41,41,42,.9) 100%);
+}
+.tile:hover img { transform: scale(1.05); }
+.tile-label { padding: 18px 20px; }
+.tile-label h3 { font-size: 1.25rem; }
+.tile-label span {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: var(--head);
+  font-weight: 500;
+  font-size: .74rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+/* ---------- feature cards (community / motivation / results) ---------- */
+
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 880px) { .card-grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px 28px;
+}
+.card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--red);
+  display: inline-block;
+}
+.card p { color: var(--muted); font-size: .98rem; }
+.card p + p { margin-top: 12px; }
+
+/* ---------- gallery ---------- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 720px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+.gallery a, .gallery figure {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  aspect-ratio: 4 / 3;
+}
+.gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s; }
+.gallery a:hover img, .gallery figure:hover img { transform: scale(1.04); }
+
+/* ---------- coaches ---------- */
+
+.coach {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 44px;
+  align-items: start;
+  padding: 54px 0;
+  border-top: 1px solid var(--line);
+}
+.coach:first-of-type { border-top: 0; }
+@media (max-width: 880px) { .coach { grid-template-columns: 1fr; gap: 26px; } }
+
+.coach-media { display: grid; gap: 12px; }
+.coach-media .main {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.coach-media .main img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; }
+.coach-media .thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.coach-media .thumbs img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+.coach h3 { font-size: 1.9rem; }
+.coach .role {
+  font-family: var(--head);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-size: .84rem;
+  color: var(--red);
+  margin: 6px 0 18px;
+}
+.coach p { color: var(--muted); }
+.coach p + p { margin-top: 14px; }
+.coach .btn { margin-top: 22px; }
+
+/* ---------- timetables ---------- */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 8px 0 36px;
+}
+.tab-btn {
+  font-family: var(--head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .85rem;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.tab-btn:hover { border-color: var(--red); }
+.tab-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.day {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.day h4 {
+  background: #2e2e2f;
+  border-bottom: 2px solid var(--red);
+  padding: 13px 18px;
+  font-size: 1.02rem;
+  letter-spacing: .1em;
+}
+.day ul { list-style: none; padding: 8px 0; }
+.day li {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  padding: 10px 18px;
+  border-top: 1px solid var(--line);
+  font-size: .95rem;
+}
+.day li:first-child { border-top: 0; }
+.day .t {
+  font-family: var(--head);
+  font-weight: 600;
+  color: var(--red);
+  min-width: 62px;
+  letter-spacing: .04em;
+}
+.day .c { color: var(--text); }
+.day .c small { display: block; color: var(--muted); }
+.day .tag {
+  display: inline-block;
+  font-style: normal;
+  font-family: var(--head);
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  padding: 1px 8px;
+  margin-left: 6px;
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+
+.note {
+  margin-top: 30px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--red);
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+/* ---------- memberships ---------- */
+
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 980px) { .price-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .price-grid { grid-template-columns: 1fr; } }
+
+.plan {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px 26px;
+  display: flex;
+  flex-direction: column;
+}
+.plan.featured { border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+.plan .flag {
+  position: absolute;
+  top: -12px;
+  right: 18px;
+  background: var(--red);
+  font-family: var(--head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .68rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+.plan h3 { font-size: 1.12rem; min-height: 2.4em; }
+.plan .price {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: #fff;
+  margin: 10px 0 2px;
+}
+.plan .price small {
+  font-size: .95rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: .06em;
+}
+.plan .desc { color: var(--muted); font-size: .95rem; margin: 10px 0 14px; }
+.plan ul { list-style: none; margin: 0 0 22px; }
+.plan li {
+  position: relative;
+  padding: 6px 0 6px 26px;
+  color: var(--text);
+  font-size: .93rem;
+}
+.plan li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 14px;
+  height: 8px;
+  border-left: 2px solid var(--red);
+  border-bottom: 2px solid var(--red);
+  transform: rotate(-45deg);
+}
+.plan li.ex { color: var(--muted); }
+.plan li.ex::before {
+  border: 0;
+  width: 12px;
+  height: 0;
+  border-bottom: 2px solid var(--muted);
+  transform: none;
+  top: 16px;
+}
+.plan .btn { margin-top: auto; text-align: center; }
+
+/* ---------- instagram / cta band ---------- */
+
+.band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 84px 0;
+  text-align: center;
+}
+.band .hero-bg::after { background: rgba(43, 43, 44, .86); }
+.band h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); }
+.band p { color: #d8d8de; max-width: 560px; margin: 12px auto 26px; }
+
+/* ---------- contact ---------- */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 54px;
+  align-items: start;
+}
+@media (max-width: 880px) { .contact-grid { grid-template-columns: 1fr; } }
+
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-family: var(--head);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .74rem;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.field input, .field textarea {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 1rem;
+  padding: 13px 14px;
+}
+.field input:focus, .field textarea:focus { outline: 2px solid var(--red); outline-offset: 0; border-color: var(--red); }
+.field textarea { min-height: 130px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+.info-block { margin-bottom: 26px; }
+.info-block h3 {
+  font-size: 1.05rem;
+  letter-spacing: .14em;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.info-block p { color: var(--muted); }
+.info-block a.link { color: var(--red); font-weight: 600; }
+
+/* ---------- policies ---------- */
+
+.prose { max-width: 820px; }
+.prose h2 { font-size: 1.5rem; margin: 40px 0 12px; }
+.prose h3 { font-size: 1.12rem; margin: 26px 0 8px; }
+.prose p { color: var(--muted); margin-bottom: 14px; }
+.prose ul { margin: 0 0 16px 22px; color: var(--muted); }
+.prose li { margin-bottom: 5px; }
+.prose strong { color: var(--text); }
+
+/* ---------- footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: #2b2b2c;
+  padding: 64px 0 0;
+  margin-top: 0;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 44px;
+}
+@media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr; gap: 28px; } }
+
+.site-footer h3 {
+  font-size: .95rem;
+  letter-spacing: .2em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.site-footer p, .site-footer address { color: var(--muted); font-style: normal; font-size: .95rem; }
+.site-footer a:hover { color: var(--red); }
+.site-footer .link { color: var(--red); font-weight: 600; }
+
+.footer-bottom {
+  border-top: 1px solid var(--line);
+  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: .86rem;
+}
+.footer-bottom nav { display: flex; gap: 20px; align-items: center; }
+
+.ig {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.ig svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* ---------- announcement bar ---------- */
+
+.announce {
+  display: block;
+  background: var(--red);
+  color: #fff;
+  text-align: center;
+  padding: 9px 16px;
+  font-family: var(--head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .76rem;
+  transition: background .15s;
+}
+.announce:hover { background: var(--red-dark); }
+
+/* ---------- Founding 50 ---------- */
+
+.founding {
+  background: var(--card);
+  border: 1px solid var(--red);
+  box-shadow: 0 0 0 1px var(--red);
+  border-radius: var(--radius);
+  padding: 38px 36px 30px;
+}
+.founding-head {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 880px) { .founding-head { grid-template-columns: 1fr; gap: 26px; } }
+
+.founding-terms { list-style: none; margin-top: 18px; }
+.founding-terms li {
+  position: relative;
+  padding: 5px 0 5px 26px;
+  color: var(--text);
+  font-size: .95rem;
+}
+.founding-terms li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 14px;
+  height: 8px;
+  border-left: 2px solid var(--red);
+  border-bottom: 2px solid var(--red);
+  transform: rotate(-45deg);
+}
+
+.founding-prices { display: grid; gap: 16px; }
+.fprice {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 24px;
+}
+.fprice h3 { font-size: 1.05rem; letter-spacing: .08em; }
+.fprice .price {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: 2.1rem;
+  color: #fff;
+  margin: 6px 0 2px;
+}
+.fprice .price small { font-size: .85rem; font-weight: 500; color: var(--muted); letter-spacing: .05em; }
+.fprice p { font-size: .88rem; margin-bottom: 14px; }
+
+.spots { margin-top: 30px; }
+.spots-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.spots-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  border-radius: 999px;
+}
+.spots p {
+  margin-top: 10px;
+  font-family: var(--head);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .82rem;
+  color: var(--muted);
+}
+.spots strong { color: #fff; font-size: 1rem; }
+
+html, body { overflow-x: hidden; }
+
+/* ---------- page load / transitions ---------- */
+
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+body { animation: pageIn .45s ease both; }
+body.leaving { opacity: 0; transition: opacity .22s ease; }
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: var(--bg-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  transition: transform .65s cubic-bezier(.7, 0, .2, 1);
+}
+.loader img { height: 52px; width: auto; }
+.loader-bar {
+  width: 130px;
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+  border-radius: 2px;
+}
+.loader-bar::after {
+  content: "";
+  display: block;
+  height: 100%;
+  background: var(--red);
+  animation: loadfill .9s ease-out forwards;
+}
+@keyframes loadfill { from { width: 0; } to { width: 100%; } }
+.loader.done { transform: translateY(-101%); }
+html.no-loader .loader { display: none; }
+
+/* ---------- scroll progress ---------- */
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--red);
+  z-index: 350;
+  pointer-events: none;
+}
+
+/* ---------- custom cursor ---------- */
+
+#cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(255, 255, 255, .55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 500;
+  transform: translate(-50%, -50%);
+  transition: width .22s, height .22s, border-color .22s, opacity .3s;
+  opacity: 0;
+}
+#cursor.on { opacity: 1; }
+#cursor.hot { width: 52px; height: 52px; border-color: var(--red); }
+@media (pointer: coarse) { #cursor { display: none; } }
+
+/* ---------- hero headline letters ---------- */
+
+.display .ch {
+  display: inline-block;
+  animation: chIn .55s cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(.25s + var(--i) * .035s);
+  white-space: pre;
+}
+@keyframes chIn {
+  from { opacity: 0; transform: translateY(.55em) rotate(4deg); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- hero grain ---------- */
+
+.hero .hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: .09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ---------- tilted marquee ---------- */
+
+.marquee { transform: rotate(-1.2deg) scale(1.04); }
+
+/* ---------- photo reveals ---------- */
+
+.split .photo.reveal img, .gallery figure.reveal img {
+  clip-path: inset(12% 12% 12% 12%);
+  transform: scale(1.12);
+  transition: clip-path .9s cubic-bezier(.2, .7, .2, 1), transform 1.1s cubic-bezier(.2, .7, .2, 1);
+}
+.split .photo.reveal.in img, .gallery figure.reveal.in img {
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+}
+.gallery figure.reveal:hover img { transform: scale(1.04); }
+
+/* ---------- footer wordmark ---------- */
+
+.site-footer { overflow: hidden; }
+.footer-word {
+  text-align: center;
+  font-family: var(--head);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: .9;
+  font-size: clamp(3rem, 10vw, 8.5rem);
+  letter-spacing: .01em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .1);
+  user-select: none;
+  pointer-events: none;
+  margin: -10px 0 34px;
+  white-space: nowrap;
+}
+.footer-word b { color: rgba(196, 32, 42, .28); -webkit-text-stroke: 0; font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  body, .display .ch, .loader-bar::after { animation: none; }
+  .loader { display: none; }
+  .split .photo.reveal img, .gallery figure.reveal img { clip-path: none; transform: none; transition: none; }
+  .marquee { transform: none; }
+  #cursor { display: none; }
+}
+
+/* ---------- skip link ---------- */
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 300;
+  background: var(--red);
+  color: #fff;
+  padding: 10px 18px;
+  font-family: var(--head);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .8rem;
+}
+.skip:focus { left: 0; }
+
+/* ---------- getting started steps ---------- */
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 880px) { .steps { grid-template-columns: 1fr; } }
+.step {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative;
+}
+.step b {
+  display: inline-block;
+  font-family: var(--head);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--red);
+  margin-bottom: 12px;
+}
+.step h3 { font-size: 1.15rem; margin-bottom: 8px; }
+.step p { color: var(--muted); font-size: .95rem; }
+
+/* ---------- FAQ ---------- */
+
+.faq { max-width: 820px; }
+.faq details {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 16px 20px;
+  font-family: var(--head);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+";
+  font-family: var(--head);
+  font-size: 1.3rem;
+  color: var(--red);
+  line-height: 1;
+  transition: transform .2s;
+}
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details[open] summary { border-bottom: 1px solid var(--line); }
+.faq details p { padding: 14px 20px 18px; color: var(--muted); font-size: .96rem; }
+
+/* ---------- hero motion ---------- */
+
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.07); } }
+.hero .hero-bg { animation: kenburns 16s ease-out forwards; transform-origin: 60% 40%; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+.hero .kicker  { animation: rise .7s .15s cubic-bezier(.2,.7,.2,1) both; }
+.hero .display { animation: rise .8s .3s  cubic-bezier(.2,.7,.2,1) both; }
+.hero-sub      { animation: rise .8s .5s  cubic-bezier(.2,.7,.2,1) both; }
+.hero-ctas     { animation: rise .8s .65s cubic-bezier(.2,.7,.2,1) both; }
+.hero-stats    { animation: rise .8s .8s  cubic-bezier(.2,.7,.2,1) both; }
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px 52px;
+  margin-top: 44px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+}
+.hero-stats b {
+  display: block;
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: 2.3rem;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.hero-stats b em { color: var(--red); font-style: normal; }
+.hero-stats span {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--head);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: .72rem;
+  color: var(--muted);
+}
+
+/* ---------- marquee ticker ---------- */
+
+.marquee {
+  overflow: hidden;
+  background: var(--bg-2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+}
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 46px;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee-track span {
+  font-family: var(--head);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 1.5rem;
+  color: #fff;
+  white-space: nowrap;
+}
+.marquee-track span.o {
+  color: #fff;
+}
+.marquee-track i {
+  font-style: normal;
+  color: var(--red);
+  font-size: 1rem;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ---------- ghost background words ---------- */
+
+.section, .band { position: relative; overflow: hidden; }
+.bg-word {
+  position: absolute;
+  top: 22px;
+  right: -8px;
+  z-index: 0;
+  font-family: var(--head);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: 1;
+  font-size: clamp(4rem, 11vw, 9.5rem);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .07);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+.section > .wrap, .band > .wrap { position: relative; z-index: 1; }
+
+/* ---------- micro-interactions ---------- */
+
+.tile::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s ease;
+  z-index: 1;
+}
+.tile:hover::before { transform: scaleX(1); }
+.tile-label span::after { content: " \2192"; opacity: 0; transition: opacity .2s; }
+.tile:hover .tile-label span::after { opacity: 1; }
+
+.coach-media .main { position: relative; }
+.coach-media .main img.alt {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+.coach-media .main:hover img.alt,
+.coach-media .main:focus-visible img.alt { opacity: 1; }
+
+.gallery img, .coach-media img, .split .photo img { cursor: zoom-in; }
+
+/* ---------- timetable "today" ---------- */
+
+.day.today { border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+.day.today h4 { display: flex; justify-content: space-between; align-items: center; }
+.day.today h4::after {
+  content: "Today";
+  font-size: .62rem;
+  letter-spacing: .14em;
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  padding: 1px 9px;
+}
+
+/* ---------- founding counter shimmer ---------- */
+
+@keyframes shimmer {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.4); }
+}
+.spots-fill { animation: shimmer 2.6s ease-in-out infinite; }
+
+/* ---------- lightbox ---------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(15, 15, 16, .94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  cursor: zoom-out;
+}
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, .6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-bg, .hero .kicker, .hero .display, .hero-sub, .hero-ctas,
+  .hero-stats, .marquee-track, .spots-fill { animation: none; }
+}
+
+/* ---------- phone-size tuning ---------- */
+
+@media (max-width: 640px) {
+  .hero { min-height: 100svh; }
+  .hero .hero-bg {
+    background-image: url(assets/img02.jpg);
+    background-position: center 30%;
+  }
+  .hero-inner { padding-top: 92px; padding-bottom: 40px; }
+  .hero .kicker { font-size: .66rem; letter-spacing: .18em; gap: 10px; }
+  .hero .kicker::before { width: 22px; }
+  .display { font-size: clamp(2.5rem, 12.5vw, 3.4rem); }
+  .hero-sub { font-size: 1rem; margin: 14px 0 22px; }
+  .hero-ctas .btn { padding: 12px 20px; font-size: .8rem; }
+  .hero-stats {
+    gap: 18px 26px;
+    margin-top: 28px;
+    padding-top: 18px;
+  }
+  .hero-stats b { font-size: 1.65rem; }
+  .hero-stats span { font-size: .6rem; letter-spacing: .14em; margin-top: 4px; }
+
+  .announce { font-size: .6rem; letter-spacing: .08em; padding: 7px 12px; }
+  .section { padding: 58px 0; }
+  .section-head { margin-bottom: 30px; }
+  h2.section-title { font-size: 1.65rem; }
+  .kicker { font-size: .72rem; letter-spacing: .2em; }
+  .bg-word { font-size: 17vw; top: 14px; }
+
+  .marquee { padding: 12px 0; }
+  .marquee-track { gap: 30px; }
+  .marquee-track span { font-size: 1.05rem; }
+  .marquee-track i { font-size: .8rem; }
+
+  .page-hero { padding: 70px 0 44px; }
+  .coach { padding: 40px 0; }
+  .coach h3 { font-size: 1.5rem; }
+  .founding { padding: 26px 20px 22px; }
+  .fprice .price { font-size: 1.8rem; }
+  .plan .price { font-size: 2.1rem; }
+  .footer-word { font-size: 13vw; margin: -4px 0 24px; }
+  .site-footer { padding-top: 44px; }
+  .steps .step, .card { padding: 22px 20px; }
+}
+
+/* ---------- reveal animation ---------- */
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+/* build 7ca5f01 */
+
+[hidden] { display: none !important; }
+.preview-note { position: fixed; bottom: 14px; right: 14px; z-index: 99; background: rgba(43,43,44,.94); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; font-size: .74rem; color: var(--muted); letter-spacing: .06em; }
+</style>
+<div class="loader" aria-hidden="true"><img src="assets/img01.png" alt=""><span class="loader-bar"></span></div>
+<div id="progress" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"></div>
+<header class="site-header">
+    <a class="announce" href="memberships.html">The Founding 50 is open &mdash; lock your first year from &pound;79.99/month &rarr;</a>
+    <div class="wrap nav">
+      <a class="logo" href="index.html" aria-label="Ultimate Fight Fitness — home">
+        <img src="assets/img01.png" alt="Ultimate Fight Fitness">
+      </a>
+      <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="classes.html">Classes</a></li>
+        <li><a href="timetables.html">Timetables</a></li>
+        <li><a href="memberships.html">Memberships</a></li>
+        <li><a class="btn btn-sm nav-cta" href="memberships.html">Join Now</a></li>
+      </ul>
+    </div>
+  </header>
+<div class="route" data-page="index" >
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="wrap hero-inner">
+      <p class="kicker">Bishop Stortford &middot; BJJ &middot; Muay Thai &middot; Strength &amp; Conditioning</p>
+      <h1 class="display"><span class="ch" style="--i:0">T</span><span class="ch" style="--i:1">r</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">i</span><span class="ch" style="--i:4">n</span><span class="ch" style="--i:5">.</span><span class="ch" style="--i:6"> </span><span class="ch" style="--i:7">F</span><span class="ch" style="--i:8">i</span><span class="ch" style="--i:9">g</span><span class="ch" style="--i:10">h</span><span class="ch" style="--i:11">t</span><span class="ch" style="--i:12">.</span><br><span class="accent"><span class="ch" style="--i:13">B</span><span class="ch" style="--i:14">e</span><span class="ch" style="--i:15"> </span><span class="ch" style="--i:16">U</span><span class="ch" style="--i:17">l</span><span class="ch" style="--i:18">t</span><span class="ch" style="--i:19">i</span><span class="ch" style="--i:20">m</span><span class="ch" style="--i:21">a</span><span class="ch" style="--i:22">t</span><span class="ch" style="--i:23">e</span><span class="ch" style="--i:24">.</span></span></h1>
+      <p class="hero-sub"><strong>With over 35 classes per week</strong> there&rsquo;s always something to fit your schedule, your goals and your training style&hellip; and your first session&rsquo;s free.</p>
+      <div class="hero-ctas">
+        <a class="btn" href="classes.html">Our Classes</a>
+        <a class="btn btn-ghost" href="memberships.html">Join Now</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b><em data-count="35">35</em>+</b><span>Classes a week</span></div>
+        <div class="stat"><b data-count="3">3</b><span>Disciplines</span></div>
+        <div class="stat"><b data-count="2">2</b><span>Floors of training</span></div>
+        <div class="stat"><b>&pound;0</b><span>First session</span></div>
+      </div>
+    </div>
+  </section>
+<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Brazilian Jiu Jitsu</span><i>&#9679;</i><span class="o">Muay Thai</span><i>&#9679;</i><span>Strength &amp; Conditioning</span><i>&#9679;</i><span class="o">Train. Fight. Be Ultimate.</span><i>&#9679;</i><span>Brazilian Jiu Jitsu</span><i>&#9679;</i><span class="o">Muay Thai</span><i>&#9679;</i><span>Strength &amp; Conditioning</span><i>&#9679;</i><span class="o">Train. Fight. Be Ultimate.</span><i>&#9679;</i></div></div>
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="reveal">
+        <p class="kicker">Welcome to UFF</p>
+        <h2 class="section-title">Built on hard work<br>and high standards</h2>
+        <p class="lead" style="margin-top:14px">Ultimate Fight Fitness is dedicated to developing strength, discipline, and confidence through high-level fight training. We offer expert coaching in BJJ, Muay Thai and Strength and Conditioning, helping members improve their technique, fitness, and mental toughness in a supportive and motivating environment.</p>
+        <p class="muted" style="margin-top:14px">Whether you&rsquo;re a beginner looking to learn self-defence or an experienced fighter preparing for competition, our training programs are designed to push your limits and help you achieve your goals.</p>
+        <p class="muted" style="margin-top:14px">At our gym, we believe that fighting is not just about physical ability &mdash; it&rsquo;s about building character, resilience, and a winning mindset. We take pride in creating a community where members encourage and challenge one another to grow both inside and outside the training area.</p>
+        <a class="btn" style="margin-top:26px" href="about.html">Find Out More</a>
+      </div>
+      <div class="photo reveal"><img src="assets/img03.jpg" alt="Brazilian Jiu-Jitsu class training on the blue mats at Ultimate Fight Fitness"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Getting started</p>
+        <h2 class="section-title">Your first session, sorted</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <b>1</b>
+          <h3>Book your free session</h3>
+          <p><a class="link" style="color:var(--red);font-weight:600" href="mailto:info@ultimatefightfitness.co.uk?subject=Free%20first%20session">Drop us a message</a>, DM us on Instagram, or just walk in. Tell us which class you fancy &mdash; any class, any discipline.</p>
+        </div>
+        <div class="step reveal">
+          <b>2</b>
+          <h3>Turn up 15 minutes early</h3>
+          <p>Comfortable sportswear and a water bottle is all you need. We&rsquo;ll show you around, introduce you to your coach and get you settled.</p>
+        </div>
+        <div class="step reveal">
+          <b>3</b>
+          <h3>Train</h3>
+          <p>Your first session is completely free &mdash; no card, no commitment. If you love it, pick a plan and we&rsquo;ll see you on the mats.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Our classes</p>
+    <span class="bg-word" aria-hidden="true">Classes</span>
+        <h2 class="section-title">With over 35 classes per week</h2>
+        <p class="muted">There&rsquo;s always something to fit your schedule, your goals and your training style&hellip;</p>
+      </div>
+      <div class="tile-grid">
+        <a class="tile reveal" href="classes.html#bjj">
+          <img src="assets/img04.jpg" alt="No-gi Brazilian Jiu-Jitsu training" loading="lazy">
+          <div class="tile-label"><h3>Brazilian Jiu Jitsu</h3><span>Gi &amp; No-Gi</span></div>
+        </a>
+        <a class="tile reveal" href="classes.html#muaythai">
+          <img src="assets/img05.jpg" alt="Muay Thai pad work" loading="lazy">
+          <div class="tile-label"><h3>Muay Thai</h3><span>All levels</span></div>
+        </a>
+        <a class="tile reveal" href="classes.html#kids">
+          <img src="assets/img06.jpg" alt="The upstairs matted training area" loading="lazy">
+          <div class="tile-label"><h3>Kids Classes</h3><span>BJJ &amp; Muay Thai</span></div>
+        </a>
+        <a class="tile reveal" href="classes.html#hybrid">
+          <img src="assets/img07.jpg" alt="Kettlebells lined up in the strength and conditioning area" loading="lazy">
+          <div class="tile-label"><h3>Hybrid</h3><span>S &amp; C</span></div>
+        </a>
+        <a class="tile reveal" href="classes.html#sweat">
+          <img src="assets/img02.jpg" alt="TUF-WEAR punch bags" style="object-position:center 72%">
+          <div class="tile-label"><h3>Sweat</h3><span>S &amp; C</span></div>
+        </a>
+        <a class="tile reveal" href="classes.html#sgpt">
+          <img src="assets/img08.jpg" alt="Small group training at Ultimate Fight Fitness" style="object-position:center 60%">
+          <div class="tile-label"><h3>Small Group PT</h3><span>S &amp; C</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Why train with us</p>
+    <span class="bg-word" aria-hidden="true">Community</span>
+        <h2 class="section-title">More than just a gym</h2>
+      </div>
+      <div class="card-grid">
+        <div class="card reveal">
+          <h3>Community</h3>
+          <p>At Ultimate Fight Fitness, we&rsquo;re more than just a gym &mdash; we&rsquo;re a community. From the moment you walk through our doors, you&rsquo;ll be made to feel comfortable, welcomed, and supported. We pride ourselves on creating an environment where everyone feels at home, regardless of their age, fitness level, or experience.</p>
+          <p>Whether you&rsquo;re stepping onto the mats for the very first time, looking to improve your fitness, or training to compete, our coaches and members are here to encourage you every step of the way. We believe the strongest communities are built by lifting each other up.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Motivation</h3>
+          <p>Staying motivated is easier when you&rsquo;re surrounded by people who genuinely want to see you succeed. Whether you&rsquo;re working towards weight loss, building confidence, improving your fitness, or mastering new skills, we&rsquo;ll help you stay focused and motivated.</p>
+          <p>Every session is designed to push you at your own pace, celebrate your progress, and remind you that every small step brings you closer to your goals. Together, we&rsquo;ll help you build not only physical strength but the confidence and determination to keep moving forward.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Results</h3>
+          <p>We&rsquo;re committed to helping you achieve real, lasting results. Our experienced trainers take the time to understand your goals and provide the guidance, support, and encouragement you need to reach them.</p>
+          <p>Our goal is not just to help you reach your targets, but to give you the knowledge, confidence, and habits to maintain your results long into the future. At Ultimate Fight Fitness, your success is our success.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="hero-bg" style="background-image:url('assets/img09.jpg')"></div>
+    <div class="wrap">
+      <p class="kicker" style="justify-content:center">Follow the gym</p>
+      <h2>Join us on Instagram</h2>
+      <p>Stay connected and up to date with all the latest gym information.</p>
+      <a class="btn" href="https://www.instagram.com/ultimatefight_fitness?igsh=MXU5cmJwamQxdzNlcQ==" target="_blank" rel="noopener">@ultimatefight_fitness</a>
+    </div>
+  </section>
+
+<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Brazilian Jiu Jitsu</span><i>&#9679;</i><span class="o">Muay Thai</span><i>&#9679;</i><span>Strength &amp; Conditioning</span><i>&#9679;</i><span class="o">Train. Fight. Be Ultimate.</span><i>&#9679;</i><span>Brazilian Jiu Jitsu</span><i>&#9679;</i><span class="o">Muay Thai</span><i>&#9679;</i><span>Strength &amp; Conditioning</span><i>&#9679;</i><span class="o">Train. Fight. Be Ultimate.</span><i>&#9679;</i></div></div>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Get in touch</p>
+        <h2 class="section-title">Looking to sign up? Drop us a message</h2>
+        <p class="muted">A member of our team will get straight back to you&hellip;</p>
+      </div>
+      <div class="contact-grid">
+        <form id="contact-form" class="reveal">
+          <div class="form-row">
+            <div class="field"><label for="cf-first">First name *</label><input id="cf-first" name="first" required autocomplete="given-name"></div>
+            <div class="field"><label for="cf-last">Last name *</label><input id="cf-last" name="last" required autocomplete="family-name"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="cf-email">Email *</label><input id="cf-email" name="email" type="email" required autocomplete="email"></div>
+            <div class="field"><label for="cf-phone">Phone</label><input id="cf-phone" name="phone" type="tel" autocomplete="tel"></div>
+          </div>
+          <div class="field"><label for="cf-msg">Message</label><textarea id="cf-msg" name="message" placeholder="Type your message here..."></textarea></div>
+          <button class="btn" type="submit">Send Message</button>
+          <p class="muted" style="margin-top:12px;font-size:.85rem">This opens your email app with the message ready to send.</p>
+        </form>
+        <div class="reveal">
+          <div class="info-block">
+            <h3>Visit us</h3>
+            <p>Ultimate Fight Fitness<br>Unit 7 Twyford Road<br>Bishop Stortford<br>CM23 3LJ</p>
+            <p style="margin-top:8px"><a class="link" href="https://www.google.com/maps/search/?api=1&query=Ultimate+Fight+Fitness%2C+Unit+7+Twyford+Road%2C+Bishop+Stortford+CM23+3LJ" target="_blank" rel="noopener">Get directions&nbsp;&rarr;</a></p>
+          </div>
+          <div class="info-block">
+            <h3>Contact</h3>
+            <p>Email: <a class="link" href="mailto:info@ultimatefightfitness.co.uk">info@ultimatefightfitness.co.uk</a></p>
+            <p>We are pleased to offer on-site parking for the convenience of our members and visitors.</p>
+          </div>
+          <div class="info-block">
+            <h3>Open times</h3>
+            <p>Mon &ndash; Fri: 6am &ndash; 8pm<br>Saturday: 10am &ndash; 2pm<br>Sunday: 12pm &ndash; 2pm</p><p style="margin-top:8px">The gym is open for off-peak training throughout our opening hours &mdash; included with The Ultimate.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div><div class="route" data-page="about" hidden>
+
+  <section class="page-hero">
+    <div class="hero-bg" style="background-image:url('assets/img06.jpg')"></div>
+    <div class="wrap">
+      <p class="kicker">About us</p>
+      <h1 class="display" style="font-size:clamp(2.4rem,5.5vw,3.8rem)">Train. Fight.<br><span style="color:var(--red)">Be Ultimate.</span></h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="reveal">
+        <p class="kicker">Team UFF</p>
+        <h2 class="section-title">Hard work. High standards.</h2>
+        <p class="lead" style="margin-top:14px">Ultimate Fight Fitness is a gym based in Bishop Stortford. We are built on hard work and high standards. We coach Muay Thai, BJJ, Fitness and Strength &amp; Conditioning &mdash; train at a high level or just for leisure, the choice is yours.</p>
+        <p class="muted" style="margin-top:14px">Every session is run by experienced coaches who care about getting you better. Technique, fitness, mental toughness &mdash; it all gets worked. Complete beginner or competing fighter, you&rsquo;ll be pushed properly and supported the whole way.</p>
+        <p class="muted" style="margin-top:14px">What we&rsquo;re really building here is character. Resilience, discipline, and a community that trains hard together and backs each other &mdash; inside the gym and out.</p>
+        <p class="lead" style="margin-top:14px"><strong>First session&rsquo;s free. We look forward to meeting you.</strong><br>TEAM UFF.</p>
+      </div>
+      <div class="photo reveal"><img src="assets/img09.jpg" alt="The Muay Thai squad after a session at Ultimate Fight Fitness"></div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Our space</p>
+    <span class="bg-word" aria-hidden="true">The Gym</span>
+        <h2 class="section-title">Two floors of training</h2>
+        <p class="muted">Ultimate Fight Fitness features a fully equipped strength and conditioning area with a wide range of free weights, kettlebells, and functional training equipment to support your fitness goals. We also have a spacious matted training area and a selection of punch bags, providing the perfect environment for Muay Thai and Brazilian Jiu-Jitsu (BJJ).</p>
+      </div>
+      <div class="gallery">
+        <figure class="reveal"><img src="assets/img06.jpg" alt="The upstairs BJJ mat space" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img03.jpg" alt="BJJ class rolling on the blue mats" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img10.jpg" alt="Upstairs changing area with lockers and toilets" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img01.jpg" alt="The downstairs Muay Thai bag area" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img02.jpg" alt="TUF-WEAR heavy bags" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img07.jpg" alt="Kettlebells lined up for class" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img11.jpg" alt="The dumbbell rack, 2.5kg to 50kg" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img12.jpg" alt="Wall balls, sandbags and kettlebell storage" loading="lazy"></figure>
+        <figure class="reveal"><img src="assets/img13.jpg" alt="The protein bar and seating area" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Our trainers</p>
+    <span class="bg-word" aria-hidden="true">Coaches</span>
+        <h2 class="section-title">Meet the coaches</h2>
+      </div>
+
+      <article class="coach">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img14.jpg" alt="Rodrigo Lima, Brazilian Jiu-Jitsu black belt, in his gi"><img class="alt" src="assets/img15.jpg" alt="Rodrigo Lima competing" loading="lazy" style="object-fit:cover;width:100%;aspect-ratio:3/4"></div>
+          <div class="thumbs">
+            <img src="assets/img04.jpg" alt="Rodrigo Lima teaching no-gi" loading="lazy">
+            <img src="assets/img03.jpg" alt="BJJ class on the mats" loading="lazy">
+          </div>
+        </div>
+        <div class="reveal">
+          <h3>Rodrigo Lima</h3>
+          <p class="role">Brazilian Jiu Jitsu First Degree Black Belt &amp; Active Competitor</p>
+          <p>Rodrigo Lima is a Brazilian Jiu-Jitsu first-degree black belt and active competitor with a genuine passion for coaching and developing students of all levels. One of Rodrigo&rsquo;s greatest strengths as a coach is his ability to make Jiu-Jitsu easy to understand. His classes are known for their clear, detailed instruction and his ability to break complex techniques down into simple concepts that students can apply immediately, allowing them to learn faster, adapt more naturally, and build confidence in their own game.</p>
+          <p>His coaching style combines strong technical knowledge with patience, attention to detail, and an approachable attitude. Whether teaching beginners, experienced practitioners, or children, Rodrigo creates a positive learning environment where every student feels supported while being challenged to improve. As an active competitor, Rodrigo continues to test himself on the competition scene and is committed to constantly evolving his own Jiu-Jitsu. He believes that continuing to learn and compete allows him to bring modern, effective, and battle-tested techniques into every class he teaches.</p>
+          <p>Rodrigo is dedicated to helping each student reach their potential, not only by improving their Jiu-Jitsu, but by building confidence, discipline, and a lifelong enjoyment of the sport.</p>
+          <a class="btn" href="timetables.html#bjj">See Timetable</a>
+        </div>
+      </article>
+
+      <article class="coach">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img05.jpg" alt="Jack Murphy holding Muay Thai pads"><img class="alt" src="assets/img16.jpg" alt="Jack Murphy competing in Muay Thai" loading="lazy" style="object-fit:cover;width:100%;aspect-ratio:3/4"></div>
+          <div class="thumbs">
+            <img src="assets/img17.jpg" alt="Jack Murphy at Ultimate Fight Fitness" loading="lazy">
+            <img src="assets/img09.jpg" alt="The Muay Thai squad" loading="lazy">
+          </div>
+        </div>
+        <div class="reveal">
+          <h3>Jack Murphy</h3>
+          <p class="role">Qualified Coach Specialising in Muay Thai, Strength and Conditioning &amp; Fat Loss</p>
+          <p>Jack is a qualified coach specialising in Muay Thai, Strength and Conditioning and Fat Loss. At the age of 15 he started weight training, initially as a hobby before turning his passion into a career. After qualifying as a Personal Trainer, he worked with clients of all ages and abilities, helping them achieve a wide range of goals, including weight loss, increased strength, improved fitness, and greater confidence.</p>
+          <p>His journey into Muay Thai began after watching a coach train clients at the gym where he worked. What started as curiosity quickly became a lifelong passion. Since then, he has dedicated over nine years to the sport, progressing to compete professionally across Ireland. This experience has given him not only a high level of technical knowledge but also a deep appreciation for the discipline, resilience, and commitment that Muay Thai demands.</p>
+          <p>Alongside his own training and competition experience, he has spent the past three years coaching one-to-one Muay Thai sessions, working with beginners through to experienced practitioners. His coaching focuses on developing technique, improving fitness, building confidence, and helping every individual reach their personal goals. Combining his background as a qualified Personal Trainer with nearly a decade of Muay Thai experience, he delivers personalised coaching tailored to each client&rsquo;s needs.</p>
+          <p>Whether the goal is to lose weight, build strength, improve fitness, learn self-defence, or refine striking skills, his sessions are designed to be supportive, challenging, and results-driven. Having recently returned to Bishop&rsquo;s Stortford, he is passionate about giving back to the local community by helping people discover the physical and mental benefits of martial arts and fitness. His aim is to create a welcoming environment where individuals of all experience levels can train with confidence, develop new skills, and achieve lasting results.</p>
+          <a class="btn" href="timetables.html#muaythai">See Timetable</a>
+        </div>
+      </article>
+
+      <article class="coach">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img18.jpg" alt="Coach Ruby training in the strength and conditioning area"></div>
+        </div>
+        <div class="reveal">
+          <h3>Ruby</h3>
+          <p class="role">Personal Trainer &amp; Strength and Conditioning Coach</p>
+          <p>As part of our team, we&rsquo;re proud to have Ruby leading our Strength &amp; Conditioning programme.</p>
+          <p>Ruby&rsquo;s fitness journey began six years ago when she made a decision to lose over 3 stone after being overweight as a teenager. Through dedication, consistency, and hard work, she completely transformed her lifestyle and discovered a passion for fitness that has never left her. She also boxed for 4 years from the age of 7!</p>
+          <p>Having experienced her own transformation, she decided 2 years ago to make it her career and become a PT. Ruby knows first-hand how life-changing fitness can be. She has since helped a number of women become stronger, build confidence, and leave every session feeling empowered and proud of what they&rsquo;ve achieved.</p>
+          <p>What sets Ruby apart is that this isn&rsquo;t just a hobby &mdash; it&rsquo;s her passion. She&rsquo;s passionate about helping others achieve what she did, creating a supportive environment where everyone feels encouraged to succeed, and helping people make fitness a part of their daily lives for good.</p>
+          <p>With Ruby, you&rsquo;ll always feel comfortable, welcomed, and supported from the moment you walk through the door. She believes everyone deserves to train in a positive, judgement-free environment where they can grow in confidence and enjoy the process. Whether you&rsquo;re stepping into the gym for the very first time or looking to take your training to the next level, Ruby is committed to supporting you every step of the way with encouragement, knowledge, and genuine care.</p>
+          <p>We&rsquo;re excited for you to meet Coach Ruby and experience the positive impact she&rsquo;ll have on your fitness journey.</p>
+          <a class="btn" href="timetables.html#sc">See Timetable</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+
+</div><div class="route" data-page="classes" hidden>
+
+  <section class="page-hero">
+    <div class="hero-bg" style="background-image:url('assets/img03.jpg')"></div>
+    <div class="wrap">
+      <p class="kicker">Our classes</p>
+      <h1 class="display" style="font-size:clamp(2.4rem,5.5vw,3.8rem)">Something for<br><span style="color:var(--red)">every goal</span></h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <article class="coach" id="bjj">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img04.jpg" alt="No-gi BJJ training at Ultimate Fight Fitness" style="aspect-ratio:4/3;object-position:center"></div>
+        </div>
+        <div class="reveal">
+          <h3>Brazilian Jiu Jitsu</h3>
+          <p class="role">Gi &amp; No-Gi &middot; Upstairs mats</p>
+          <p>Our Brazilian Jiu-Jitsu (BJJ) classes welcome everyone, from complete beginners taking their first steps onto the mats to experienced practitioners looking to refine their skills. Training focuses on technique, problem-solving, and building confidence through grappling in a safe, supportive, and respectful environment where everyone is encouraged to progress at their own pace.</p>
+          <p>Led by an experienced coach, our classes develop effective self-defence skills, improve strength, mobility, and cardiovascular fitness, while teaching discipline, resilience, and strategic thinking. Whether your goal is to learn a new martial art, compete, improve your fitness, or simply be part of a positive and welcoming community, our BJJ programme provides expert coaching and a friendly atmosphere to help you achieve your goals.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+          <a class="btn" href="timetables.html#bjj">See Timetable</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="coach" id="muaythai">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img05.jpg" alt="Muay Thai pad work with coach Jack Murphy" style="aspect-ratio:4/3;object-position:center"></div>
+        </div>
+        <div class="reveal">
+          <h3>Muay Thai</h3>
+          <p class="role">All levels &middot; Downstairs</p>
+          <p>Our Muay Thai classes are designed for all skill levels, from complete beginners taking their first steps into martial arts to experienced fighters looking to sharpen their skills and improve their performance. Each session focuses on developing technique, fitness, confidence, and discipline in a supportive and motivating environment where every member is encouraged to learn, progress, and achieve their personal goals.</p>
+          <p>Led by an experienced coach, our classes combine traditional Muay Thai techniques with modern training methods to help you develop striking skills, improve strength and conditioning, increase fitness levels, and build mental resilience. Whether you’re training for fitness, self-defence, personal development, or competition, our sessions are structured to help you improve safely while enjoying the challenge and camaraderie of training alongside others.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+          <a class="btn" href="timetables.html#muaythai">See Timetable</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="coach" id="kids">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img06.jpg" alt="The upstairs matted area where kids classes run" style="aspect-ratio:4/3;object-position:center"></div>
+        </div>
+        <div class="reveal">
+          <h3>Kids Classes</h3>
+          <p class="role">Kids BJJ &amp; Kids Muay Thai</p>
+          <p>Our Kids' Muay Thai and Brazilian Jiu-Jitsu classes are designed to help children build confidence, discipline, and respect while learning valuable martial arts skills in a fun, safe, and supportive environment. Led by experienced coaches, every session is carefully structured with age-appropriate training that develops technique, fitness, coordination, and teamwork while ensuring each child feels encouraged and included.</p>
+          <p>We place a strong emphasis on creating a positive atmosphere where children can learn at their own pace, make new friends, and grow in confidence both on and off the mats.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+          <a class="btn" href="timetables.html#bjj">Kids BJJ Timetable</a>
+          <a class="btn btn-ghost" href="timetables.html#muaythai">Kids Muay Thai Timetable</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="coach" id="hybrid">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img07.jpg" alt="Kettlebells set out for a strength and conditioning class" style="aspect-ratio:4/3;object-position:center"></div>
+        </div>
+        <div class="reveal">
+          <h3>Hybrid</h3>
+          <p class="role">Strength &amp; Conditioning &middot; 45 mins</p>
+          <p>Our hybrid class combines both strength training and cardiovascular exercise, so you’re not neglecting any aspect of fitness. The cardio elements keep your heart rate elevated, improving cardiovascular endurance and burning calories, while the strength exercises help build muscle, increase power, and improve overall body strength.</p>
+          <p>By combining both training styles in one session, participants can improve their overall fitness, endurance, muscle tone, and cardiovascular health at the same time. This makes hybrid classes an efficient and effective way to achieve a balanced level of fitness.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+          <a class="btn" href="timetables.html#sc">See Timetable</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="coach" id="sweat">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img02.jpg" alt="The bag line used for Sweat class intervals" style="aspect-ratio:4/3;object-position:center 72%"></div>
+        </div>
+        <div class="reveal">
+          <h3>Sweat</h3>
+          <p class="role">Strength &amp; Conditioning &middot; 30&ndash;35 mins</p>
+          <p>Our Sweat class is a high-intensity, 30–35 minute workout of constant work, designed to get your heart rate up and leave you feeling energised. You’ll move continuously through a series of stations, including boxing bag intervals to develop power, coordination and cardiovascular fitness, ERG machines to build endurance, bodyweight exercises, and free weights to improve strength and muscular endurance.</p>
+          <p>With minimal rest between stations, the class keeps the intensity high, helping you burn calories, boost fitness, and start your day with a great sweat.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+          <a class="btn" href="timetables.html#sc">See Timetable</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="coach" id="sgpt">
+        <div class="coach-media reveal">
+          <div class="main"><img src="assets/img08.jpg" alt="A small group PT session at Ultimate Fight Fitness" style="aspect-ratio:4/3;object-position:center 60%"></div>
+        </div>
+        <div class="reveal">
+          <h3>Small Group PT</h3>
+          <p class="role">Strength &amp; Conditioning &middot; 45 mins</p>
+          <p>Our Small Group PT classes offer the perfect balance of personalised coaching and the motivation of training with others. With small class sizes, you'll receive expert guidance, technique correction, and individual support while enjoying the energy and encouragement of a group environment.</p>
+          <p>Every session is carefully planned to help you improve your strength, fitness, mobility, and overall health, with exercises tailored to suit your individual ability and goals. Whether you're just beginning your fitness journey or looking to take your training to the next level, our experienced coaches will ensure you're challenged safely and effectively while maintaining proper technique throughout.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+          <a class="btn" href="timetables.html#sc">See Timetable</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+
+</div><div class="route" data-page="timetables" hidden>
+
+  <section class="page-hero">
+    <div class="hero-bg" style="background-image:url('assets/img02.jpg')"></div>
+    <div class="wrap">
+      <p class="kicker">Weekly timetables</p>
+      <h1 class="display" style="font-size:clamp(2.4rem,5.5vw,3.8rem)">Find your<br><span style="color:var(--red)">next session</span></h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="tabs" role="tablist">
+        <button class="tab-btn" data-tab="tt-bjj">Brazilian Jiu Jitsu</button>
+        <button class="tab-btn" data-tab="tt-muaythai">Muay Thai</button>
+        <button class="tab-btn" data-tab="tt-sc">Strength &amp; Conditioning</button>
+      </div>
+
+    <div class="tab-panel active" id="tt-bjj">
+      <p class="muted" style="max-width:820px;margin-bottom:30px">Our Brazilian Jiu-Jitsu timetable is designed to offer classes for all experience levels, with sessions available throughout the week to suit a variety of schedules. Whether you're just starting your BJJ journey or looking to develop your skills further, our timetable provides regular opportunities to train in a supportive and welcoming environment. For any further information or questions about our classes, please contact the gym directly.</p>
+      <div class="day-grid">
+        <div class="day reveal">
+          <h4>Monday</h4>
+          <ul>
+            <li><span class="t">07:00</span><span class="c">Beginners &amp; Intermediates <em class="tag">From 1 Sept</em><small>Gi</small></span></li>
+            <li><span class="t">12:30</span><span class="c">Beginners &amp; Intermediates<small>Gi</small></span></li>
+            <li><span class="t">16:15</span><span class="c">Kids (Age 4&ndash;11) <em class="tag">From 1 Sept</em></span></li>
+            <li><span class="t">17:30</span><span class="c">Beginners &amp; Intermediates<small>Gi</small></span></li>
+            <li><span class="t">18:45</span><span class="c">Beginners &amp; Intermediates<small>No-Gi</small></span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Tuesday</h4>
+          <ul>
+            <li><span class="t">07:00</span><span class="c">Beginners &amp; Intermediates <em class="tag">From 1 Sept</em><small>No-Gi</small></span></li>
+            <li><span class="t">12:30</span><span class="c">Beginners &amp; Intermediates<small>No-Gi</small></span></li>
+            <li><span class="t">16:15</span><span class="c">Kids (Age 12&ndash;15) <em class="tag">From 1 Sept</em></span></li>
+            <li><span class="t">17:30</span><span class="c">Beginners &amp; Intermediates<small>No-Gi</small></span></li>
+            <li><span class="t">18:45</span><span class="c">Beginners &amp; Intermediates<small>Gi</small></span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Wednesday</h4>
+          <ul>
+            <li><span class="t">12:30</span><span class="c">Beginners &amp; Intermediates<small>Gi</small></span></li>
+            <li><span class="t">17:30</span><span class="c">Open Mat</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Thursday</h4>
+          <ul>
+            <li><span class="t">07:00</span><span class="c">Open Mat <em class="tag">From 1 Sept</em><small>Gi &middot; Blue Belt &amp; Above</small></span></li>
+            <li><span class="t">12:30</span><span class="c">Beginners &amp; Intermediates<small>No-Gi</small></span></li>
+            <li><span class="t">16:15</span><span class="c">Kids (Age 12&ndash;15) <em class="tag">From 1 Sept</em></span></li>
+            <li><span class="t">17:30</span><span class="c">Beginners &amp; Intermediates<small>No-Gi</small></span></li>
+            <li><span class="t">18:45</span><span class="c">Beginners &amp; Intermediates<small>Gi</small></span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Friday</h4>
+          <ul>
+            <li><span class="t">07:00</span><span class="c">Beginners &amp; Intermediates <em class="tag">From 1 Sept</em><small>Gi</small></span></li>
+            <li><span class="t">12:30</span><span class="c">Beginners &amp; Intermediates<small>Gi</small></span></li>
+            <li><span class="t">16:15</span><span class="c">Kids (Age 4&ndash;11) <em class="tag">From 1 Sept</em></span></li>
+            <li><span class="t">17:30</span><span class="c">Beginners &amp; Intermediates<small>Gi</small></span></li>
+            <li><span class="t">18:45</span><span class="c">Beginners &amp; Intermediates<small>No-Gi</small></span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Saturday</h4>
+          <ul>
+            <li><span class="t">12:30</span><span class="c">Open Mat</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Sunday</h4>
+          <ul>
+            <li><span class="t">12:30</span><span class="c">Open Mat</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Please note: all 7:00am classes and all kids classes begin after the six-week school holidays &mdash; first sessions from Monday 1st September 2026. If you have any queries, please drop us a message or email us and a member of the team will get back to you.</p>
+    </div>
+
+    <div class="tab-panel" id="tt-muaythai">
+      <p class="muted" style="max-width:820px;margin-bottom:30px">Our Muay Thai timetable offers a range of classes throughout the week, catering to beginners and experienced practitioners alike. Each session is designed to help you build technique, improve fitness, and develop confidence in a motivating training environment. For any further information or questions regarding our classes, please contact the gym directly.</p>
+      <div class="day-grid">
+        <div class="day reveal">
+          <h4>Monday</h4>
+          <ul>
+            <li><span class="t">18:45</span><span class="c">Muay Thai Adults</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Tuesday</h4>
+          <ul>
+            <li><span class="t">17:30</span><span class="c">Muay Thai Kids <em class="tag">From 1 Sept</em></span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Wednesday</h4>
+          <ul>
+            <li><span class="t">18:45</span><span class="c">Muay Thai Adults</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Friday</h4>
+          <ul>
+            <li><span class="t">18:45</span><span class="c">Muay Thai Adults</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Saturday</h4>
+          <ul>
+            <li><span class="t">10:00</span><span class="c">Muay Thai Kids <em class="tag">From 1 Sept</em></span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Please note: all kids classes begin after the six-week school holidays &mdash; first sessions from Tuesday 2nd September 2026. If you have any queries, please drop us a message or email us and a member of the team will get back to you.</p>
+    </div>
+
+    <div class="tab-panel" id="tt-sc">
+      <p class="muted" style="max-width:820px;margin-bottom:30px">Our Strength &amp; Conditioning classes are designed to help you build strength, improve fitness, and enhance overall athletic performance in a supportive and motivating environment. Whether you're looking to increase power, boost endurance, lose weight, or simply feel stronger in everyday life, our expert coaches will guide you through structured workouts tailored to all fitness levels. Every session is challenging, rewarding, and focused on helping you reach your personal goals.</p>
+      <div class="day-grid">
+        <div class="day reveal">
+          <h4>Monday</h4>
+          <ul>
+            <li><span class="t">09:00</span><span class="c">Strength</span></li>
+            <li><span class="t">18:00</span><span class="c">Sweat</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Tuesday</h4>
+          <ul>
+            <li><span class="t">09:00</span><span class="c">Sweat</span></li>
+            <li><span class="t">18:30</span><span class="c">Strength</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Wednesday</h4>
+          <ul>
+            <li><span class="t">09:00</span><span class="c">Strength</span></li>
+            <li><span class="t">18:00</span><span class="c">Sweat</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Thursday</h4>
+          <ul>
+            <li><span class="t">09:00</span><span class="c">Sweat</span></li>
+            <li><span class="t">18:00</span><span class="c">Strength</span></li>
+          </ul>
+        </div>
+        <div class="day reveal">
+          <h4>Friday</h4>
+          <ul>
+            <li><span class="t">09:00</span><span class="c">Strength</span></li>
+            <li><span class="t">18:00</span><span class="c">Sweat</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">All Strength &amp; Conditioning classes are held for 45 minutes. If you have any queries regarding our classes please drop us an email and a member of our team will get back to you.</p>
+    </div>
+    </div>
+  </section>
+
+
+</div><div class="route" data-page="memberships" hidden>
+
+  <section class="page-hero">
+    <div class="hero-bg" style="background-image:url('assets/img11.jpg')"></div>
+    <div class="wrap">
+      <p class="kicker">Our memberships</p>
+      <h1 class="display" style="font-size:clamp(2.4rem,5.5vw,3.8rem)">Choose<br><span style="color:var(--red)">your plan</span></h1>
+    </div>
+  </section>
+
+  <section class="section" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="founding reveal">
+        <div class="founding-head">
+          <div>
+            <p class="kicker">Limited to our first 50 members</p>
+            <h2 class="section-title">The Founding 50</h2>
+            <p class="muted" style="max-width:560px;margin-top:10px">To open the gym, our first 50 members lock a founding rate for their entire first year &mdash; then move to the standard price. One pool of 50 spots across both plans. When they&rsquo;re gone, they&rsquo;re gone for good.</p>
+            <ul class="founding-terms">
+              <li>Founding rate for your full first year</li>
+              <li>No contract &mdash; cancel anytime</li>
+              <li>Founding Pass members can upgrade to the founding Ultimate rate while spots remain</li>
+              <li>First session free, as always</li>
+            </ul>
+          </div>
+          <div class="founding-prices">
+            <div class="fprice">
+              <h3>Founding Ultimate</h3>
+              <div class="price">&pound;99.99 <small>/ month first year</small></div>
+              <p class="muted">Then &pound;119.99 &middot; save &pound;240 in year one</p>
+              <a class="btn" href="https://secure15.clubwise.com/ultimatefightfitness/pos.asp?promocode=FOUNDULT" target="_blank" rel="noopener">Claim a founding spot</a>
+            </div>
+            <div class="fprice">
+              <h3>Founding 12-Class Pass</h3>
+              <div class="price">&pound;79.99 <small>/ month first year</small></div>
+              <p class="muted">Then &pound;89.99 &middot; save &pound;120 in year one</p>
+              <a class="btn btn-ghost" href="https://secure15.clubwise.com/ultimatefightfitness/pos.asp?promocode=FOUND12" target="_blank" rel="noopener">Claim a founding spot</a>
+            </div>
+          </div>
+        </div>
+        <div class="spots">
+          <div class="spots-bar"><span class="spots-fill" style="width:74%"></span></div>
+          <p><strong>37 of 50</strong> founding spots remaining</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Standard memberships</p>
+        <h2 class="section-title">Simple. No contracts.</h2>
+        <p class="muted">The gym is open for off-peak training throughout our opening hours &mdash; included with The Ultimate. Have a query regarding one of our memberships? <a class="link" style="color:var(--red);font-weight:600" href="mailto:info@ultimatefightfitness.co.uk">Drop us a message</a> and a member of the team will get back to you. Your first session is free.</p>
+      </div>
+      <div class="price-grid">
+      <div class="plan featured reveal">
+        <span class="flag">Most Popular</span>
+        <h3>The Ultimate</h3>
+        <div class="price">&pound;119.99 <small>/ month</small></div>
+        <p class="desc">Every class at UFF &mdash; BJJ, Muay Thai and Strength &amp; Conditioning &mdash; plus off-peak use of the full gym and facilities at any time we&rsquo;re open.</p>
+        <ul>
+          <li>Unlimited access to all classes, all three disciplines</li>
+          <li>Off-peak open gym access &mdash; use our facilities any time we&rsquo;re open</li>
+          <li>No contract &mdash; cancel anytime</li>
+        </ul>
+        <a class="btn" href="https://secure15.clubwise.com/ultimatefightfitness/pos.asp?promocode=THEULT" target="_blank" rel="noopener">Sign Up</a>
+      </div>
+      <div class="plan reveal">
+        
+        <h3>Single Discipline Unlimited</h3>
+        <div class="price">&pound;99.99 <small>/ month</small></div>
+        <p class="desc">Unlimited classes in one discipline of your choice &mdash; Brazilian Jiu-Jitsu, Muay Thai or Strength &amp; Conditioning.</p>
+        <ul>
+          <li>Choose BJJ, Muay Thai or Strength &amp; Conditioning</li>
+          <li>Unlimited classes in your chosen discipline</li>
+          <li>No contract &mdash; cancel anytime</li>
+          <li class="ex">Classes only &mdash; does not include off-peak open gym access</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://secure15.clubwise.com/ultimatefightfitness/pos.asp?promocode=SINGLE" target="_blank" rel="noopener">Sign Up</a>
+      </div>
+      <div class="plan reveal">
+        
+        <h3>12-Class Pass</h3>
+        <div class="price">&pound;89.99 <small>/ month</small></div>
+        <p class="desc">12 classes a month, any mix of BJJ, Muay Thai and Strength &amp; Conditioning &mdash; perfect for training two to three times a week.</p>
+        <ul>
+          <li>Use your 12 classes on any session on the timetable</li>
+          <li>Mix disciplines however you like</li>
+          <li>Classes reset each month</li>
+          <li>No contract &mdash; cancel anytime</li>
+          <li class="ex">Classes only &mdash; does not include off-peak open gym access</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://secure15.clubwise.com/ultimatefightfitness/pos.asp?promocode=12CLASS" target="_blank" rel="noopener">Sign Up</a>
+      </div>
+      <div class="plan reveal">
+        
+        <h3>Kids Unlimited</h3>
+        <div class="price">&pound;59.99 <small>/ month</small></div>
+        <p class="desc">Ultimate Fight Fitness offers a Kids' Unlimited plan focusing on personal growth and safety. We provide a positive space for children to build confidence and discipline.</p>
+        <ul>
+          <li>Full access to all age-specific youth sessions</li>
+          <li>Certified instructors providing expert guidance in a professional, secure setting</li>
+          <li>No contract &mdash; cancel anytime</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://secure15.clubwise.com/ultimatefightfitness/pos.asp?promocode=KIDS" target="_blank" rel="noopener">Sign Up</a>
+      </div>
+      <div class="plan reveal">
+        
+        <h3>Walk Ins / Single Sessions</h3>
+        <div class="price">&pound;15 <small>/ session</small></div>
+        <p class="desc">Our walk-in option is ideal for anyone who would like to experience a class without committing to a membership.</p>
+        <ul>
+          <li>Access to any single class</li>
+          <li>No membership commitment required</li>
+          <li>An opportunity to meet our coaches and members before joining</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://secure15.clubwise.com/ultimatefightfitness/pos.asp?promocode=DAYPASS" target="_blank" rel="noopener">Sign Up</a>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="kicker">Good to know</p>
+    <span class="bg-word" aria-hidden="true">FAQ</span>
+        <h2 class="section-title">Frequently asked questions</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Do I need any experience to start?</summary>
+          <p>None at all. Every class welcomes complete beginners &mdash; our Beginners &amp; Intermediates BJJ sessions, Muay Thai classes and all S&amp;C classes are coached for every level, and you&rsquo;ll never be thrown in at the deep end.</p>
+        </details>
+        <details>
+          <summary>How do I claim my free first session?</summary>
+          <p>Email us, message us on Instagram, or just walk in. Any class, any discipline &mdash; your first one is on us, with no card details and no commitment.</p>
+        </details>
+        <details>
+          <summary>What should I wear and bring?</summary>
+          <p>Comfortable sportswear and a water bottle. For BJJ, a gi if you have one &mdash; no-gi classes just need shorts and a t-shirt or rash guard. Don&rsquo;t worry about kit for your first session; come as you are.</p>
+        </details>
+        <details>
+          <summary>Are there contracts?</summary>
+          <p>No. Every membership is rolling monthly and you can cancel anytime. The Founding 50 rate is a reward, not a lock-in &mdash; it simply holds your lower price for your first year.</p>
+        </details>
+        <details>
+          <summary>What does &ldquo;off-peak gym use&rdquo; mean?</summary>
+          <p>The Ultimate members can use the gym floor and facilities for their own training throughout our opening hours, outside of class times. The 12-Class Pass and Single Discipline Unlimited cover classes only.</p>
+        </details>
+        <details>
+          <summary>What ages are the kids classes?</summary>
+          <p>Kids BJJ runs in two groups &mdash; ages 4&ndash;11 and 12&ndash;15 &mdash; alongside kids Muay Thai. All kids classes begin after the six-week school holidays, from 1st September.</p>
+        </details>
+        <details>
+          <summary>Can I just pay for one class?</summary>
+          <p>Yes &mdash; walk-ins are &pound;15 a session, no membership needed. It&rsquo;s a great way to try a few different classes before picking a plan.</p>
+        </details>
+        <details>
+          <summary>Is there parking?</summary>
+          <p>Yes &mdash; we offer on-site parking for the convenience of our members and visitors, at Unit 7 Twyford Road, Bishop Stortford CM23 3LJ.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+</div><div class="route" data-page="privacy-policy" hidden>
+
+  <section class="section">
+    <div class="wrap prose">
+      <p class="kicker">Ultimate Fight Fitness</p>
+      <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Privacy Notice</h1>
+      <p style="margin-top:18px">At Ultimate Fight Fitness, we value your privacy and are committed to protecting your personal information. This Privacy Notice explains how we collect, use, store, and protect your data, as well as the choices available to you regarding its use.</p>
+      <p>If you have any questions about this Privacy Notice or would like to make a request concerning your personal information, please contact us at <a style="color:var(--red)" href="mailto:info@ultimatefightfitness.co.uk">info@ultimatefightfitness.co.uk</a>.</p>
+
+      <h2>1. Use of Your Information</h2>
+      <p>Ultimate Fight Fitness processes your personal information in accordance with the UK General Data Protection Regulation (UK GDPR) and applicable data protection laws. We only collect and use information that is necessary for the purposes outlined in this Privacy Notice. We take appropriate technical and organisational measures to safeguard your personal information and reduce the risk of unauthorised access, disclosure, or misuse.</p>
+
+      <h2>2. Your Consent</h2>
+      <p>By purchasing a membership or completing a contact form on www.ultimatefightfitness.co.uk, you consent to Ultimate Fight Fitness collecting, storing, and processing the personal information you provide in line with this Privacy Notice.</p>
+      <p>If you are under the age of 16, we will only collect and process your information with the consent of a parent or legal guardian.</p>
+
+      <h2>3. Personal Information We Collect</h2>
+      <h3>3.1 Data Processor Details</h3>
+      <p>Personal information collected through our website is processed on our behalf by:</p>
+      <p>ClubWise Software Ltd<br>6 Tower Court, Horns Lane<br>Princes Risborough, Buckinghamshire HP27 0AJ<br>Company Number: 3843268</p>
+      <p>Your data is stored within the United Kingdom. Where necessary for software support, authorised employees of ClubWise Development India Pvt. Ltd, Office No.101, First Floor, Fourtune Arcade, Yeolekar Mala, College Road, Nashik 422005, Maharashtra, India, may access your information.</p>
+      <p>All data processors acting on our behalf are required to comply fully with UK GDPR requirements.</p>
+
+      <h3>3.2 Why We Process Your Data</h3>
+      <p>We collect your personal information primarily to provide the services included with your membership. This may include:</p>
+      <ul>
+        <li>Contacting you regarding your membership.</li>
+        <li>Managing your club access.</li>
+        <li>Administering member reward schemes where applicable.</li>
+        <li>Resolving enquiries or issues and improving our services.</li>
+        <li>Meeting our legal and regulatory obligations.</li>
+      </ul>
+      <p>Your personal information is only processed where permitted by law, and all employees and service providers are required to treat your information confidentially.</p>
+
+      <h3>3.3 Marketing Communications</h3>
+      <p>With your permission, we may send you promotional emails or SMS messages about products, services, offers, or events that may interest you. You may withdraw your consent or update your marketing preferences at any time by using the unsubscribe option provided in our communications or by emailing info@ultimatefightfitness.co.uk.</p>
+
+      <h3>3.4 Information We Collect</h3>
+      <p>When you become a member, we may collect the following information:</p>
+      <ul>
+        <li>Full name</li>
+        <li>Postal address</li>
+        <li>Email address</li>
+        <li>Mobile telephone number</li>
+        <li>Gender</li>
+        <li>Date of birth</li>
+        <li>Attendance records</li>
+        <li>Marketing preferences</li>
+        <li>Bank or payment information for membership billing</li>
+      </ul>
+      <p>We may also automatically collect limited technical information through our website as described in the Cookies section below.</p>
+
+      <h3>3.5 Accessing or Updating Your Information</h3>
+      <p>You have the right to request details of the personal information we hold about you and how it is being used. You may also ask us to correct inaccurate information or delete your personal data where it is no longer required to provide our services.</p>
+      <p>To make a request, please email us at info@ultimatefightfitness.co.uk, or write to: Ultimate Fight Fitness, Unit 7, Twyford Road, Bishop Stortford CM23 3LJ.</p>
+      <p>For security purposes, we may request proof of identity, such as a passport or driving licence, before processing your request.</p>
+
+      <h3>3.6 Sharing Your Information</h3>
+      <p>Your personal information may be shared within Ultimate Fight Fitness companies and with our appointed data processor (as described above) where necessary to provide our services. We will not disclose your personal information to other third parties without your consent unless required or permitted by law.</p>
+      <p>Any organisation processing your data on our behalf is contractually required to keep it secure, use it only for agreed purposes, and delete it when no longer required. We may also use anonymised or aggregated information that cannot identify individuals for business planning and marketing analysis.</p>
+
+      <h3>3.7 Cookies</h3>
+      <p>Cookies are small text files stored on your device when you visit a website. They help websites function correctly and improve the user experience.</p>
+      <p><strong>Our Use of Cookies:</strong> Ultimate Fight Fitness uses session cookies to maintain secure browsing sessions and provide features such as automatic time-outs. These cookies do not store personal or financial information.</p>
+      <p><strong>Google Analytics:</strong> We may use Google Analytics to better understand how visitors use our website and to improve our online marketing activities. Further information about Google Analytics cookies can be found on Google's website.</p>
+
+      <h3>3.8 Links to Other Websites</h3>
+      <p>Our website may include links to external websites that are not controlled by Ultimate Fight Fitness. If you visit another website using one of these links, that website will have its own privacy policy, and we are not responsible for its content or data handling practices.</p>
+
+      <h2>4. Data Retention</h2>
+      <p>If you enquire about membership and consent to being contacted, we will retain your information for up to 12 months unless you request its deletion sooner. If you become a member, your information will be retained throughout your membership.</p>
+      <p>After your membership ends, your personal information will normally be retained for up to six years to allow us to respond to any future legal or insurance-related claims. Once this retention period expires, your information will either be securely deleted or permanently anonymised.</p>
+
+      <h3>4.1 Your Data Protection Rights</h3>
+      <p>Under UK GDPR, you have the right to:</p>
+      <ul>
+        <li>Be informed about how your personal information is used.</li>
+        <li>Request access to your personal data.</li>
+        <li>Request correction of inaccurate or incomplete information.</li>
+        <li>Request deletion of your personal information where applicable.</li>
+        <li>Restrict how your data is processed in certain circumstances.</li>
+        <li>Receive a copy of your data in a portable format.</li>
+        <li>Object to certain processing activities, including direct marketing.</li>
+        <li>Object to decisions based solely on automated processing or profiling.</li>
+      </ul>
+      <p>If we refuse a request, we will explain the reason where legally permitted. If a personal data breach occurs that is likely to affect your rights and freedoms, we will notify you in accordance with legal requirements.</p>
+
+      <h2>5. Making a Complaint</h2>
+      <p>If you believe your personal information has been handled improperly, you have the right to lodge a complaint with the Information Commissioner's Office (ICO). Further information is available on the ICO website.</p>
+
+      <h2>6. Changes to This Privacy Notice</h2>
+      <p>Ultimate Fight Fitness may amend this Privacy Notice from time to time to reflect changes in legislation, guidance, or our business practices. We encourage you to review this page periodically to stay informed about how we protect your personal information.</p>
+
+      <h2>7. Contact Us</h2>
+      <p>If you have any questions about this Privacy Notice or the way we process your personal information, please contact us:</p>
+      <p>Email: <a style="color:var(--red)" href="mailto:info@ultimatefightfitness.co.uk">info@ultimatefightfitness.co.uk</a><br>
+         Or write to: Ultimate Fight Fitness, Unit 7, Twyford Road, Bishop Stortford CM23 3LJ</p>
+    </div>
+  </section>
+
+
+</div><div class="route" data-page="equality-policy" hidden>
+
+  <section class="section">
+    <div class="wrap prose">
+      <p class="kicker">Ultimate Fight Fitness</p>
+      <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Equality, Diversity and Inclusion Policy</h1>
+
+      <h2>Policy Statement</h2>
+      <p>Ultimate Fight Fitness is committed to creating a welcoming, inclusive and respectful environment for all members, visitors, staff, coaches and volunteers. We believe everyone should have equal opportunities to participate in our activities, regardless of their background or personal characteristics.</p>
+      <p>We are committed to promoting equality, valuing diversity and preventing discrimination, harassment and victimisation in all aspects of our business.</p>
+
+      <h2>Purpose</h2>
+      <p>This policy aims to:</p>
+      <ul>
+        <li>Promote equal opportunities for everyone involved with Ultimate Fight Fitness.</li>
+        <li>Foster an inclusive environment where everyone is treated with dignity and respect.</li>
+        <li>Prevent discrimination, harassment, bullying and victimisation.</li>
+        <li>Ensure our services are accessible wherever reasonably possible.</li>
+        <li>Comply with the Equality Act 2010 and all relevant UK legislation.</li>
+      </ul>
+
+      <h2>Scope</h2>
+      <p>This policy applies to:</p>
+      <ul>
+        <li>All employees.</li>
+        <li>Self-employed coaches and instructors.</li>
+        <li>Volunteers.</li>
+        <li>Members.</li>
+        <li>Visitors.</li>
+        <li>Contractors and anyone acting on behalf of Ultimate Fight Fitness.</li>
+      </ul>
+
+      <h2>Our Commitment</h2>
+      <p>Ultimate Fight Fitness will not tolerate discrimination on the basis of:</p>
+      <ul>
+        <li>Age</li>
+        <li>Disability</li>
+        <li>Gender reassignment</li>
+        <li>Marriage and civil partnership</li>
+        <li>Pregnancy and maternity</li>
+        <li>Race, nationality, ethnic or national origin</li>
+        <li>Religion or belief</li>
+        <li>Sex</li>
+        <li>Sexual orientation</li>
+      </ul>
+      <p>These are protected characteristics under the Equality Act 2010.</p>
+
+      <h2>Equal Opportunities</h2>
+      <p>Ultimate Fight Fitness is committed to ensuring that:</p>
+      <ul>
+        <li>Membership is open to everyone without unlawful discrimination.</li>
+        <li>Recruitment, promotion and employment decisions are based on merit, qualifications and ability.</li>
+        <li>Training opportunities are available fairly.</li>
+        <li>Members are treated equally regardless of ability or experience.</li>
+        <li>Reasonable adjustments are considered to support disabled members, employees and visitors where practical.</li>
+      </ul>
+
+      <h2>Respectful Behaviour</h2>
+      <p>Everyone attending or working at Ultimate Fight Fitness is expected to:</p>
+      <ul>
+        <li>Treat others with courtesy and respect.</li>
+        <li>Create a positive and supportive atmosphere.</li>
+        <li>Respect differences in culture, beliefs, identity and ability.</li>
+        <li>Avoid offensive language, intimidation or bullying.</li>
+        <li>Challenge discriminatory behaviour where appropriate and report concerns.</li>
+      </ul>
+
+      <h2>Harassment and Bullying</h2>
+      <p>Ultimate Fight Fitness has a zero-tolerance approach to:</p>
+      <ul>
+        <li>Harassment.</li>
+        <li>Bullying.</li>
+        <li>Intimidation.</li>
+        <li>Victimisation.</li>
+        <li>Hate speech.</li>
+        <li>Sexual harassment.</li>
+        <li>Any form of discriminatory behaviour.</li>
+      </ul>
+      <p>Anyone found engaging in such behaviour may face disciplinary action, suspension of membership or permanent exclusion from the gym.</p>
+
+      <h2>Accessibility</h2>
+      <p>Where reasonably practicable, Ultimate Fight Fitness will:</p>
+      <ul>
+        <li>Consider the needs of disabled members.</li>
+        <li>Make reasonable adjustments to remove barriers to participation.</li>
+        <li>Review facilities and services to improve accessibility.</li>
+        <li>Encourage open communication regarding individual requirements.</li>
+      </ul>
+
+      <h2>Reporting Concerns</h2>
+      <p>Anyone who experiences or witnesses discrimination, harassment or bullying should report it to gym management as soon as possible.</p>
+      <p>All complaints will be:</p>
+      <ul>
+        <li>Taken seriously.</li>
+        <li>Handled confidentially where possible.</li>
+        <li>Investigated promptly and fairly.</li>
+        <li>Resolved in accordance with our disciplinary and complaints procedures.</li>
+      </ul>
+      <p>No individual will be treated unfairly for raising a genuine concern.</p>
+
+      <h2>Responsibilities</h2>
+      <p><strong>Management</strong> is responsible for:</p>
+      <ul>
+        <li>Implementing this policy.</li>
+        <li>Leading by example.</li>
+        <li>Ensuring staff understand their responsibilities.</li>
+        <li>Investigating complaints appropriately.</li>
+        <li>Reviewing the policy regularly.</li>
+      </ul>
+      <p><strong>Employees, coaches, volunteers and members</strong> are responsible for:</p>
+      <ul>
+        <li>Following this policy.</li>
+        <li>Treating everyone fairly and respectfully.</li>
+        <li>Reporting inappropriate behaviour.</li>
+        <li>Supporting an inclusive environment.</li>
+      </ul>
+
+      <h2>Monitoring and Review</h2>
+      <p>Ultimate Fight Fitness will review this policy annually or sooner if required by changes in legislation or business operations. Feedback from members, staff and coaches will be considered as part of the review process.</p>
+
+      <h2>Policy Approval</h2>
+      <p>Organisation: Ultimate Fight Fitness<br>
+         Policy: Equality, Diversity and Inclusion Policy<br>
+         Effective Date: 01/06/2026<br>
+         Review Date: 01/06/2027</p>
+    </div>
+  </section>
+
+
+</div>
+<footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-word" aria-hidden="true">Be <b>Ultimate.</b></div>
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo"><img src="assets/img01.png" alt="Ultimate Fight Fitness"></div>
+          <h3>Visit us</h3>
+          <address>
+            Ultimate Fight Fitness<br>
+            Unit 7 Twyford Road<br>
+            Bishop Stortford<br>
+            CM23 3LJ
+          </address>
+          <p style="margin-top:10px"><a class="link" href="https://www.google.com/maps/search/?api=1&query=Ultimate+Fight+Fitness%2C+Unit+7+Twyford+Road%2C+Bishop+Stortford+CM23+3LJ" target="_blank" rel="noopener">Get directions&nbsp;&rarr;</a></p>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <p>Email: <a class="link" href="mailto:info@ultimatefightfitness.co.uk">info@ultimatefightfitness.co.uk</a></p>
+          <p style="margin-top:10px">We are pleased to offer on-site parking for the convenience of our members and visitors.</p>
+          <p style="margin-top:14px"><a class="ig link" href="https://www.instagram.com/ultimatefight_fitness?igsh=MXU5cmJwamQxdzNlcQ==" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.36 1.05.42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.17-1.05.36-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.42-.36-1.05-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.05-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2m0 1.8c-3.1 0-3.5 0-4.7.07-1.13.05-1.74.24-2.15.4-.54.21-.93.46-1.33.87-.4.4-.66.79-.87 1.33-.16.4-.35 1.02-.4 2.15-.07 1.2-.07 1.6-.07 4.7s0 3.5.07 4.7c.05 1.13.24 1.74.4 2.15.21.54.46.93.87 1.33.4.4.79.66 1.33.87.4.16 1.02.35 2.15.4 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c1.13-.05 1.74-.24 2.15-.4.54-.21.93-.46 1.33-.87.4-.4.66-.79.87-1.33.16-.4.35-1.02.4-2.15.07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.05-1.13-.24-1.74-.4-2.15a3.6 3.6 0 0 0-.87-1.33 3.6 3.6 0 0 0-1.33-.87c-.4-.16-1.02-.35-2.15-.4-1.2-.07-1.6-.07-4.7-.07zm0 3.06a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zm5.2-2.1a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3z"/></svg> @ultimatefight_fitness</a></p>
+        </div>
+        <div>
+          <h3>Open times</h3>
+          <p>Mon &ndash; Fri: 6am &ndash; 8pm<br>
+             Saturday: 10am &ndash; 2pm<br>
+             Sunday: 12pm &ndash; 2pm</p>
+          <p style="margin-top:10px">The gym is open for off-peak training throughout these hours &mdash; included with The Ultimate membership.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Ultimate Fight Fitness</span>
+        <nav>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="equality-policy.html">Equality Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+<script>
+(function () {
+  var routes = document.querySelectorAll('.route');
+  var PAGES = ['index', 'about', 'classes', 'timetables', 'memberships', 'privacy-policy', 'equality-policy'];
+
+  function activateTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === id); });
+    document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.toggle('active', p.id === id); });
+  }
+  document.querySelectorAll('.tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
+  });
+  activateTab('tt-bjj');
+
+  function show(name, anchor, tab) {
+    routes.forEach(function (r) { r.hidden = r.dataset.page !== name; });
+    document.querySelectorAll('.nav-links a').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      a.classList.toggle('active', !a.classList.contains('btn') && href.indexOf(name + '.html') === 0);
+    });
+    var links = document.querySelector('.nav-links');
+    var burger = document.querySelector('.burger');
+    if (links) links.classList.remove('open');
+    if (burger) burger.classList.remove('open');
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    if (tab) activateTab(tab);
+    window.scrollTo(0, 0);
+    if (anchor) {
+      var el = document.getElementById(anchor);
+      if (el) el.scrollIntoView();
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var m = href.match(/^([\w-]+)\.html(?:#([\w-]+))?$/);
+    if (m && PAGES.indexOf(m[1]) !== -1) {
+      e.preventDefault();
+      var anchor = m[2] || null, tab = null;
+      if (m[1] === 'timetables' && anchor) { tab = 'tt-' + anchor; anchor = null; }
+      show(m[1], anchor, tab);
+    } else if (href.charAt(0) === '#') {
+      var el = document.getElementById(href.slice(1));
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+    }
+  });
+
+  document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+})();
+</script>
+<script>
+// Ultimate Fight Fitness — shared scripts
+
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PREVIEW = !!window.UFF_PREVIEW;
+
+// Loading curtain — shows once per browsing session
+const loader = document.querySelector('.loader');
+if (loader) {
+  const dismiss = () => {
+    if (loader.classList.contains('done')) return;
+    loader.classList.add('done');
+    try { sessionStorage.uffSeen = '1'; } catch (e) {}
+  };
+  window.addEventListener('load', () => setTimeout(dismiss, 700));
+  setTimeout(dismiss, 2400); // safety net
+}
+
+// Scroll progress bar
+const progress = document.getElementById('progress');
+if (progress) {
+  const paint = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+  };
+  addEventListener('scroll', paint, { passive: true });
+  paint();
+}
+
+// Custom cursor ring (desktop pointers only)
+const cursor = document.getElementById('cursor');
+if (cursor && matchMedia('(pointer: fine)').matches && !REDUCED) {
+  let tx = -100, ty = -100, x = -100, y = -100;
+  addEventListener('mousemove', e => {
+    tx = e.clientX; ty = e.clientY;
+    cursor.classList.add('on');
+    cursor.classList.toggle('hot', !!e.target.closest('a, button, summary, .tile, .plan'));
+  }, { passive: true });
+  (function follow() {
+    x += (tx - x) * 0.2; y += (ty - y) * 0.2;
+    cursor.style.transform = 'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%)';
+    requestAnimationFrame(follow);
+  })();
+  addEventListener('mouseout', e => { if (!e.relatedTarget) cursor.classList.remove('on'); });
+}
+
+// Magnetic buttons
+if (matchMedia('(pointer: fine)').matches && !REDUCED) {
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = (e.clientX - r.left - r.width / 2) / r.width;
+      const dy = (e.clientY - r.top - r.height / 2) / r.height;
+      btn.style.transform = 'translate(' + dx * 5 + 'px,' + (dy * 4 - 1) + 'px)';
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+}
+
+// Gentle parallax on feature photos
+if (!REDUCED) {
+  const pxEls = Array.from(document.querySelectorAll('.split .photo img'));
+  if (pxEls.length) {
+    let ticking = false;
+    const move = () => {
+      pxEls.forEach(img => {
+        const r = img.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) return;
+        const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+        img.style.transform = 'translateY(' + (p * -16).toFixed(1) + 'px) scale(1.06)';
+      });
+      ticking = false;
+    };
+    addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(move); ticking = true; }
+    }, { passive: true });
+    move();
+  }
+}
+
+// Page-to-page fade (real site only, not the single-file preview)
+if (!PREVIEW && !REDUCED) {
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href$=".html"], a[href*=".html#"]');
+    if (!a || a.target === '_blank') return;
+    const href = a.getAttribute('href');
+    if (/^https?:|^mailto:/.test(href)) return;
+    e.preventDefault();
+    document.body.classList.add('leaving');
+    setTimeout(() => { window.location.href = href; }, 200);
+  });
+}
+
+// Mobile navigation
+const burger = document.querySelector('.burger');
+const navLinks = document.querySelector('.nav-links');
+if (burger && navLinks) {
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+}
+
+// Timetable tabs
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabPanels = document.querySelectorAll('.tab-panel');
+function activateTab(id, updateHash) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  tabButtons.forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+  tabPanels.forEach(p => p.classList.toggle('active', p.id === id));
+  if (updateHash) history.replaceState(null, '', '#' + id);
+}
+if (tabButtons.length) {
+  tabButtons.forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab, true)));
+  const initial = location.hash.replace('#', '');
+  activateTab(document.getElementById(initial) ? initial : tabButtons[0].dataset.tab, false);
+  window.addEventListener('hashchange', () => {
+    const id = location.hash.replace('#', '');
+    if (document.getElementById(id)) activateTab(id, false);
+  });
+}
+
+// Contact form -> opens the visitor's email app with the message filled in
+const form = document.getElementById('contact-form');
+if (form) {
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const get = n => (form.querySelector('[name="' + n + '"]') || { value: '' }).value.trim();
+    const name = (get('first') + ' ' + get('last')).trim();
+    const body =
+      'Name: ' + name + '\n' +
+      'Email: ' + get('email') + '\n' +
+      (get('phone') ? 'Phone: ' + get('phone') + '\n' : '') +
+      '\n' + get('message');
+    const subject = 'Website enquiry' + (name ? ' from ' + name : '');
+    window.location.href = 'mailto:info@ultimatefightfitness.co.uk' +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  });
+}
+
+// Reveal on scroll — grid children get a small stagger
+document.querySelectorAll('.tile-grid, .card-grid, .gallery, .price-grid, .day-grid').forEach(grid => {
+  Array.from(grid.children).forEach((el, i) => {
+    el.style.transitionDelay = (i % 9) * 70 + 'ms';
+  });
+});
+const revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window && revealEls.length) {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('in'));
+}
+
+// Hero stat count-up
+const counters = document.querySelectorAll('[data-count]');
+if (counters.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  counters.forEach(el => {
+    const target = parseInt(el.dataset.count, 10);
+    const start = performance.now();
+    const dur = 1100;
+    el.textContent = '0';
+    function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// Highlight today's column on the timetables
+const todayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()];
+document.querySelectorAll('.day h4').forEach(h => {
+  if (h.textContent.trim() === todayName) h.parentElement.classList.add('today');
+});
+
+// Lightbox for photos
+document.addEventListener('click', e => {
+  const img = e.target.closest('.gallery img, .coach-media img, .split .photo img');
+  if (!img) return;
+  const box = document.createElement('div');
+  box.className = 'lightbox';
+  const full = document.createElement('img');
+  full.src = img.src;
+  full.alt = img.alt || '';
+  box.appendChild(full);
+  box.addEventListener('click', () => box.remove());
+  document.addEventListener('keydown', function esc(ev) {
+    if (ev.key === 'Escape') { box.remove(); document.removeEventListener('keydown', esc); }
+  });
+  document.body.appendChild(box);
+});
+
+</script>
+</body>
+</html>
