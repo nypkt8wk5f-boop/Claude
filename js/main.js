@@ -646,42 +646,40 @@ document.addEventListener('click', e => {
   /* minutes from midnight -> [start, minutes, name, sub] */
   var M = function (h, m) { return h * 60 + m; };
   var BJJ = 60, SC = 45, MT = 60, KID = 45;
-  /* entries with a 5th element start on 1 Sept 2026 (after the school holidays) */
   var SCHED = {
-    1: [[M(6,15), SC, 'Hybrid', 'S&C'], [M(7,0), BJJ, 'BJJ Beginners & Intermediates', 'Gi', 1],
-        [M(7,15), SC, 'Sweat', 'S&C'], [M(9,15), SC, 'Strength', 'S&C'],
-        [M(12,30), SC, 'Small Group PT', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
-        [M(16,15), KID, 'BJJ Kids (4–11)', '', 1],
-        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'], [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+    1: [[M(9,0), SC, 'Strength', 'S&C'],
+        [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
+        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
+        [M(18,0), SC, 'Sweat', 'S&C'],
+        [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
         [M(18,45), MT, 'Muay Thai Adults', 'All levels']],
-    2: [[M(6,15), SC, 'Sweat', 'S&C'], [M(7,0), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi', 1],
-        [M(7,15), SC, 'Hybrid', 'S&C'], [M(9,15), SC, 'Small Group PT', 'S&C'],
-        [M(12,30), SC, 'Strength', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
-        [M(16,15), KID, 'BJJ Kids (12–15)', '', 1], [M(17,30), MT, 'Muay Thai Kids', '', 1],
-        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'], [M(18,30), SC, 'Hybrid', 'S&C'],
+    2: [[M(9,0), SC, 'Sweat', 'S&C'],
+        [M(16,15), KID, 'BJJ Kids (4–15)', 'Gi'],
+        [M(17,30), MT, 'Muay Thai Kids', 'Ages 4–15'],
+        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+        [M(18,30), SC, 'Strength', 'S&C'],
         [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'Gi']],
-    3: [[M(6,15), SC, 'Small Group PT', 'S&C'], [M(7,15), SC, 'Strength', 'S&C'], [M(9,15), SC, 'Hybrid', 'S&C'],
-        [M(12,30), SC, 'Sweat', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
-        [M(17,30), BJJ, 'Open Mat', 'BJJ'], [M(18,45), MT, 'Muay Thai Adults', 'All levels']],
-    4: [[M(6,15), SC, 'Strength', 'S&C'], [M(7,0), BJJ, 'Open Mat', 'Blue Belt & Above', 1],
-        [M(7,15), SC, 'Small Group PT', 'S&C'], [M(9,15), SC, 'Sweat', 'S&C'],
-        [M(12,30), SC, 'Hybrid', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
-        [M(16,15), KID, 'BJJ Kids (12–15)', '', 1],
-        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'], [M(18,30), SC, 'Strength', 'S&C'],
-        [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'Gi']],
-    5: [[M(6,15), SC, 'Hybrid', 'S&C'], [M(7,0), BJJ, 'BJJ Beginners & Intermediates', 'Gi', 1],
-        [M(7,15), SC, 'Sweat', 'S&C'], [M(9,15), SC, 'Small Group PT', 'S&C'],
-        [M(12,30), SC, 'Strength', 'S&C'], [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
-        [M(16,15), KID, 'BJJ Kids (4–11)', '', 1],
-        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'], [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+    3: [[M(9,0), SC, 'Strength', 'S&C'],
+        [M(12,30), BJJ, 'Open Mat', 'BJJ'],
+        [M(17,30), BJJ, 'Open Mat', 'BJJ'],
+        [M(18,0), SC, 'Sweat', 'S&C'],
         [M(18,45), MT, 'Muay Thai Adults', 'All levels']],
-    6: [[M(10,0), KID, 'Muay Thai Kids', '', 1], [M(12,30), BJJ, 'Open Mat', 'BJJ']],
+    4: [[M(9,0), SC, 'Sweat', 'S&C'],
+        [M(16,30), KID, 'BJJ Kids (4–15)', 'No-Gi'],
+        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+        [M(18,0), SC, 'Strength', 'S&C'],
+        [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'Gi']],
+    5: [[M(9,0), SC, 'Strength', 'S&C'],
+        [M(12,30), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+        [M(17,30), BJJ, 'BJJ Beginners & Intermediates', 'Gi'],
+        [M(18,0), SC, 'Sweat', 'S&C'],
+        [M(18,45), BJJ, 'BJJ Beginners & Intermediates', 'No-Gi'],
+        [M(18,45), MT, 'Muay Thai Adults', 'All levels']],
+    6: [[M(10,0), KID, 'Muay Thai Kids', 'Ages 4–15'], [M(12,30), BJJ, 'Open Mat', 'BJJ']],
     0: [[M(12,30), BJJ, 'Open Mat', 'BJJ']]
   };
   function schedFor(d) {
-    var sept = new Date() >= new Date(2026, 8, 1);
-    return (SCHED[d] || []).filter(function (c) { return !c[4] || sept; })
-      .slice().sort(function (a, b) { return a[0] - b[0]; });
+    return (SCHED[d] || []).slice().sort(function (a, b) { return a[0] - b[0]; });
   }
   var HOURS = { 1: [360, 1200], 2: [360, 1200], 3: [360, 1200], 4: [360, 1200], 5: [360, 1200], 6: [600, 840], 0: [720, 840] };
   var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
