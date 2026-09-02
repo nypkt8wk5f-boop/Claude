@@ -14,14 +14,14 @@ if (loader) {
     // once the doors have opened, take the whole thing out of the page —
     // parked-off-screen halves can peek back in when mobile browser chrome
     // collapses, which reads as a black band with a red seam over content
-    setTimeout(() => { loader.style.display = 'none'; }, 850);
+    setTimeout(() => { loader.style.display = 'none'; }, 500);
     try { sessionStorage.uffSeen = '1'; } catch (e) {}
   };
   // don't wait for window.load — images can hold the logo hostage on mobile
-  const arm = () => setTimeout(dismiss, seen ? 0 : 350);
+  const arm = () => setTimeout(dismiss, seen ? 0 : 120);
   if (document.readyState !== 'loading') arm();
   else document.addEventListener('DOMContentLoaded', arm);
-  setTimeout(dismiss, seen ? 600 : 1400); // safety net
+  setTimeout(dismiss, seen ? 350 : 800); // safety net
 }
 
 // Scroll progress bar — you rank up as you read: white, blue, purple, brown, black
@@ -155,21 +155,10 @@ if (!REDUCED) {
   }
 }
 
-// Page-to-page fade (real site only, not the single-file preview)
+// Page-to-page navigation is native — no exit curtain. A wipe that covers the
+// screen while the next page fetches reads as "stuck on a red screen" on slow
+// mobile connections, so links just navigate and the next page fades itself in.
 if (!PREVIEW && !REDUCED) {
-  document.addEventListener('click', e => {
-    // leave modified clicks (new tab / new window) to the browser
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.defaultPrevented) return;
-    const a = e.target.closest('a[href$=".html"], a[href*=".html#"]');
-    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
-    if (a.closest('.site-header') && a.classList.contains('logo')) return; // logo taps feed FIGHT MODE
-    const href = a.getAttribute('href');
-    if (/^https?:|^mailto:/.test(href)) return;
-    e.preventDefault();
-    if (window.__uffWipe) { window.__uffWipe(href); return; }
-    document.body.classList.add('leaving');
-    setTimeout(() => { window.location.href = href; }, 200);
-  });
   // back-swipe out of the bfcache must not land on a leftover wipe/fade
   addEventListener('pageshow', e => {
     if (!e.persisted) return;
@@ -1003,9 +992,7 @@ document.addEventListener('click', e => {
     wipe.appendChild(mark);
     document.body.appendChild(wipe);
     window.__uffWipe = function (href) {
-      wipe.style.visibility = 'visible';
-      wipe.classList.add('go');
-      setTimeout(function () { location.href = href; }, 430);
+      location.href = href;
     };
   }
 

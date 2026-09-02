@@ -767,7 +767,7 @@ body.leaving { opacity: 0; transition: opacity .22s ease; }
   align-items: center;
   justify-content: center;
   gap: 22px;
-  transition: transform .65s cubic-bezier(.7, 0, .2, 1);
+  transition: transform .4s cubic-bezier(.7, 0, .2, 1);
 }
 .loader img { height: 52px; width: auto; }
 .loader-bar {
@@ -782,12 +782,12 @@ body.leaving { opacity: 0; transition: opacity .22s ease; }
   display: block;
   height: 100%;
   background: var(--red);
-  animation: loadfill .9s ease-out forwards;
+  animation: loadfill .5s ease-out forwards;
 }
 @keyframes loadfill { from { width: 0; } to { width: 100%; } }
 .loader.done { transform: translateY(-101%); }
 /* if scripts never run, the curtain must not hold the site hostage */
-.loader { animation: loaderBail 0s 3.2s forwards; }
+.loader { animation: loaderBail 0s 2s forwards; }
 @keyframes loaderBail { to { visibility: hidden; opacity: 0; } }
 html.no-loader .loader { display: none; }
 
