@@ -18,7 +18,7 @@ if (loader) {
     try { sessionStorage.uffSeen = '1'; } catch (e) {}
   };
   // don't wait for window.load — images can hold the logo hostage on mobile
-  const arm = () => setTimeout(dismiss, seen ? 0 : 120);
+  const arm = () => setTimeout(dismiss, 0);
   if (document.readyState !== 'loading') arm();
   else document.addEventListener('DOMContentLoaded', arm);
   setTimeout(dismiss, seen ? 350 : 800); // safety net
@@ -155,10 +155,24 @@ if (!REDUCED) {
   }
 }
 
-// Page-to-page navigation is native — no exit curtain. A wipe that covers the
-// screen while the next page fetches reads as "stuck on a red screen" on slow
-// mobile connections, so links just navigate and the next page fades itself in.
+// Page-to-page red wipe. The curtain rises with the logo and a live loading
+// bar while the next page is already fetching; the destination arrives with a
+// matching red curtain (html.wiped) that slides away, so slow connections show
+// a branded loading screen instead of a dead red wall.
 if (!PREVIEW && !REDUCED) {
+  document.addEventListener('click', e => {
+    // leave modified clicks (new tab / new window) to the browser
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.defaultPrevented) return;
+    const a = e.target.closest('a[href$=".html"], a[href*=".html#"]');
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+    if (a.closest('.site-header') && a.classList.contains('logo')) return; // logo taps feed FIGHT MODE
+    const href = a.getAttribute('href');
+    if (/^https?:|^mailto:/.test(href)) return;
+    e.preventDefault();
+    if (window.__uffWipe) { window.__uffWipe(href); return; }
+    document.body.classList.add('leaving');
+    setTimeout(() => { window.location.href = href; }, 180);
+  });
   // back-swipe out of the bfcache must not land on a leftover wipe/fade
   addEventListener('pageshow', e => {
     if (!e.persisted) return;
@@ -990,9 +1004,17 @@ document.addEventListener('click', e => {
     mark.src = 'assets/img/logo-small.png';
     mark.alt = '';
     wipe.appendChild(mark);
+    var wbar = document.createElement('span');
+    wbar.className = 'wbar';
+    wipe.appendChild(wbar);
     document.body.appendChild(wipe);
     window.__uffWipe = function (href) {
-      location.href = href;
+      try { sessionStorage.uffWipe = '1'; } catch (e) {}
+      wipe.style.visibility = 'visible';
+      wipe.classList.add('go');
+      /* navigate while the curtain is still rising — the fetch overlaps the
+         animation and the next page opens under its own red curtain */
+      setTimeout(function () { location.href = href; }, 240);
     };
   }
 
