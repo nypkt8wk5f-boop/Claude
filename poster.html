@@ -79,12 +79,11 @@
   var DISCS = { bjj: 'BRAZILIAN JIU-JITSU', mt: 'MUAY THAI', sc: 'STRENGTH & CONDITIONING' };
   /* next session per discipline, from the live timetable (day 0=Sun) */
   var NEXT = {
-    bjj: { 1:[[750,'GI'],[1050,'GI'],[1125,'NO-GI']], 2:[[750,'NO-GI'],[1050,'NO-GI'],[1125,'GI']],
-           3:[[750,'GI'],[1050,'OPEN MAT']], 4:[[750,'NO-GI'],[1050,'NO-GI'],[1125,'GI']],
-           5:[[750,'GI'],[1050,'GI'],[1125,'NO-GI']], 6:[[750,'OPEN MAT']], 0:[[750,'OPEN MAT']] },
-    mt:  { 1:[[1125,'ADULTS']], 3:[[1125,'ADULTS']], 5:[[1125,'ADULTS']] },
-    sc:  { 1:[[375],[435],[555],[750]], 2:[[375],[435],[555],[750],[1110]],
-           3:[[375],[435],[555],[750]], 4:[[375],[435],[555],[750],[1110]], 5:[[375],[435],[555],[750]] }
+    bjj: { 1:[[1080,'GI'],[1140,'NO-GI']], 2:[[1080,'NO-GI'],[1140,'GI']],
+           3:[[720,'NO-GI'],[1080,'OPEN MAT']], 4:[[1080,'NO-GI'],[1140,'GI']],
+           5:[[720,'NO-GI'],[1080,'GI'],[1140,'NO-GI']], 6:[[750,'OPEN MAT']], 0:[[750,'OPEN MAT']] },
+    mt:  { 1:[[1140,'ADULTS']], 3:[[1140,'ADULTS']], 4:[[1140,'ADULTS']] },
+    sc:  { 1:[[570],[1080]], 2:[[570],[1110]], 3:[[570],[1080]], 4:[[570],[1110]], 5:[[570],[1080]] }
   };
   var DAYS = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
   function nextSession(d) {
