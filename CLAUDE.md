@@ -10,7 +10,7 @@
 - First session is always free. Arriving 10 to 15 minutes early to meet the coach is fine to suggest.
 - Kids classes are ages 4 to 15. Kids BJJ Tuesday 4.30pm (Gi) and Thursday 4.30pm (No-Gi). Kids Muay Thai Tuesday 5.30pm and Saturday 10am.
 - Prices only when asked: £10 a kids class, £59.99 a month Kids Unlimited, £15 adult walk-in, £10 open mat walk-in.
-- Sign-off: Ryan, Ultimate Fight Fitness, 07885 521508.
+- Sign-off: never add a signature. No name, gym name or phone number. End with just "Thanks," or "Best regards," and nothing after it, because Ryan's email signature is added automatically. This applies to every email, including consultants and the council. (Ryan, 16 November 2026.)
 
 ## Tone everywhere else
 - Social captions: punchy, human, no cringe, no hard sell.
