@@ -29,5 +29,5 @@ These come from ClubWise support emails. Use them as written and do not guess at
 - See current members: Back menu > dashboard > memberships tab > DD memberships. For a report: Back menu > reports > current > run as a CSV.
 - Cut-off: direct debits for the 1st are processed 12 days before the end of the month. A change made after that misses the next payment. ClubWise's advice then is to let the payment go out and refund it. Money reaches the gym 5 working days after the 1st.
 - Memberships cannot be renamed or deleted, only hidden from the POS. ClubWise creates new ones on request.
-- Cancelling a membership: steps not yet known (asked 18 November 2026). Ask ClubWise, then record them here.
+- Cancelling a membership: the exact clicks are not recorded yet. Ruby processed one on 18 November 2026 (status "Set to term", with a termination receipt), so she knows the steps. Ask her, then record them here. A cancellation record shows the date the member gave notice, the final billing date, the membership end date and the reason.
 - Support: Club Support 01844 348300, option 3, or the web form at support.clubwise.com/s/clientsupport. Quote case 00397203.
