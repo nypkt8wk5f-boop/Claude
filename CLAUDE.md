@@ -20,3 +20,14 @@
 
 ## Site
 - Live branch is claude/gym-website-redesign-5zzasl. Keep timetables.html, memberships.html and the SCHED table in js/main.js in sync, and bump the js/main.js?v= cache-buster when the schedule changes.
+
+## ClubWise how-tos
+These come from ClubWise support emails. Use them as written and do not guess at steps that are not listed.
+- Freeze a member: member's status tab > freeze > freeze membership > select the dates. Tick "Entry permitted" if they can still come in. (Lewis Woolman, 24 September 2026.)
+- Upgrade or move a member: member profile > update membership status > membership status > select the new membership > remove the pro rata and joining fee > confirm and continue > complete the sale. (Muzaffar Ali, 27 October 2026.)
+- Change a membership's fee for new joiners: Back > Setup > POS > Billed Memberships for Sale > select the membership > Membership tab > amend the fee > Save. Existing members keep their old fee until each one is moved using the upgrade steps. (26 October 2026.)
+- See current members: Back menu > dashboard > memberships tab > DD memberships. For a report: Back menu > reports > current > run as a CSV.
+- Cut-off: direct debits for the 1st are processed 12 days before the end of the month. A change made after that misses the next payment. ClubWise's advice then is to let the payment go out and refund it. Money reaches the gym 5 working days after the 1st.
+- Memberships cannot be renamed or deleted, only hidden from the POS. ClubWise creates new ones on request.
+- Cancelling a membership: steps not yet known (asked 18 November 2026). Ask ClubWise, then record them here.
+- Support: Club Support 01844 348300, option 3, or the web form at support.clubwise.com/s/clientsupport. Quote case 00397203.
